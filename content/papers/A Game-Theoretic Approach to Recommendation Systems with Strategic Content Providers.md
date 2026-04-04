@@ -46,17 +46,19 @@ comment: false
 
 只需要做一个简单构造：有 $3$ 个用户 $u_1,u_2,u_3$ 和两个供应商，$\mathcal L_1=\mathcal L_2=\{l_1,l_2,l_3\}$，考察如下的 $\sigma$：
 $$
+\$$
 \begin{array}{cc}
- & \begin{array}{ccc} u_1 & u_2 & u_3 \end{array} \\
-\begin{array}{c} l_1 \\ l_2 \\ l_3 \end{array} & 
+& \begin{array}{ccc} l_1 & l_2 & l_3 \end{array} \\\\
+\begin{array}{c} l_1 \\\\ l_2 \\\\ l_3 \end{array} & 
 \left[
 \begin{array}{ccc}
-0 & y & x \\
-x & 0 & y \\
-y & x & 0
+1+\alpha,1+\alpha & \beta,3-\beta & 3-\beta,\beta \\\\
+3-\beta,\beta & 1+\alpha,1+\alpha & \beta,3-\beta \\\\
+\beta,3-\beta & 3-\beta,\beta & 1+\alpha,1+\alpha
 \end{array}
 \right]
 \end{array}
+$$
 $$
 其中 $x,y \in (0,1]$，为了叙述方便，我们让 $\mathcal M_k(\sigma_i(l_1),\sigma_i(l_2))$ 表示 $\mathbb P(\mathcal M((l_1,l_2),u_i)=k)$，容易根据 **C** 和 **F** 得到
 $$

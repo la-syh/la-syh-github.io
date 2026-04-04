@@ -1335,6 +1335,10 @@ h6 = "{h2}.{h3}.{h4}.{h5}.{h6} {title}"
 enable = true
 # mathematical formulas rendering engines, optional values: ["katex", "mathjax"]
 type = "katex"
+# 开启拷贝扩展（可选，方便读者复制公式）
+copyTex = true
+# 开启 mhchem 扩展
+mhchem = true
 
 # KaTeX server-side rendering (https://katex.org)
 # KaTeX partial config: https://gohugo.io/functions/transform/tomath/#options
