@@ -7,6 +7,8 @@ keywords: ""
 comment: false
 ---
 
+[文章链接](https://arxiv.org/pdf/1806.00955)
+
 ## 概述
 
 在部分情况下，广告提供商会观察推荐算法的偏好从而调整自己提供的内容，我们希望寻找一个合理的广告展示策略，满足一些较好的性质.
@@ -46,19 +48,17 @@ comment: false
 
 只需要做一个简单构造：有 $3$ 个用户 $u_1,u_2,u_3$ 和两个供应商，$\mathcal L_1=\mathcal L_2=\{l_1,l_2,l_3\}$，考察如下的 $\sigma$：
 $$
-\$$
 \begin{array}{cc}
-& \begin{array}{ccc} l_1 & l_2 & l_3 \end{array} \\\\
-\begin{array}{c} l_1 \\\\ l_2 \\\\ l_3 \end{array} & 
+ & \begin{array}{ccc} u_1 & u_2 & u_3 \end{array} \\
+\begin{array}{c} l_1 \\ l_2 \\ l_3 \end{array} & 
 \left[
 \begin{array}{ccc}
-1+\alpha,1+\alpha & \beta,3-\beta & 3-\beta,\beta \\\\
-3-\beta,\beta & 1+\alpha,1+\alpha & \beta,3-\beta \\\\
-\beta,3-\beta & 3-\beta,\beta & 1+\alpha,1+\alpha
+0 & y & x \\
+x & 0 & y \\
+y & x & 0
 \end{array}
 \right]
 \end{array}
-$$
 $$
 其中 $x,y \in (0,1]$，为了叙述方便，我们让 $\mathcal M_k(\sigma_i(l_1),\sigma_i(l_2))$ 表示 $\mathbb P(\mathcal M((l_1,l_2),u_i)=k)$，容易根据 **C** 和 **F** 得到
 $$
@@ -66,14 +66,14 @@ $$
 $$
  设 $\mathcal M_1(0,0)=\alpha$，根据 **Symmetry**，$\mathcal M_2(0,0)=\alpha$ 同样成立，再记 $\beta = \mathcal M_1(0,x)+\mathcal M_1(y,0)+\mathcal M_1(x,y)$，可以描述各策略下两供应商的收益情况如下：
 $$
-\begin{array}{cc}
- & \begin{array}{ccc} l_1 &&&&&& l_2 &&&&&& l_3 \end{array} \\
-\begin{array}{c} l_1 \\ l_2 \\ l_3 \end{array} & 
+\begin{array}{rc}
+ & \begin{array}{ccc} l_1 & \hspace{5em} l_2 & \hspace{5em} l_3 \end{array} \\\\
+\begin{array}{r} l_1 \\\\ l_2 \\\\ l_3 \end{array} & 
 \left[
 \begin{array}{ccc}
-1+\alpha,1+\alpha & \beta,3-\beta & 3-\beta,\beta \\
-3-\beta,\beta & 1+\alpha,1+\alpha & \beta,3-\beta \\
-\beta,3-\beta & 3-\beta,\beta & 1+\alpha,1+\alpha
+1+\alpha, 1+\alpha & \beta, 3-\beta & 3-\beta, \beta \\\\
+3-\beta, \beta & 1+\alpha, 1+\alpha & \beta, 3-\beta \\\\
+\beta, 3-\beta & 3-\beta, \beta & 1+\alpha, 1+\alpha
 \end{array}
 \right]
 \end{array}
