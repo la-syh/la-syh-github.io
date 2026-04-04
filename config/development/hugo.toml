@@ -1,4 +1,4 @@
-title = "Hugo FixIt Blog"
+title = "LA's blog"
 theme = [
   "FixIt",
   "shortcode-docs-bookmark"
