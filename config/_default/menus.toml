@@ -39,6 +39,13 @@ url = "/categories/"
 title = ""
 weight = 2
 
+[[main]]
+identifier = "papers"
+name = "paper notes"        # 导航栏显示的文字
+url = "/papers/"    # 对应刚才创建的目录
+weight = 3         # 排序，数字越小越靠前
+pre = '<i class="fa-solid fa-book"></i>' # FixIt 支持 FontAwesome 图标
+
 [main.params]
 icon = "fa-solid fa-folder-tree"
 
