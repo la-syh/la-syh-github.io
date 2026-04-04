@@ -11,7 +11,7 @@
 # -------------------------------------------------------------------------------------
 
 # website title
-title = ""
+title = "LA's blog"
 # Hostname (and path) to the root
 baseURL = "https://la-syh.blog"
 # theme list
