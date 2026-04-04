@@ -5,7 +5,7 @@ keywords = ["Hugo", "FixIt"]
 name = "LA"
 email = "la-syh@qq.com"
 link = "https://github.com/la-syh"
-avatar = "https://lruihao.cn/images/avatar.jpg"
+avatar = "/images/avatar.jpg"
 
 [app]
 title = ""
