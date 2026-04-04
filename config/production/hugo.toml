@@ -1,4 +1,4 @@
-title = ""
+title = "LA's blog"
 baseURL = "https://la-syh.blog"
 theme = [
   "FixIt",
