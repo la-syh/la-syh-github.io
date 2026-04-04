@@ -2,9 +2,9 @@ description = "This is my new Hugo FixIt site"
 keywords = ["Hugo", "FixIt"]
 
 [author]
-name = "Lruihao"
-email = ""
-link = "https://github.com/Lruihao"
+name = "LA"
+email = "la-syh@qq.com"
+link = "https://github.com/la-syh"
 avatar = "https://lruihao.cn/images/avatar.jpg"
 
 [app]
