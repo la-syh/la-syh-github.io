@@ -47,10 +47,10 @@ disableThemeInject = false
 
 # Author Configuration
 [author]
-  name = "LA"
-  email = "la-syh@qq.com"
-  link = ""
-avatar = "/images/avatar.jpg"
+name = ""
+email = ""
+link = ""
+avatar = ""
 
 # FixIt 0.3.0 | NEW public Git repository information only then enableGitInfo is true
 [gitInfo]
@@ -143,7 +143,6 @@ mobileMode = "auto"
 # Header title config
 [header.title]
 # URL of the LOGO
-# logo = "/images/fixit.min.svg"
 logo = ""
 # title name
 name = ""
@@ -642,7 +641,7 @@ theme = "minimal"
 # Get PostChat Key from my invitation link, thanks for your support!
 # https://ai.zhheo.com/console/login?InviteID=85041330
 [postChat]
-enable = true
+enable = false
 key = ""
 # How users initiate chats: ["iframe", "magic"]
 userMode = "iframe"
