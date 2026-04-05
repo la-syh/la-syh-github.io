@@ -4,6 +4,6 @@ subtitle: ""
 date: {{ .Date }}
 description: ""
 keywords: ""
-comment: false
-tod: true
+comment: true
+toc: true
 ---
