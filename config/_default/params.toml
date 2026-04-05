@@ -299,7 +299,7 @@ paginate = 6
 
 # FixIt 0.2.16 | CHANGED Social config about the author
 [social]
-GitHub = ""
+GitHub = "https://github.com/la-syh/"
 Linkedin = ""
 Twitter = ""
 Instagram = ""
@@ -342,7 +342,7 @@ Twitch = ""
 Strava = ""
 Skype = ""
 Whatsapp = ""
-Zhihu = ""
+Zhihu = "https://www.zhihu.com/people/-lap-"
 Douban = ""
 Angellist = ""
 Slidershare = ""
@@ -366,7 +366,7 @@ Liberapay = ""
 Ko-Fi = ""
 BuyMeaCoffee = ""
 Linktree = ""
-QQ = ""
+QQ = "3135505031"
 QQGroup = "" # https://qun.qq.com/join.html
 Diaspora = ""
 CSDN = ""
@@ -386,7 +386,7 @@ TikTok = ""
 Credly = ""
 Bluesky = ""
 Phone = ""
-Email = ""
+Email = "la-syh@qq.com"
 RSS = true
 
 # custom social links like the following
