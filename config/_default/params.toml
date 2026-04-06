@@ -299,7 +299,7 @@ paginate = 6
 
 # FixIt 0.2.16 | CHANGED Social config about the author
 [social]
-GitHub = "https://github.com/la-syh/"
+GitHub = ""
 Linkedin = ""
 Twitter = ""
 Instagram = ""
@@ -342,7 +342,7 @@ Twitch = ""
 Strava = ""
 Skype = ""
 Whatsapp = ""
-Zhihu = "https://www.zhihu.com/people/-lap-"
+Zhihu = ""
 Douban = ""
 Angellist = ""
 Slidershare = ""
@@ -366,7 +366,7 @@ Liberapay = ""
 Ko-Fi = ""
 BuyMeaCoffee = ""
 Linktree = ""
-QQ = "3135505031"
+QQ = ""
 QQGroup = "" # https://qun.qq.com/join.html
 Diaspora = ""
 CSDN = ""
@@ -386,7 +386,7 @@ TikTok = ""
 Credly = ""
 Bluesky = ""
 Phone = ""
-Email = "la-syh@qq.com"
+Email = ""
 RSS = true
 
 # custom social links like the following
@@ -731,7 +731,7 @@ wrapperClass = ""
 # the maximum number of lines to show in the code block preview
 maxShownLines = 10
 # whether to show shadow effect for code blocks, available values: ["always", "hover", "never"]
-shadow = "always"
+shadow = "never"
 # whether to enable code copy button
 copyable = true
 # [classic] whether to enable code download button in the code block header
@@ -1053,7 +1053,7 @@ Mix = false
 
 # FixIt 0.2.15 | CHANGED Comment config
 [page.comment]
-enable = true
+enable = false
 
 # FixIt 0.2.13 | NEW Artalk comment config (https://artalk.js.org/)
 [page.comment.artalk]
@@ -1198,19 +1198,19 @@ katex = false
 
 # FixIt 0.2.14 | NEW Giscus comments config
 [page.comment.giscus]
-enable = true
-repo = "la-syh/la-syh-github.io"
-repoId = "R_kgDOR5hCgQ"
-category = "Announcements"
-categoryId = "DIC_kwDOR5hCgc4C6GkS"
-mapping = "pathname"
+enable = false
+repo = ""
+repoId = ""
+category = ""
+categoryId = ""
+mapping = ""
 origin = "https://giscus.app" # FixIt NEW | 0.3.7 Or set it to your self-hosted domain
 strict = "0" # FixIt NEW | 0.2.18
 term = ""
 reactionsEnabled = "1"
 emitMetadata = "0"
-inputPosition = "top" # ["top", "bottom"]
-lang = "zh-CN"
+inputPosition = "bottom" # ["top", "bottom"]
+lang = ""
 lightTheme = "light"
 darkTheme = "dark"
 lazyLoad = true
