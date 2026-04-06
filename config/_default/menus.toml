@@ -4,16 +4,6 @@
 # -------------------------------------------------------------------------------------
 
 [[main]]
-  identifier = "home"
-  name = "home"
-  url = "/"
-  weight = -1 # 权重设为 0 或更小，确保它排在最左边
-
-[main.params]
-  # 使用 FixIt 推荐的 icon 方式，这样更整洁
-  icon = "fa-solid fa-house"
-
-[[main]]
 identifier = "archives"
 parent = ""
 # you can add extra information before the name (HTML format is supported), such as icons
