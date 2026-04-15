@@ -298,7 +298,7 @@ $$
 
 除此之外，类中还有两个成员 `explained_variance__` 表示降维后各主成分的方差，`explained_variance_ratio__` 表示各主成分方差占总方差的比例，`components_` 存储了矩阵 $\boldsymbol V^T$，每行对应一个奇异向量，并已按照奇异值降序排序.
 
-```python {group = "PCA", name = "sklearn 中的 PCA 测试"}
+```python {group = "PCA", name = "生成随机数据"}
 # %%
 import matplotlib.pyplot as plt
 from sklearn.datasets._samples_generator import make_blobs
@@ -320,7 +320,7 @@ ax.set_zlabel('Z axis')
 plt.show()
 ```
 
-```python {group = "PCA", name = "sklearn 中的 PCA 测试"}
+```python {group = "PCA", name = "查看各主成分方差"}
 # %%
 # 查看各主成分的方差
 from sklearn.decomposition import PCA
@@ -335,7 +335,7 @@ Explained variance: [3.78597259 0.03857942 0.03697134]
 '''
 ```
 
-```python {group = "PCA", name = "sklearn 中的 PCA 测试"}
+```python {group = "PCA", name = "PCA 降维"}
 # %%
 # 将数据投影到 PCA 计算出的主成分上
 X_pca = pca.transform(X)
