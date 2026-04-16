@@ -1,0 +1,163 @@
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+<div style="background: #ffffff; padding: 25px; border: 1px solid #eee; border-radius: 16px; font-family: sans-serif; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+    <div id="hyper-plot" style="width:100%; height:550px; background: #fafafa; border-radius: 8px;"></div>
+
+    <div style="margin-top: 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <div style="padding: 10px; background: #fff5f5; border-radius: 8px; border-left: 5px solid #e74c3c;">
+            <label style="color:#e74c3c; font-weight:bold; display:block; margin-bottom: 8px;">参数 u (红线方向): <span id="u-display">1.0</span></label>
+            <input type="range" id="u-slide" min="-1.5" max="1.5" step="0.1" value="1.0"
+                   oninput="window.updateHyperPlot()" style="width:100%; accent-color:#e74c3c; cursor: pointer;">
+        </div>
+        <div style="padding: 10px; background: #f0f7ff; border-radius: 8px; border-left: 5px solid #3498db;">
+            <label style="color:#3498db; font-weight:bold; display:block; margin-bottom: 8px;">参数 v (蓝线方向): <span id="v-display">1.0</span></label>
+            <input type="range" id="v-slide" min="-1.5" max="1.5" step="0.1" value="1.0"
+                   oninput="window.updateHyperPlot()" style="width:100%; accent-color:#3498db; cursor: pointer;">
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 15px; font-size: 0.9em; color: #555; background: #f8f9fa; padding: 10px; border-radius: 6px;">
+        在 $P_0$ 点，灰色切平面由参数曲线切向量 $\boldsymbol{r}_u$ (红) 和 $\boldsymbol{r}_v$ (蓝) 张成.
+    </div>
+</div>
+
+<script>
+(function() {
+    const gd = document.getElementById('hyper-plot');
+    if (!gd) return;
+
+    // 数据准备
+    const range = [];
+    for(let i = -1.6; i <= 1.61; i += 0.1) range.push(i);
+    const zS = range.map(v => range.map(u => (u*u - v*v)/2));
+
+    const surfaceTrace = {
+        z: zS, x: range, y: range, type: 'surface',
+        colorscale: 'Viridis', showscale: false, opacity: 0.5, hoverinfo: 'none'
+    };
+
+    // 全局更新函数
+    window.updateHyperPlot = function() {
+        const uIn = document.getElementById('u-slide');
+        const vIn = document.getElementById('v-slide');
+        if (!uIn || !vIn) return;
+
+        const uVal = parseFloat(uIn.value);
+        const vVal = parseFloat(vIn.value);
+        const z0 = (uVal*uVal - vVal*vVal)/2;
+
+        document.getElementById('u-display').innerText = uVal.toFixed(1);
+        document.getElementById('v-display').innerText = vVal.toFixed(1);
+
+        // 1. P0 点
+        const dot = {
+            x: [uVal], y: [vVal], z: [z0], type: 'scatter3d', mode: 'markers',
+            marker: { size: 3, color: '#333' }, hoverinfo: 'none'
+        };
+
+        // 2. 参数曲线
+        const uLine = {
+            x: range, y: range.map(() => vVal), z: range.map(u => (u*u - vVal*vVal)/2),
+            type: 'scatter3d', mode: 'lines', line: { color: '#e74c3c', width: 6 }, hoverinfo: 'none'
+        };
+        const vLine = {
+            x: range.map(() => uVal), y: range, z: range.map(v => (uVal*uVal - v*v)/2),
+            type: 'scatter3d', mode: 'lines', line: { color: '#3498db', width: 6 }, hoverinfo: 'none'
+        };
+
+        // 3. 切向量标注 (标注 HTML 标签防止乱码)
+        const scale = 0.8;
+        const ruZ = uVal;  // ru = (1, 0, u)
+        const rvZ = -vVal; // rv = (0, 1, -v)
+        const labelRu = "<b><i>r</i></b><sub>u</sub>";
+        const labelRv = "<b><i>r</i></b><sub>v</sub>";
+
+        // A. 红线向量 ru (固定 v=vVal) - 分拆线以区分文字颜色
+        const ruLineTrace = {
+            x: [uVal, uVal + 1*scale],
+            y: [vVal, vVal],
+            z: [z0, z0 + ruZ*scale],
+            type: 'scatter3d', mode: 'lines+text', line: { color: '#e74c3c', width: 8 },
+            text: [null, labelRu], textposition: 'top center',
+            font: { size: 16, color: '#e74c3c' }, hoverinfo: 'none'
+        };
+
+        // B. 蓝线向量 rv (固定 u=uVal) - 分拆线以区分文字颜色
+        const rvLineTrace = {
+            x: [uVal, uVal],
+            y: [vVal, vVal + 1*scale],
+            z: [z0, z0 + rvZ*scale],
+            type: 'scatter3d', mode: 'lines+text', line: { color: '#3498db', width: 8 },
+            text: [null, labelRv], textposition: 'top center',
+            font: { size: 16, color: '#3498db' }, hoverinfo: 'none'
+        };
+
+        // --- 特别修正：3D 向量箭头 (分拆 Cone 以确保颜色绝对正确) ---
+        // 红色箭头 (对应 ru, #e74c3c)
+        const ruHeadTrace = {
+            type: 'cone',
+            colorscale: [[0, '#e74c3c'], [1, '#e74c3c']], // 纯红
+            showscale: false,
+            // 尖端位置
+            x: [uVal + 1*scale], y: [vVal], z: [z0 + ruZ*scale],
+            // 方向分量
+            u: [1], v: [0], w: [ruZ],
+            sizemode: 'absolute', sizeref: 0.18, anchor: 'tip', hoverinfo: 'none'
+        };
+
+        // 蓝色箭头 (对应 rv, #3498db)
+        const rvHeadTrace = {
+            type: 'cone',
+            colorscale: [[0, '#3498db'], [1, '#3498db']], // 纯蓝
+            showscale: false,
+            // 尖端位置
+            x: [uVal], y: [vVal + 1*scale], z: [z0 + rvZ*scale],
+            // 方向分量
+            u: [0], v: [1], w: [rvZ],
+            sizemode: 'absolute', sizeref: 0.18, anchor: 'tip', hoverinfo: 'none'
+        };
+
+        // 4. 切平面 z = z0 + u0*(u-u0) - v0*(v-v0)
+        const s = 0.8;
+        const px = [uVal - s, uVal + s], py = [vVal - s, vVal + s];
+        const pz = [
+            [z0 + uVal*(px[0]-uVal) - vVal*(py[0]-vVal), z0 + uVal*(px[1]-uVal) - vVal*(py[0]-vVal)],
+            [z0 + uVal*(px[0]-uVal) - vVal*(py[1]-vVal), z0 + uVal*(px[1]-uVal) - vVal*(py[1]-vVal)]
+        ];
+        const plane = {
+            x: px, y: py, z: pz, type: 'surface',
+            opacity: 0.7, showscale: false,
+            // 切平面使用深色半透明，使其在 viridis 背景上清晰
+            colorscale: [[0, 'rgba(100,100,100,0.5)'], [1, 'rgba(100,100,100,0.5)']],
+            hoverinfo: 'none'
+        };
+
+        const layout = {
+            scene: {
+                xaxis: {title: 'U', range: [-2, 2], gridcolor: '#eee'},
+                yaxis: {title: 'V', range: [-2, 2], gridcolor: '#eee'},
+                zaxis: {title: 'Z', range: [-1.8, 1.8], gridcolor: '#eee'},
+                camera: { eye: {x: 1.6, y: 1.6, z: 1.1} }
+            },
+            margin: {l:0, r:0, b:0, t:0},
+            showlegend: false
+        };
+
+        if (window.Plotly) {
+            // 将分拆后的红/蓝箭头 Trace 加入渲染数组
+            Plotly.react(gd, [surfaceTrace, dot, uLine, vLine, plane, ruLineTrace, rvLineTrace, ruHeadTrace, rvHeadTrace], layout);
+        }
+    };
+
+    // 初始化检查和调用
+    let checkIdx = 0;
+    const checkPlotly = setInterval(() => {
+        if (window.Plotly) {
+            window.updateHyperPlot();
+            clearInterval(checkPlotly);
+        } else if (checkIdx > 50) { // 10秒后停止检查
+            clearInterval(checkPlotly);
+        }
+        checkIdx++;
+    }, 200);
+})();
+</script>

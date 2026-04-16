@@ -1,0 +1,115 @@
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+<div style="background: #ffffff; padding: 25px; border: 1px solid #eee; border-radius: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+
+    <div id="mapping-lab" style="width:100%; height:500px;"></div>
+
+    <div style="margin-top: 20px; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px;">
+        <div style="flex: 1; min-width: 180px;">
+            <label style="color:#666; font-size: 0.9em; font-weight:600;">参数 u: <span id="u-val" style="color:#e74c3c">1.0</span></label>
+            <input type="range" id="u-slider" min="-2" max="2" step="0.1" value="1" style="width:100%; height:6px; cursor: pointer; accent-color:#e74c3c;">
+        </div>
+        <div style="flex: 1; min-width: 180px;">
+            <label style="color:#666; font-size: 0.9em; font-weight:600;">参数 v: <span id="v-val" style="color:#3498db">1.0</span></label>
+            <input type="range" id="v-slider" min="-2" max="2" step="0.1" value="1" style="width:100%; height:6px; cursor: pointer; accent-color:#3498db;">
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 25px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+        <div style="font-size: 1.1em; color: #333;">
+            映射逻辑: <b>r</b>(u, v) = ( u, v, (u² - v²)/2 )
+        </div>
+    </div>
+</div>
+
+<script>
+    const labPlot = document.getElementById('mapping-lab');
+    const uS = document.getElementById('u-slider');
+    const vS = document.getElementById('v-slider');
+    const uL = document.getElementById('u-val');
+    const vL = document.getElementById('v-val');
+
+    // 1. 数据计算
+    const range = [];
+    for(let i=-2; i<=2.05; i+=0.15) range.push(i);
+
+    let zData = [];
+    for(let i=0; i<range.length; i++) {
+        let row = [];
+        for(let j=0; j<range.length; j++) {
+            row.push((Math.pow(range[j], 2) - Math.pow(range[i], 2)) / 2);
+        }
+        zData.push(row);
+    }
+
+    // 2. 轨迹配置
+    const domainTrace = {
+        x: [-2, 2], y: [-2, 2],
+        z: [[0,0],[0,0]], type: 'heatmap',
+        colorscale: [[0, '#f8f9fb'], [1, '#f8f9fb']],
+        showscale: false, xaxis: 'x1', yaxis: 'y1', opacity: 0.6, hoverinfo: 'none'
+    };
+
+    const point2D = {
+        x: [1], y: [1], mode: 'markers',
+        marker: { size: 10, color: '#e74c3c', line: {color: 'white', width: 2} },
+        xaxis: 'x1', yaxis: 'y1'
+    };
+
+    const surfaceTrace = {
+        z: zData, x: range, y: range,
+        type: 'surface', colorscale: 'Viridis', showscale: false,
+        opacity: 0.85, scene: 'scene1', hoverinfo: 'none'
+    };
+
+    const point3D = {
+        x: [1], y: [1], z: [0],
+        type: 'scatter3d', mode: 'markers',
+        marker: {
+            size: 2.5,  // 极小尺寸，像一个数学上的点
+            color: '#e74c3c',
+            line: { color: 'rgba(255, 255, 255, 0.8)', width: 1 }
+        },
+        scene: 'scene1', hoverinfo: 'none'
+    };
+
+    const layout = {
+        grid: {rows: 1, columns: 2, pattern: 'independent'},
+        xaxis: {title: 'u', range: [-2.1, 2.1], domain: [0, 0.42], gridcolor: '#eee'},
+        yaxis: {title: 'v', range: [-2.1, 2.1], anchor: 'x1', gridcolor: '#eee'},
+        scene1: {
+            domain: {x: [0.52, 1]},
+            xaxis: {title: 'x', gridcolor: '#eee'},
+            yaxis: {title: 'y', gridcolor: '#eee'},
+            zaxis: {title: 'z', gridcolor: '#eee'},
+            camera: { eye: {x: 1.5, y: 1.5, z: 1.1} }
+        },
+        margin: {l: 40, r: 10, b: 40, t: 40},
+        showlegend: false,
+        annotations: [
+            { text: "参数空间 D", x: 0.21, xref: "paper", y: 1.1, yref: "paper", showarrow: false, font: {size: 14, color: '#666'} },
+            { text: "目标空间 S", x: 0.78, xref: "paper", y: 1.1, yref: "paper", showarrow: false, font: {size: 14, color: '#666'} }
+        ]
+    };
+
+    Plotly.newPlot(labPlot, [domainTrace, point2D, surfaceTrace, point3D], layout);
+
+    // 3. 同步函数
+    function sync(u, v) {
+        const z = (u*u - v*v) / 2;
+        uL.innerText = u.toFixed(1);
+        vL.innerText = v.toFixed(1);
+        uS.value = u;
+        vS.value = v;
+
+        Plotly.restyle(labPlot, { x: [[u]], y: [[v]] }, [1]);
+        Plotly.restyle(labPlot, { x: [[u]], y: [[v]], z: [[z]] }, [3]);
+    }
+
+    uS.addEventListener('input', () => sync(parseFloat(uS.value), parseFloat(vS.value)));
+    vS.addEventListener('input', () => sync(parseFloat(uS.value), parseFloat(vS.value)));
+
+    labPlot.on('plotly_click', function(d){
+        if(d.points[0].xaxis === 'x1') sync(d.points[0].x, d.points[0].y);
+    });
+</script>

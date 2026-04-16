@@ -11,9 +11,8 @@ weight: 0
 tags:
   - 线性代数
   - 机器学习
-  
 categories:
-  - 线性代数
+  - 数学
   - 机器学习
 hiddenFromHomePage: false
 hiddenFromSearch: false

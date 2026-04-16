@@ -920,7 +920,7 @@ h6 = "{h2}.{h3}.{h4}.{h5}.{h6} {title}"
 [page.math]
 enable = true
 # mathematical formulas rendering engines, optional values: ["katex", "mathjax"]
-type = "katex"
+type = "mathjax"
 
 # KaTeX server-side rendering (https://katex.org)
 # KaTeX partial config: https://gohugo.io/functions/transform/tomath/#options
@@ -938,21 +938,25 @@ errorColor = "#ff4949"
 # MathJax server-side rendering (https://www.mathjax.org)
 # MathJax config: https://docs.mathjax.org/en/latest/options/index.html
 [page.math.mathjax]
-cdn = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-
+cdn = "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"
+# cdn = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 [page.math.mathjax.packages]
-# "[+]" = ["configmacros"]
+"[+]" = ["ams", "physics", "configmacros", "unicode"]
 
 # custom macros map
 # syntax: <macro> = <definition>
 [page.math.mathjax.macros]
 # bold = ["{\\bf #1}", 1] # usage: $\bold{math}$
+d = "{\\,\\mathrm{d}}"
+oiint = "{\\rlap{\\kern.45em\\raise.25ex{\\style{transform: scale(1.5, 0.7); display: inline-block;}{\\bigcirc}}}\\iint}"
 
 [page.math.mathjax.loader]
-load = [ "ui/safe" ]
+load = [ "ui/safe", "[tex]/ams", "[tex]/physics", "[tex]/configmacros", "[tex]/unicode"]
 
 [page.math.mathjax.loader.paths]
 # custom = "https://cdn.jsdelivr.net/gh/sonoisa/XyJax-v3@3.0.1/build/"
+extra = "https://cdn.jsdelivr.net/npm/mathjax-extra-packages@1.0.1/dist"
+
 
 # more loader config e.g source, dependencies, provides etc.
 
