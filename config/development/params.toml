@@ -1,5 +1,5 @@
 description = "This is LA's blog."
-keywords = ["Hugo", "FixIt"]
+keywords = ["Hugo", "FixIt", "blog", "LA"]
 
 [author]
 name = "LA"

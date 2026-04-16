@@ -118,7 +118,7 @@ a_i=\arg\min_{c \in \mathbb R} \|\boldsymbol x_i-c\boldsymbol z\|^2
 $$
 就是在给定 $\boldsymbol z$ 后使得 $\|\boldsymbol x_i-a_i\boldsymbol z\|$ 最小的那个系数 $a_i$，对优化目标求导得到
 $$
-\frac{{\rm d}\|\boldsymbol x_i-a_i\boldsymbol z\|^2}{{\rm d}c}=-2(\boldsymbol x_i-a_i\boldsymbol z)^T\boldsymbol z=0
+\frac{\d \|\boldsymbol x_i-a_i\boldsymbol z\|^2}{\d c}=-2(\boldsymbol x_i-a_i\boldsymbol z)^T\boldsymbol z=0
 $$
 于是
 $$
