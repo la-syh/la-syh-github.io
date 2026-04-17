@@ -4,17 +4,17 @@
 # -------------------------------------------------------------------------------------
 
 # website title
-title = "LA's blog"
+title = ""
 # Hostname (and path) to the root
-baseURL = "https://la-syh.blog"
+baseURL = "http://localhost:1313"
 # theme list
 # theme = ["FixIt"] # enable in your site config file
 # determines default content language ["en", "zh-cn", "fr", "pl", ...]
 defaultContentLanguage = "en"
 # language code ["en", "zh-CN", "fr", "pl", ...]
-languageCode = "zh-cn"
+languageCode = "en"
 # language name ["English", "简体中文", "Français", "Polski", ...]
-languageName = "简体中文"
+languageName = "English"
 # whether to include Chinese/Japanese/Korean
 hasCJKLanguage = false
 # copyright description used only for seo schema
