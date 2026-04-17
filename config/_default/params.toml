@@ -946,8 +946,8 @@ cdn = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 # custom macros map
 # syntax: <macro> = <definition>
 [page.math.mathjax.macros]
-  d = "{\\,\\mathrm{d}}"
-  oiint = "\\iint\\kern-1.25em\\raise.3ex{\\small\\bigcirc}\\kern.35em"
+  d = '{\,\mathrm{d}}'
+  oiint = '{\mkern{7mu}\raise.3ex{\style{transform:scale(1.5,0.7);display:inline-block;}{\bigcirc}}\mkern-27mu\iint\mkern{2mu}}'
 # bold = ["{\\bf #1}", 1] # usage: $\bold{math}$
 
 [page.math.mathjax.loader]
