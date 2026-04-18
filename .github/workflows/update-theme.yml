@@ -28,11 +28,11 @@ jobs:
           git submodule update --remote --merge
 
       - uses: actions/setup-node@v6
-      - name: Fetch and split theme configuration
-        run: |
-          npx fixit-cli split https://raw.githubusercontent.com/hugo-fixit/FixIt/refs/heads/main/hugo.toml
-          rm -f config/_default/mediaTypes.toml
-          rm -f config/_default/outputFormats.toml
+      # - name: Fetch and split theme configuration
+      #   run: |
+      #     npx fixit-cli split https://raw.githubusercontent.com/hugo-fixit/FixIt/refs/heads/main/hugo.toml
+      #     rm -f config/_default/mediaTypes.toml
+      #     rm -f config/_default/outputFormats.toml
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v7
