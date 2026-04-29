@@ -2,10 +2,28 @@
 title: "A Game Theoretic Approach to Recommendation Systems With Strategic Content Providers"
 subtitle: ""
 date: 2026-04-04T17:57:17+08:00
-description: ""
-keywords: ""
+slug: d672c0d
+draft: false
+description:
+keywords:
 comment: true
-toc: true
+weight: 0
+tags:
+  - 推荐系统
+categories:
+  - 论文笔记
+hiddenFromHomePage: false
+hiddenFromSearch: false
+hiddenFromRelated: false
+hiddenFromFeed: false
+summary:
+featuredImagePreview:
+featuredImage:
+password:
+message:
+repost:
+  enable: false
+  url:
 ---
 
 [文章链接](https://arxiv.org/pdf/1806.00955)
