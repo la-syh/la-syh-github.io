@@ -36,9 +36,9 @@ repost:
 
 ## Clone-Robust Weighting Functions
 
-首先形式化一下问题：现在有一个内容聚合器，每当用户刷新界面，聚合器就会从所有内容构成的全集 $M$ 中选出一个有限集 $S$，并依某个概率分布 $\pi_S$ 独立重复[^1]选取 $k$ 个内容展示给用户. 集合 $M$ 应当是一个伪度量空间，带有距离函数 $d:E \times E \to \mathbb R_{\ge 0}$，也就是存在 $x \ne y$ 使得 $d(x,y) = 0$，这在两个用户发表相同内容时是必要的.
+首先形式化一下问题：现在有一个内容聚合器，每当用户刷新界面，聚合器就会从所有内容构成的全集 $M$ 中选出一个有限集 $S$，并依某个概率分布 $\pi_S$ 独立重复[^1]选取 $k$ 个内容展示给用户. 集合 $M$ 应当是一个伪度量空间，带有距离函数 $d:M \times M \to \mathbb R_{\ge 0}$，也就是存在 $x \ne y$ 使得 $d(x,y) = 0$，这在两个用户发表相同内容时是必要的.
 
-[^1]: 这里假设统一内容被重复选取的概率极小，也就是 $k^2\|p_S\|_2{}^2 \ll 1$.
+[^1]: 这里假设同一内容被重复选取的概率极小，也就是 $k^2\|p_S\|_2{}^2 \ll 1$.
 
 现在的问题在于如何选择概率分布 $\pi_S$，一个平凡的方案是用均匀分布，但是这样会被攻击者通过多次发布相同内容成功攻击，此时拥有一个评价内容相似度的伪度量 $d$ 是至关重要的，我们假设 $d$ 是被公布的，并研究它应该如何影响 $\pi_S$.
 
@@ -51,7 +51,7 @@ $$
 理想的权重函数 $f$ 应当具有什么性质？
 - $f$ 应当对同构的内容给出相同的被展示概率.
 - 进一步的，相似的内容理应具有相似的概率，也就是说 $f$ 应当连续.
-- 为了防范重复内容攻击，加入一个内容后，概率只应在小范围内重新分配，也就是存在一个阈值 $\alpha > 0$ 使得距离大于 $\alpha$ 的内容被展示的概率不会变化.
+- 为了防范重复内容攻击，加入一个内容后，概率只应在小范围内重新分配，也就是存在一个阈值 $\alpha > 0$ 使得距离大于 $\alpha$ 的内容被展示的概率被距离线性控制.
 - 最后，每个内容被展示的概率都应该大于 $0$，此时攻击者不能通过某些手段将某个帖子的被展示概率降为 $0$.
 
 上面的性质可以形式化为类 Lipschitz 条件，按照这样定义 Clone-Robust Weighting Function 为
@@ -80,9 +80,9 @@ $$
 - **Symmetry** 对任意图同构 $\sigma:\mathcal G \to \mathcal G$ 均有 $w(G)(x)=w(\sigma(G))(\sigma(x))$
 - **Locality** 对任意 $y \in V(G)-N_G[x]$ 和 $z \in [x]_G$ 均有 $w(G)(y)=w(G-\{z\})(y)$
 - **Positivity** 对任意 $x \in V(G)$ 均有 $w(G)(x) > 0$.[^2]
-时，该 graph weighting function 就被称作 **clone-robust graph weighting function**.
+时，该 graph weighting function 就被称作 **clone-robust graph weighting function**,.注意，原文只要求 Symmetry 和 Locality；但 THEOREM 1 的 Positivity 证明要求 $w$ 具有 Positivity，所以这里采用加强版定义。
 
-[^2]: 这里的 **Positivity** 在原论文中并未提及，但如果没有这条性质，Theorem 1 中对应正性的证明存在问题.
+[^2]: 这里的 **Positivity** 在原论文中并未提及，但如果没有这条性质，Theorem 1 中对应 Positivity 的证明存在问题.
 
 {{< figure src="/images/40c1f6f/img1.svg" title="$w^{\text{CU}}$ 示意图" width="60%" >}}
 
@@ -132,7 +132,7 @@ $$
 都是 clone-robust graph weighting function.
 {{< /admonition >}}
 
-其中 $\tilde{w}$ 表示将图中 $w$ 对等价类中每个的权重求和再平均分配，$\hat{w}$ 在 $\tilde{w}$ 的基础上再将每个点的权重平均分配到每个邻居上. 这两个构造都专门针对的等价类，那么可不可以加强限制，要求添加邻居结点时更远的权重保持不变？下面的引理否认了这一点.
+其中 $\tilde{w}$ 表示将图中 $w$ 对等价类缩点，在新图中按照 $w$ 得到权重并平均分配给类内结点，$\hat{w}$ 在 $\tilde{w}$ 的基础上再将每个点的权重平均分配到每个邻居上. 这两个构造都专门针对的等价类，那么可不可以加强限制，要求添加邻居结点时更远的权重保持不变？下面的引理否认了这一点.
 
 {{< admonition lemma "LEMMA 2" true>}}
 不存在 graph weighting function $w$ 同时满足
@@ -141,3 +141,28 @@ $$
 {{< /admonition >}}
 
 ### Explainability of Existing Weighting Functions
+
+接下来插入的一小节主要解决一些可解释性的问题，为了理解权重的分配方式，我们自然地想要得知两个不同的元素之间会共享多少权重，为此我们将引入 sharing coefficient 来量化两个元素之间相互影响权重的程度. [[Berriaud and Wattenhofer, 2025]](https://arxiv.org/abs/2502.03576) 这篇文章中引入的 clone-robust weighting functions 自然地允许这样的概念，该函数针对有限集 $S \subseteq \mathbb R^n$ 和欧式距离的度量，定义
+$$
+g_r(S)(x)=\frac{1}{\operatorname{Vol}\!\Big(\bigcup_{y\in S} B_r(y)\Big)}
+\int_{B_r(x)} \frac{1}{|S\cap B_r(z)|} \d z
+$$
+其中 $B_r(\cdot)$ 表示半径为 $r > 0$ 的球，$\operatorname{Vol}(X)$ 表示$X \in \mathbb R^n$ 的 $n$ 维 Lebesgue 测度. 这个式子的含义为：空间中的每个点都会向与它距离不超过 $r$ 的 $S$ 中元素投票，若有多个则将票均分，$|S\cap B_r(z)|$ 就是以点 $z$ 为球心的球中有多少个 $S$ 中的点，统一除以体积是为了将和归一化.
+
+对于 $g_r$，它的 sharing coefficient 是容易定义的，对于两个元素 $x,y \in S$，他们的 sharing coefficient 表示 $x$ 的权重中有多少是与 $y$ 竞争得到的，更准确地，表示在旧的归一化尺度下 $y$ 对 $x$ 的权重造成的损失.
+
+{{< admonition definition "DEFINITION 3" true >}}
+对于有限集 $S \in \mathbb R^n$ 和互异元素 $x \ne y \in S$，定义 $x$ 与 $y$ 的 sharing coefficient $\chi_{g_r, S}(x,y)$ 为
+$$
+\chi_{g_r, S}(x,y):=\frac{1}{\operatorname{Vol}\!\Big( \bigcup_{u \in S}B_r(u) \Big)}
+\int_{B_r(x)\cap B_r(y)} \Big(\frac{1}{|S\cap B_r(z)|-1}-\frac{1}{|S\cap B_r(z)|}\Big)\d z
+$$
+{{< /admonition >}}
+
+更进一步地，在这样的定义下
+$$
+g_r(S)(x)-\sum_{y \ne x}\chi_{g_r, S}(x,y)=\frac{1}{\operatorname{Vol}\!\Big( \bigcup_{y \in S}B_r(y) \Big)}
+\int_{B_r(x)-\bigcup_{y\ne x}B_r(y)} \frac{1}{|S \cap B_r(z)|} \d z \ge 0
+$$
+
+形式化地记作 $g_r(S)(x)=\chi_{g_r, S}(x,x)+\sum_{y \ne x} \chi_{g_r, S}(x,y)$，注意这里 $\chi_{g_r, S}(x,x)$ 的定义不由 DEFINITION 3 中的式子给出，而是由 $g_r(S)(x)-\sum_{y \ne x}\chi_{g_r, S}(x,y)$ 定义. 这个性质记作 additive property.
