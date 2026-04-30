@@ -938,7 +938,7 @@ errorColor = "#ff4949"
 # MathJax server-side rendering (https://www.mathjax.org)
 # MathJax config: https://docs.mathjax.org/en/latest/options/index.html
 [page.math.mathjax]
-cdn = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+cdn = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml-nofont.js"
 
 [page.math.mathjax.packages]
 "[+]" = ["ams", "physics", "configmacros"]
@@ -947,7 +947,6 @@ cdn = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 # syntax: <macro> = <definition>
 [page.math.mathjax.macros]
   d = '{\,\mathrm{d}}'
-  oiint = '{\mkern{7mu}\raise.3ex{\style{transform:scale(1.5,0.7);display:inline-block;}{\bigcirc}}\mkern-27mu\iint\mkern{2mu}}'
 # bold = ["{\\bf #1}", 1] # usage: $\bold{math}$
 
 [page.math.mathjax.loader]

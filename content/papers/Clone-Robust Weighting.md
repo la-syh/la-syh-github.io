@@ -64,3 +64,33 @@ $$
 对任意 $n \in \mathbb N_{>0}$ 均满足上述条件的 $f$ 被称为 **$\alpha$-clone-robust weighting function**.
 
 [^1]: 这里假设统一内容被重复选取的概率极小，也就是 $k^2\|p_S\|_2{}^2 \ll 1$.
+
+## Construction based on Neighborhood Graphs
+
+设 $S \subseteq M$ 是有限集，$r \ge 0$ 是半径，定义 **$r$-近邻图**（$r$-neighborhood graph）$G_r(S)=\big(S,E_r(S)\big)$ 是点集为 $S$，边集为 $E_r(S) = \{ (x,y) \in S^2 : d(x,y) \le r \}$. 显然这张图中的边不具有传递性，但是当 $d(x,y),d(y,z) \le r$ 时总有 $d(x,z) \le 2r$，因此若在 $G_r(S)$ 中有边 $x \sim y$ 和 $y \sim z$，那么 $G_{2r}(S)$ 中必然有边 $x \sim z$.
+
+定义图 $G=(V,E)$ 中 $x$ 的邻居为 $N_G[x]=\{x\} \cup \{y \in V : (x,y) \in E\}$ 并依此定义 $x$ 所在的等价类 $[x]_G=\{y \in V : N_G[y]=N_G[x]\}$.
+
+**定义 2（Graph Weighting Functions）** 一个图上权重函数 $w$ 是一个给有限无向图上顶点赋概率分布的函数，也就是说
+$$
+w:(V,E) \in \mathcal G \to p_V \in \Delta(V)
+$$
+其中 $\mathcal G$ 表示所有有限无向图，$\Delta(V)=\{p_V:V \to [0,1]:\sum_{x \in V}p_V(x)=1\}$，当 $w$ 满足
+- **Symmetry** 对任意图同构 $\sigma:\mathcal G \to \mathcal G$ 均有 $w(G)(x)=w(\sigma(G))(\sigma(x))$
+- **Locality** 对任意 $y \in V(G)-N_G[x]$ 和 $z \in [x]_G$ 均有 $w(G)(y)=w(G-\{z\})(y)$
+时，该 graph weighting function 就被称作 **clone-robust graph weighting function**.
+
+{{< figure src="/images/40c1f6f/img1.svg" title="$w^{\text{CU}}$ 示意图" width="60%" >}}
+
+一个平凡的构造是让每个等价类具有相同的概率，等价类内部再将概率均分给每个结点. 形式化地，设 $V/\equiv_G$ 表示图 $G$ 的所有等价类构成的集合，则
+$$
+w^{\text{CU}}(G)(x)=\frac{1}{|V/\equiv_G| \cdot |[x]_G|}, \qquad x \in V
+$$
+
+我们关心 clone-robust graph weighting function 的原因是它可以给出任意伪度量下的 clone-robust weighting function，这由下面的定理 1 导出.
+
+**定理 1** 设 $w$ 是一个 clone-robust graph weighting function，$\alpha > 0$ 为正半径，$v$ 是一个 $[0,\alpha]$ 上的概率密度函数. 此时对任意有限集 $S \subseteq M$ 和任意 $x \in S$，定义
+$$
+f_{v,w}(S)(x)=\int_0^\alpha v(r)w(G_r(S))(x) \d r
+$$
+则 $f_{v,w}$ 是一个 $\alpha$-clone-robust weighting function.

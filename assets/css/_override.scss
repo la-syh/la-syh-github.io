@@ -2,16 +2,36 @@
 // Override Variables
 // 覆盖变量
 // ==============================
-// 1. 加载 JetBrains Mono (代码神体) 或 Fira Code
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
-// 2. 覆盖全局代码字体变量
-$code-font-family: 'JetBrains Mono', 'Fira Code', 'Fira Mono', 'Menlo', 'Monaco', monospace;
+// 正文字体：Noto Serif SC
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap");
 
-// 3. 微调代码块的呼吸感 (非常重要！)
-code, kbd, pre, samp {
-    font-family: $code-font-family !important;
-    font-variant-ligatures: contextual; // 开启连字特性（如把 != 渲染成一个符号）
-    line-height: 1.6 !important;       // 增加行高，减少压抑感
-    font-size: 0.92em !important;      // 稍微缩小一点，显得更精致
+// 代码字体：JetBrains Mono
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+
+$global-font-family:
+  "Noto Serif SC",
+  "Source Han Serif SC",
+  "思源宋体 SC",
+  "Songti SC",
+  "PingFang SC",
+  "Microsoft YaHei",
+  serif;
+
+$code-font-family:
+  "JetBrains Mono",
+  "Fira Code",
+  "Fira Mono",
+  "Menlo",
+  "Monaco",
+  monospace;
+
+code,
+kbd,
+pre,
+samp {
+  font-family: $code-font-family !important;
+  font-variant-ligatures: contextual;
+  line-height: 1.6 !important;
+  font-size: 0.92em !important;
 }
