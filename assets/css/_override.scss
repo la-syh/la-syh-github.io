@@ -35,3 +35,32 @@ samp {
   line-height: 1.6 !important;
   font-size: 0.92em !important;
 }
+
+// ==============================
+// Custom Admonitions for Math Notes
+// ==============================
+
+$custom-admonition-map: (
+  theorem: (
+    color: #2f6f9f,
+    bg-color: rgba(47, 111, 159, 0.10),
+  ),
+  proof: (
+    color: #5f6368,
+    bg-color: rgba(95, 99, 104, 0.10),
+  ),
+  lemma: (
+    color: #7a5c00,
+    bg-color: rgba(122, 92, 0, 0.10),
+  ),
+  corollary: (
+    color: #5b5fc7,
+    bg-color: rgba(91, 95, 199, 0.10),
+  ),
+  definition: (
+    color: #247a4d,
+    bg-color: rgba(36, 122, 77, 0.10),
+  ),
+);
+
+$admonition-color-map: map-merge($admonition-color-map, $custom-admonition-map);

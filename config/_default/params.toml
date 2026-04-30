@@ -449,6 +449,11 @@ layout = "dagre"
 # syntax: <type> = <icon>
 [admonition]
 # ban = "fa-solid fa-ban"
+theorem = "fa-solid fa-square-root-variable"
+proof = "fa-solid fa-pen-nib"
+lemma = "fa-solid fa-lightbulb"
+corollary = "fa-solid fa-arrow-right"
+definition = "fa-solid fa-book"
 
 # FixIt 0.3.14 | NEW Task lists custom config
 # See https://fixit.lruihao.cn/documentation/content-management/advanced/#custom-task-lists
