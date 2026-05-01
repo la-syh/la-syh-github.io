@@ -951,7 +951,11 @@ cdn = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml-nofont.js"
 # custom macros map
 # syntax: <macro> = <definition>
 [page.math.mathjax.macros]
-  d = '{\,\mathrm{d}}'
+  d = '{\,\mathrm{d}}'  # 微分算子
+  aff = '\boldsymbol{\operatorname{aff}}\ ' # 仿射
+  relint = '\boldsymbol{\operatorname{relint}}\ ' # 相对内部
+  cl = '\boldsymbol{\operatorname{cl}}\ ' # 闭包
+  conv = '\boldsymbol{\operatorname{conv}}\ ' # 凸包
 # bold = ["{\\bf #1}", 1] # usage: $\bold{math}$
 
 [page.math.mathjax.loader]

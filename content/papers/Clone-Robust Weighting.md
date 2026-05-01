@@ -34,6 +34,26 @@ repost:
 
 如今 AI 生成内容越来越容易，攻击者总可以批量生成一些内容相似的文章来使平台的推荐算法产生偏好. 这导致之前将内容简单分为完全重复和不相关两类的算法出现了问题： AI 可以大量生成用词、语气等完全不同但主旨相同的文章，这迫使我们修改算法，将原先简单的“相同或无关”转为对内容相似度的评价.
 
+## 概览
+
+我们的目标是构造一个合适的函数 $f$ 给每一个可能的待推送内容构成的有限集 $S$ 赋一个概率分布，给出每条内容被推送的概率. 核心问题有两个：
+
+1. 什么样的 $f$ 是好的
+2. 如何构造这样的函数
+  
+对于第一点，我们给出了 Clone-Robust Weighting Function 的定义，它不局限于欧氏空间而是可以用于任意伪度量空间，其性质削弱了使用大量相似内容的攻击. 对于第二点，文章采用了图论方法：对每个半径 $r$ 将 $S$ 转为近邻图 $G_r(S)$ 再用一个图权重函数 $w$ 给顶点赋权. 只要 $w$ 满足一些基本条件且本身可以高效计算，那么就可以给出一个可以高效计算 $f$.
+
+于是问题转化为寻找合适的 $w$，限制很弱导致了满足条件的 $w$ 很多. 但文章还希望 $w$ 能够有较好的可解释性，能够解释两个内容之间的共享或转移了多少权重.
+
+为此，文章先建立了图上共享系数的框架并先后考察了
+- 基于 maximal clique cover 的构造
+- 基于信息论/最大熵的构造
+
+这些尝试均有不足之处，文章也到此结束.
+
+**结论**： 我们已经能在任意伪度量空间上构造 clone-robust weighting，但要找到同时满足 clone-robust、可解释、non-negative sharing 的图权重规则，仍然很难，是未来工作。
+
+
 ## Clone-Robust Weighting Functions
 
 首先形式化一下问题：现在有一个内容聚合器，每当用户刷新界面，聚合器就会从所有内容构成的全集 $M$ 中选出一个有限集 $S$，并依某个概率分布 $\pi_S$ 独立重复[^1]选取 $k$ 个内容展示给用户. 集合 $M$ 应当是一个伪度量空间，带有距离函数 $d:M \times M \to \mathbb R_{\ge 0}$，也就是存在 $x \ne y$ 使得 $d(x,y) = 0$，这在两个用户发表相同内容时是必要的.
@@ -56,23 +76,25 @@ $$
 
 上面的性质可以形式化为类 Lipschitz 条件，按照这样定义 Clone-Robust Weighting Function 为
 
-**DEFINITION 1（Clone-Robust Weighting Function）** 阈值 $\alpha > 0$ 为一个 disambiguation factor，$n \in \mathbb N_{>0}$，$L_n,L_n',L_n'' > 0$ 为 Lipschitz 常数，一个权重函数 $f$ 如果对所有 $S \in \mathcal P_n(M)$ 均有 $\forall x,y \in S,z \in M-S$，
+{{< admonition definition "DEFINITION 1 (Clone-Robust Weighting Function)" true>}}
+给定阈值 $\alpha > 0$，$n \in \mathbb N_{>0}$，$L_n,L_n',L_n'' > 0$ 为 Lipschitz 常数，一个权重函数 $f$ 如果对所有 $S \in \bigcup_{n \ge 1}\mathcal P_n(M)$ 均有 $\forall x,y \in S,z \in M-S$，
 - **Symmetry**: 对自等距映射 $\sigma:S \to S$ 总有 $f(S)(x)=f(S)(\sigma(x))$
 - **Lipschitz Clone Fairness**: $|f(S)(x)-f(S)(y)| \le L_n d(x,y)$
 - **Lipschitz Continuity**: 对任意双射 $\pi :S \to \pi(S) \subseteq M$ 均有 $|f(S)(x)-f(\pi(S))(\pi(x))| \le L_n' \max_{x \in S} d(x,\pi(x))$
 - **$\alpha$-Lipschitz Locality**: 如果 $d(x,y) > \alpha$，则 $|f(S \cup \{z\})(y) - f(S)(y)| \le L_n'' d(x,z)$
 - **Positivity**: $f(S)(x) > 0$
 
-对任意 $n \in \mathbb N_{>0}$ 均满足上述条件的 $f$ 被称为 **$\alpha$-clone-robust weighting function**.
-
+，则 $f$ 被称为 **$\alpha$-clone-robust weighting function**.
+{{< /admonition >}}
 
 ## Construction based on Neighborhood Graphs
 
-设 $S \subseteq M$ 是有限集，$r \ge 0$ 是半径，定义 **$r$-近邻图**（$r$-neighborhood graph）$G_r(S)=\big(S,E_r(S)\big)$ 是点集为 $S$，边集为 $E_r(S) = \{ (x,y) \in S^2 : d(x,y) \le r \}$. 显然这张图中的边不具有传递性，但是当 $d(x,y),d(y,z) \le r$ 时总有 $d(x,z) \le 2r$，因此若在 $G_r(S)$ 中有边 $x \sim y$ 和 $y \sim z$，那么 $G_{2r}(S)$ 中必然有边 $x \sim z$.
+设 $S \subseteq M$ 是有限集，$r \ge 0$ 是半径，定义 **$r$-近邻图**（$r$-neighborhood graph）$G_r(S)=\big(S,E_r(S)\big)$ 是点集为 $S$，边集为 $E_r(S) = \{ (x,y) \in S^2 : d(x,y) \le r \}$ 的无向图. 显然这张图中的边不具有传递性，但是当 $d(x,y),d(y,z) \le r$ 时总有 $d(x,z) \le 2r$，因此若在 $G_r(S)$ 中有边 $x \sim y$ 和 $y \sim z$，那么 $G_{2r}(S)$ 中必然有边 $x \sim z$.
 
 定义图 $G=(V,E)$ 中 $x$ 的邻居为 $N_G[x]=\{x\} \cup \{y \in V : (x,y) \in E\}$ 并依此定义 $x$ 所在的等价类 $[x]_G=\{y \in V : N_G[y]=N_G[x]\}$.
 
-**DEFINITION 2（Graph Weighting Functions）** 一个图上权重函数 $w$ 是一个给有限无向图上顶点赋概率分布的函数，也就是说
+{{< admonition definition "DEFINITION 2 (Graph Weighting Functions)" true >}}
+一个图上权重函数 $w$ 是一个给有限无向图上顶点赋概率分布的函数，也就是说
 $$
 w:(V,E) \in \mathcal G \to p_V \in \Delta(V)
 $$
@@ -80,7 +102,9 @@ $$
 - **Symmetry** 对任意图同构 $\sigma:\mathcal G \to \mathcal G$ 均有 $w(G)(x)=w(\sigma(G))(\sigma(x))$
 - **Locality** 对任意 $y \in V(G)-N_G[x]$ 和 $z \in [x]_G$ 均有 $w(G)(y)=w(G-\{z\})(y)$
 - **Positivity** 对任意 $x \in V(G)$ 均有 $w(G)(x) > 0$.[^2]
-时，该 graph weighting function 就被称作 **clone-robust graph weighting function**,.注意，原文只要求 Symmetry 和 Locality；但 THEOREM 1 的 Positivity 证明要求 $w$ 具有 Positivity，所以这里采用加强版定义。
+
+时，该 graph weighting function 就被称作 **clone-robust graph weighting function**. 注意原文只要求 Symmetry 和 Locality；但 THEOREM 1 的 Positivity 证明要求 $w$ 具有 Positivity，所以这里采用加强版定义。
+{{< /admonition >}}
 
 [^2]: 这里的 **Positivity** 在原论文中并未提及，但如果没有这条性质，Theorem 1 中对应 Positivity 的证明存在问题.
 
@@ -142,17 +166,17 @@ $$
 
 ### Explainability of Existing Weighting Functions
 
-接下来插入的一小节主要解决一些可解释性的问题，为了理解权重的分配方式，我们自然地想要得知两个不同的元素之间会共享多少权重，为此我们将引入 sharing coefficient 来量化两个元素之间相互影响权重的程度. [[Berriaud and Wattenhofer, 2025]](https://arxiv.org/abs/2502.03576) 这篇文章中引入的 clone-robust weighting functions 自然地允许这样的概念，该函数针对有限集 $S \subseteq \mathbb R^n$ 和欧式距离的度量，定义
+接下来插入的一小节主要解决一些可解释性的问题，为了理解权重的分配方式，我们自然地想要得知两个不同的元素之间会共享多少权重，为此我们将引入**共享系数（sharing coefficient）** 来量化两个元素之间相互影响权重的程度. [[Berriaud and Wattenhofer, 2025]](https://arxiv.org/abs/2502.03576) 这篇文章中引入的 clone-robust weighting functions 自然地允许这样的概念，该函数针对有限集 $S \subseteq \mathbb R^n$ 和欧式距离的度量，定义
 $$
 g_r(S)(x)=\frac{1}{\operatorname{Vol}\!\Big(\bigcup_{y\in S} B_r(y)\Big)}
 \int_{B_r(x)} \frac{1}{|S\cap B_r(z)|} \d z
 $$
 其中 $B_r(\cdot)$ 表示半径为 $r > 0$ 的球，$\operatorname{Vol}(X)$ 表示$X \in \mathbb R^n$ 的 $n$ 维 Lebesgue 测度. 这个式子的含义为：空间中的每个点都会向与它距离不超过 $r$ 的 $S$ 中元素投票，若有多个则将票均分，$|S\cap B_r(z)|$ 就是以点 $z$ 为球心的球中有多少个 $S$ 中的点，统一除以体积是为了将和归一化.
 
-对于 $g_r$，它的 sharing coefficient 是容易定义的，对于两个元素 $x,y \in S$，他们的 sharing coefficient 表示 $x$ 的权重中有多少是与 $y$ 竞争得到的，更准确地，表示在旧的归一化尺度下 $y$ 对 $x$ 的权重造成的损失.
+$g_r$ 的共享系数是容易定义的：对于两个元素 $x,y \in S$，他们的共享系数表示 $x$ 的权重中有多少是与 $y$ 竞争得到的，更准确地，表示在旧的归一化尺度下 $y$ 对 $x$ 的权重造成的损失.
 
 {{< admonition definition "DEFINITION 3" true >}}
-对于有限集 $S \in \mathbb R^n$ 和互异元素 $x \ne y \in S$，定义 $x$ 与 $y$ 的 sharing coefficient $\chi_{g_r, S}(x,y)$ 为
+对于有限集 $S \in \mathbb R^n$ 和互异元素 $x \ne y \in S$，定义 $x$ 与 $y$ 的共享系数 $\chi_{g_r, S}(x,y)$ 为
 $$
 \chi_{g_r, S}(x,y):=\frac{1}{\operatorname{Vol}\!\Big( \bigcup_{u \in S}B_r(u) \Big)}
 \int_{B_r(x)\cap B_r(y)} \Big(\frac{1}{|S\cap B_r(z)|-1}-\frac{1}{|S\cap B_r(z)|}\Big)\d z
@@ -166,3 +190,56 @@ g_r(S)(x)-\sum_{y \ne x}\chi_{g_r, S}(x,y)=\frac{1}{\operatorname{Vol}\!\Big( \b
 $$
 
 形式化地记作 $g_r(S)(x)=\chi_{g_r, S}(x,x)+\sum_{y \ne x} \chi_{g_r, S}(x,y)$，注意这里 $\chi_{g_r, S}(x,x)$ 的定义不由 DEFINITION 3 中的式子给出，而是由 $g_r(S)(x)-\sum_{y \ne x}\chi_{g_r, S}(x,y)$ 定义. 这个性质记作 additive property.
+
+然后我们就可以知道删除 $x$ 对其他元素 $y$ 的影响，
+$$
+g_r(S-\{x\})(y)=(g_r(S)(y)+\chi_{g_r, S}(x,y)) \cdot (1+\eta_{r,S,x})
+$$
+其中非负常数 $\eta_{r,S,x}$ 定义为
+$$
+\eta_{r,S,x}=\frac{\chi_{g_r,S}(x,x)}{\operatorname{Vol}\!\Big( \bigcup_{y \in S}B_r(y) \Big)-\chi_{g_r,S}(x,x)}
+$$
+简单来说就是先将 $x,y$ 竞争的部分加回到 $y$，而又由于删去 $x$ 后总体积可能发生变化，因此需要再将归一化系数调整一下，在式子中表现为乘 $(1+\eta_{r,S,x})$.
+
+直觉上来说，距 $x$ 越近的元素与 $x$ 的共享系数理应越大，但这是不成立的，因为 clone 会稀释共享权重，例如下图中 $\boldsymbol{y_1}$ 距 $\boldsymbol{x}$ 更近，但由于 $\boldsymbol{y_2}$ 的稀释，它与 $\boldsymbol{x}$ 的共享系数小于更远的 $\boldsymbol{z}$.
+
+{{< figure src="/images/40c1f6f/img2.svg" title="共享权重的稀释" width="50%">}}
+
+但我们其实可以得到一个更几何的单调性：
+
+{{< admonition lemma "LEMMA 3" true>}}
+若 $S \subseteq \mathbb R^n$ 是有限集且互异元素 $x,y,z \in S$ 满足
+$$
+B_r(x) \cap B_r(z) \subseteq B_r(x) \cap B_r(y)
+$$
+那么总有
+$$
+\chi_{g_r,S}(x,y) \ge \chi_{g_r,S}(x,z)
+$$
+{{< /admonition >}}
+
+这些内容是对固定的半径 $r$ 来讲的，事实上，将半径从 $0$ 到 $\alpha$ 积分就可以得到一个欧氏空间上的更一般形式. 若 $\nu$ 是 $[0,\alpha]$ 上的概率密度函数，定义
+$$
+f_V(S)(x)=\int_0^\alpha \nu(r) g_r(S)(x) \d r
+$$
+于是共享系数 $\chi_{g_r}$ 可以自然地扩展到 $\chi_{f_V}$：
+
+{{< admonition lemma "LEMMA 4" true >}}
+$$
+\begin{aligned}
+\chi_{f_V, S}(x,y):=\int_0^\alpha \nu(r) \chi_{g_r,S}(x,y) \d r\\
+\chi_{f_V,S}(x,x):=\int_0^\alpha \nu(r)\chi_{g_r,S}(x,x)\d r
+\end{aligned}
+$$
+{{< /admonition >}}
+
+注意此时归一化系数的调整项 $\eta_{r,S,x}$ 对于不同的半径 $r$ 是不同的，因此删除 $x$ 对 $y$ 的影响是
+$$
+f_V(S-\{x\})(y)=f_V(S)(y)+\chi_{f_V,S}(x,y)+\int_0^\alpha \nu(r) \eta_{r,S,x}\big( g_r(S)(y)+\chi_{g_r,S}(x,y) \big) \d r
+$$
+
+既然这篇文章中的欧氏构造天然可以解释权重的共享，那么我们新的 graph-based weighting function 能不能有类似的共享系数定义？
+
+### Sharing Coefficient for Graph Weighting Functions
+
+
