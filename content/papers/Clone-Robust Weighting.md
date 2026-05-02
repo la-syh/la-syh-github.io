@@ -56,7 +56,7 @@ repost:
 
 ## Clone-Robust Weighting Functions
 
-首先形式化一下问题：现在有一个内容聚合器，每当用户刷新界面，聚合器就会从所有内容构成的全集 $M$ 中选出一个有限集 $S$，并依某个概率分布 $\pi_S$ 独立重复[^1]选取 $k$ 个内容展示给用户. 集合 $M$ 应当是一个伪度量空间，带有距离函数 $d:M \times M \to \mathbb R_{\ge 0}$，也就是存在 $x \ne y$ 使得 $d(x,y) = 0$，这在两个用户发表相同内容时是必要的.
+首先形式化一下问题：现在有一个内容聚合器，每当用户刷新界面，聚合器就会从所有内容构成的全集 $M$ 中选出一个有限集 $S$，并依某个概率分布 $\pi_S$ 独立重复[^1]选取 $k$ 个内容展示给用户. 集合 $M$ 应当是一个伪度量空间，带有距离函数 $d:M \times M \mapsto \mathbb R_{\ge 0}$，也就是存在 $x \ne y$ 使得 $d(x,y) = 0$，这在两个用户发表相同内容时是必要的.
 
 [^1]: 这里假设同一内容被重复选取的概率极小，也就是 $k^2\|p_S\|_2{}^2 \ll 1$.
 
@@ -64,9 +64,9 @@ repost:
 
 形式化地，引入一个权重函数（weighting function）$f$，它对给定的有限集 $S$ 生成一个概率分布 $p_S \in \Delta (S)$，其中 $\Delta (S)$ 是集合 $S$ 上所有概率分布的全体，也就是说
 $$
-f:S \in \bigcup_{n \ge 1} \mathcal P_n(M) \to p_S \in \Delta (S)
+f:S \in \bigcup_{n \ge 1} \mathcal P_n(M) \mapsto p_S \in \Delta (S)
 $$
-其中 $\mathcal P_n(M)$ 表示 $M$ 的所有势为 $n$ 的子集构成的集族，$\Delta(S) = \{p_S:S \to [0,1], \sum_{x \in S}p_S(x)=1\}$ 是所有 $S$ 上的概率分布构成的集合.
+其中 $\mathcal P_n(M)$ 表示 $M$ 的所有势为 $n$ 的子集构成的集族，$\Delta(S) = \{p_S:S \mapsto [0,1], \sum_{x \in S}p_S(x)=1\}$ 是所有 $S$ 上的概率分布构成的集合.
 
 理想的权重函数 $f$ 应当具有什么性质？
 - $f$ 应当对同构的内容给出相同的被展示概率.
@@ -77,14 +77,14 @@ $$
 上面的性质可以形式化为类 Lipschitz 条件，按照这样定义 Clone-Robust Weighting Function 为
 
 {{< admonition definition "DEFINITION 1 (Clone-Robust Weighting Function)" true>}}
-给定阈值 $\alpha > 0$，$n \in \mathbb N_{>0}$，$L_n,L_n',L_n'' > 0$ 为 Lipschitz 常数，一个权重函数 $f$ 如果对所有 $S \in \bigcup_{n \ge 1}\mathcal P_n(M)$ 均有 $\forall x,y \in S,z \in M-S$，
-- **Symmetry**: 对自等距映射 $\sigma:S \to S$ 总有 $f(S)(x)=f(S)(\sigma(x))$
+给定阈值 $\alpha > 0$ 和权重函数 $f$，若对于任意 $n \in \mathbb N_{>0}$，存在 Lipschitz 常数 $L_n,L_n',L_n'' > 0$，使得对任意 $S \in \mathcal P_n(M)$ 以及任意 $x,y \in S,z \in M-S$ 均满足：
+- **Symmetry**: 对自等距映射 $\sigma:S \mapsto S$ 总有 $f(S)(x)=f(S)(\sigma(x))$
 - **Lipschitz Clone Fairness**: $|f(S)(x)-f(S)(y)| \le L_n d(x,y)$
-- **Lipschitz Continuity**: 对任意双射 $\pi :S \to \pi(S) \subseteq M$ 均有 $|f(S)(x)-f(\pi(S))(\pi(x))| \le L_n' \max_{x \in S} d(x,\pi(x))$
-- **$\alpha$-Lipschitz Locality**: 如果 $d(x,y) > \alpha$，则 $|f(S \cup \{z\})(y) - f(S)(y)| \le L_n'' d(x,z)$
+- **Lipschitz Continuity**: 对任意双射 $\pi :S \mapsto \pi(S) \subseteq M$ 均有 $|f(S)(x)-f(\pi(S))(\pi(x))| \le L_n' \max_{x \in S} d(x,\pi(x))$
+- **$\alpha$-Lipschitz Locality**: 如果 $d(x,y) \ge \alpha$，则 $|f(S \cup \{z\})(y) - f(S)(y)| \le L_n'' d(x,z)$
 - **Positivity**: $f(S)(x) > 0$
 
-，则 $f$ 被称为 **$\alpha$-clone-robust weighting function**.
+则称 $f$ 为 **$\alpha$-clone-robust weighting function**.
 {{< /admonition >}}
 
 ## Construction based on Neighborhood Graphs
@@ -96,10 +96,10 @@ $$
 {{% admonition definition "DEFINITION 2 (Graph Weighting Functions)" true %}}
 一个图上权重函数 $w$ 是一个给有限无向图上顶点赋概率分布的函数，也就是说
 $$
-w:(V,E) \in \mathcal G \to p_V \in \Delta(V)
+w:(V,E) \in \mathcal G \mapsto p_V \in \Delta(V)
 $$
-其中 $\mathcal G$ 表示所有有限无向图，$\Delta(V)=\{p_V:V \to [0,1]:\sum_{x \in V}p_V(x)=1\}$，当 $w$ 满足
-- **Symmetry** 对任意图同构 $\sigma:\mathcal G \to \mathcal G$ 均有 $w(G)(x)=w(\sigma(G))(\sigma(x))$
+其中 $\mathcal G$ 表示所有有限无向图，$\Delta(V)=\{p_V:V \mapsto [0,1]:\sum_{x \in V}p_V(x)=1\}$，当 $w$ 满足
+- **Symmetry** 对任意图同构 $\sigma:\mathcal G \mapsto \mathcal G$ 均有 $w(G)(x)=w(\sigma(G))(\sigma(x))$
 - **Locality** 对任意 $y \in V(G)-N_G[x]$ 和 $z \in [x]_G$ 均有 $w(G)(y)=w(G-\{z\})(y)$
 - **Positivity**[^2] 对任意 $x \in V(G)$ 均有 $w(G)(x) > 0$.
 
@@ -127,17 +127,7 @@ $$
 
 这个定义的通俗解释是：对每一个 $[0,\alpha]$ 的半径 $r$ 求出点 $x$ 在图 $G_r(S)$ 中的权重后做加权平均，如果 $\nu$ 比较尖锐，那么在某个半径处的权重就会很大，而若 $\nu$ 较为平滑，那么扰动带来的权重变化也更可控，因此规定上界 $\bar\nu$ 实际上是为控制 Lipschitz 常数.
 
-{{< admonition proof "PROOF" true>}}
-首先这个定义是 well-defined 的，因为不同的 $G_r(S)$ 只有有限个，$r$ 从 $0$ 增加到 $\alpha$ 的过程中，每经过某个 $d(u,v)$ 才会使图的形态发生改变. 形式化地，记 $\mathcal D_S^x = \{d(x,z):z \in S, z \ne x\}$ 与 $\mathcal D = \bigcup_{x \in S} \mathcal D_S^x$，并设 $\mathcal D_S$ 中元素为 $0<r_1 < r_2 < \cdots < r_k<\infty$，则 $r \in [r_i,r_{i+1})$ 时图 $G_r(S)$ 是相同的. 并且 $f_{\nu, w}(S)$ 自然地成为一个概率分布函数.
-
-我们依次证明每条性质，核心的思路在于坏半径构成的集合很小.
-
-- **Symmetry** 对于等距自映射 $\sigma$，$\sigma$ 是 $G_r(S)$ 的自同构，因此有 $w(G_r(S))(\sigma(x))=w(G_r(S))(x)$，带入定义式即可得到 $f_{\nu, w}(x) = f_{\nu, w}(\sigma(x))$.
-- **Lipschitz Clone Fairness** **待填充**
-- **Positivity** 由 $w$ 的 **Positivity** 和 $\nu$ 的非负性自然给出.
-{{< /admonition >}}
-
-更进一步地，$f_{\nu,w}(S)(x)$ 可以在 $\mathcal O \Big(|S|^2(W(|S|)+C_v+C_d+\log |S|)\Big)$ 的时间复杂度内被计算，其中 $W(i)$ 是 **待填充**
+更进一步，$f_{\nu,w}(S)(x)$ 可以在 $\mathcal O \Big(|S|^2(W(|S|)+C_\nu+C_d+\log |S|)\Big)$ 的时间复杂度内被计算，其中 $W(i)$ 是 $w$ 在 $i$ 个点的图上的最坏计算复杂度，$C_\nu$ 是计算 $\nu$ 的累积分布函数 CDF 在单点处的复杂度，$C_d$ 是计算一次距离 $d(x,y)$ 的复杂度.
 
 ## Design Space of Graph Weighting Functions
 
@@ -178,7 +168,7 @@ $$
 $g_r$ 的共享系数是容易定义的：对于两个元素 $x,y \in S$，他们的共享系数表示 $x$ 的权重中有多少是与 $y$ 竞争得到的，更准确地，表示在旧的归一化尺度下 $y$ 对 $x$ 的权重造成的损失.
 
 {{< admonition definition "DEFINITION 3 (SHARING COEFFICIENT OF $g_r$)" true >}}
-对于有限集 $S \in \mathbb R^n$ 和互异元素 $x \ne y \in S$，定义 $x$ 与 $y$ 的共享系数 $\chi_{g_r, S}(x,y)$ 为
+对于有限集 $S \subseteq \mathbb R^n$ 和互异元素 $x \ne y \in S$，定义 $x$ 与 $y$ 的共享系数 $\chi_{g_r, S}(x,y)$ 为
 $$
 \chi_{g_r, S}(x,y):=\frac{1}{\operatorname{Vol}\!\Big( \bigcup_{u \in S}B_r(u) \Big)}
 \int_{B_r(x)\cap B_r(y)} \Big(\frac{1}{|S\cap B_r(z)|-1}-\frac{1}{|S\cap B_r(z)|}\Big)\d z
@@ -199,7 +189,7 @@ g_r(S-\{x\})(y)=(g_r(S)(y)+\chi_{g_r, S}(x,y)) \cdot (1+\eta_{r,S,x})
 $$
 其中非负常数 $\eta_{r,S,x}$ 定义为
 $$
-\eta_{r,S,x}=\frac{\chi_{g_r,S}(x,x)}{\operatorname{Vol}\!\Big( \bigcup_{y \in S}B_r(y) \Big)-\chi_{g_r,S}(x,x)}
+\eta_{r,S,x}=\frac{\chi_{g_r,S}(x,x)}{1-\chi_{g_r,S}(x,x)}
 $$
 简单来说就是先将 $x,y$ 竞争的部分加回到 $y$，而又由于删去 $x$ 后总体积可能发生变化，因此需要再将归一化系数调整一下，在式子中表现为乘 $(1+\eta_{r,S,x})$.
 
@@ -222,29 +212,29 @@ $$
 
 这些内容是对固定的半径 $r$ 来讲的，事实上，将半径从 $0$ 到 $\alpha$ 积分就可以得到一个欧氏空间上的更一般形式. 若 $\nu$ 是 $[0,\alpha]$ 上的概率密度函数，定义
 $$
-f_V(S)(x)=\int_0^\alpha \nu(r) g_r(S)(x) \d r
+f_\nu(S)(x)=\int_0^\alpha \nu(r) g_r(S)(x) \d r
 $$
-于是共享系数 $\chi_{g_r}$ 可以自然地扩展到 $\chi_{f_V}$：
+于是共享系数 $\chi_{g_r}$ 可以自然地扩展到 $\chi_{f_\nu}$：
 
-{{< admonition definition "DEFINITION 4 (SHARING COEFFICIENT OF $f_V$)" true >}}
+{{< admonition definition "DEFINITION 4 (SHARING COEFFICIENT OF $f_\nu$)" true >}}
 $$
 \begin{aligned}
-\chi_{f_V, S}(x,y):=\int_0^\alpha \nu(r) \chi_{g_r,S}(x,y) \d r\\
-\chi_{f_V,S}(x,x):=\int_0^\alpha \nu(r)\chi_{g_r,S}(x,x)\d r
+\chi_{f_\nu, S}(x,y):=\int_0^\alpha \nu(r) \chi_{g_r,S}(x,y) \d r\\
+\chi_{f_\nu,S}(x,x):=\int_0^\alpha \nu(r)\chi_{g_r,S}(x,x)\d r
 \end{aligned}
 $$
 {{< /admonition >}}
 
 注意此时归一化系数的调整项 $\eta_{r,S,x}$ 对于不同的半径 $r$ 是不同的，因此删除 $x$ 对 $y$ 的影响是
 $$
-f_V(S-\{x\})(y)=f_V(S)(y)+\chi_{f_V,S}(x,y)+\int_0^\alpha \nu(r) \eta_{r,S,x}\big( g_r(S)(y)+\chi_{g_r,S}(x,y) \big) \d r
+f_\nu(S-\{x\})(y)=f_\nu(S)(y)+\chi_{f_\nu,S}(x,y)+\int_0^\alpha \nu(r) \eta_{r,S,x}\big( g_r(S)(y)+\chi_{g_r,S}(x,y) \big) \d r
 $$
 
 既然这篇文章中的欧氏构造天然可以解释权重的共享，那么我们新的 graph-based weighting function 能不能有类似的共享系数定义？
 
 ### Sharing Coefficient for Graph Weighting Functions
 
-这一小节尝试将上一小节中 $g_r$ 和 $f_V$ 的共享系数定义迁移到 clone-robust graph weighting function 上，这会对 $w$ 提出额外的要求：
+这一小节尝试将上一小节中 $g_r$ 和 $f_\nu$ 的共享系数定义迁移到 clone-robust graph weighting function 上，这会对 $w$ 提出额外的要求：
 - 从 $w$ 中删去一点 $x$ 后，与之不相邻的点的权重应当以相同的比例增加.
 - 共享系数应当非负，也就是说删除 $x$ 后 $y$ 的权重不会减少.
 - 共享系数应当是对称函数，即 $\chi_{w,G}(x,y)=\chi_{w,G}(y,x)$.
@@ -252,7 +242,7 @@ $$
 
 这分别对应了接下来的四个公理，下面我们逐一展示.
 
-根据 Graph Weighting Function 的定义，$w(G)(x)$ 只与 $x$ 所在的等价类 $[x]_G$ 有关，因此两个不相邻的点之间共享系数理应为 $0$，也就是说
+根据 locality 的要求，删除 clone 的影响应局限在邻域内，因此两个不相邻的点之间共享系数理应为 $0$，也就是说
 $$
 \chi_{w,G}(x,y)=0, \qquad \text{if } (x,y) \notin E(G)
 $$
@@ -265,7 +255,7 @@ w(G-\{x\})(y) = w(G)(y) \cdot (1+\eta_{G,x})
 $$ 
 则称 $w$ 满足 **multiplicative rescaling**.
 
-此时删去一个极大连通子图 $C$ 对剩下点的权重的影响也都是乘同一个归一化系数[^3]，
+此时删去一个连通分量 $C$ 对剩下点的权重的影响也都是乘同一个归一化系数[^3]，
 $$
 w(G-C)(y)=\frac{w(G)(y)}{1-\sum_{x \in C}w(G)(x)}=w(G)(y) \cdot (1+\eta_{G,C}), \qquad \text{where } y \in G - C
 $$
@@ -277,7 +267,7 @@ $$
 {{< admonition definition "DEFINITION 5 (SHARING COEFFICIENT FOR GRAPH WEIGHTING FUNCTIONS)" true >}}
 设 $w$ 是满足公理 1 的 graph weighting function，$G \in \mathcal G$ 是一个有限图，$x \ne y \in V(G)$ 是图中的两个点，定义 $x,y$ 的 *vertex-based sharing coefficient* 为
 $$
-\chi_{w,G}(x,y):=\frac{w(G-\{x\})(y)}{1+\eta_{G,x}}-w(G,y)
+\chi_{w,G}(x,y):=\frac{w(G-\{x\})(y)}{1+\eta_{G,x}}-w(G)(y)
 $$
 其中 $\eta_{G,x} \ge 0$ 定义为
 $$
@@ -315,8 +305,8 @@ $$
 
 共享系数理应对称，将这个要求视作公理 3：
 
-{{< admonition axiom "AXIOM 3 (SHARING SYMMETRIC)" true >}}
-clone-robust graph weighting function $w$ 若对于任意有限图 $G \in \mathcal G$ 和其中任意两个点 $x,y \in V(G)$ 都有 $\chi_{w,G}(x ,y)=\chi_{w,G}(y,x)$，那么就称 $w$ 满足 *sharing symmetric*.
+{{< admonition axiom "AXIOM 3 (SHARING SYMMETRY)" true >}}
+clone-robust graph weighting function $w$ 若对于任意有限图 $G \in \mathcal G$ 和其中任意两个点 $x,y \in V(G)$ 都有 $\chi_{w,G}(x ,y)=\chi_{w,G}(y,x)$，那么就称 $w$ 满足 *sharing symmetry*.
 上式可以等价地化为
 $$
 \frac{w(G-\{x\})(y)}{1+\eta_{G,x}}-\frac{w(G-\{y\})(x)}{1+\eta_{G,y}}=w(G)(y)-w(G)(x)
@@ -335,11 +325,9 @@ $$
 
 需要满足的公理已经列出，现在剩下的唯一问题就是找到满足这些公理的 graph weighting function. 令人沮丧的是本文尚未找到这样的函数，在这一小节的末尾，我们尝试验证 $w^{\text{CU}}$ 是否满足这些公理.
 
-首先，公理 1 是成立的，放缩倍率恰好就是 $1+\eta_{G,x}=\dfrac{|V/\equiv_G|}{|(V-\{x\})/\equiv_{G-\{x\}}|}$，但剩下的公理是否成立呢？
-
 {{< figure src="/images/40c1f6f/img3.svg" title="$w^{\text{CU}}$ 的共享系数示意图" width="30%" >}}
 
-在上图中，删去 $a$ 会导致剩下的三个点成为新等价类，从而 $w^{\text{CU}}(G-\{a\})(c)=\frac{1}{3}$，，因此 $1+\eta_{G,a}=\frac{w^{\text{CU}}(G-\{a\})(c)}{w^{\text{CU}}(G)(c)}=2$，据此得到 
+在上图中，删去 $a$ 会导致剩下的三个点成为新等价类，从而 $w^{\text{CU}}(G-\{a\})(c)=\frac{1}{3}$，因此 $1+\eta_{G,a}=\frac{w^{\text{CU}}(G-\{a\})(c)}{w^{\text{CU}}(G)(c)}=2$，据此得到 
 $$
 \chi_{w^{\text{CU}},G}(a,b)=\frac{w^{\text{CU}}(G-\{a\})(b)}{1+\eta_{G,a}}-w^{\text{CU}}(G)(b)=\frac{1}{6}-\frac{1}{3}=-\frac{1}{6}
 $$
@@ -349,3 +337,75 @@ $$
 回顾 $w^{\text{CU}}$ 失败的原因，主要问题在于删去某个点后可能会导致其邻居的等价类发生改变，这会进一步影响距离为 $2$ 的点所在等价类，这一现象告诉我们依据等价类分配权重的函数难以满足公理 2 和 3，为了克服这一困难，需要设计基于邻域而非等价类的权重函数.
 
 ### Constructions based on Maximal Clique Covers
+
+本节把视角转换到极大团上：给每个极大团均匀分配权重，极大团内再次均匀分配. 形式化地，设 $\mathcal K(G)$ 表示图 $G$ 的所有极大团构成的集合，则
+$$
+w^{\text{MCCA}}(G)(x)=\frac{1}{|\mathcal K(G)|} \sum_{K \in \mathcal K(G)} \frac{\big[x \in K\big]}{|K|}
+$$
+这样的均匀分配可能还是有些粗糙，某个点可能同时存在于很多极大团中导致其权重异常高. 设 $c(v)=|\{K \in \mathcal K(G): v \in K\}|$ 表示包含点 $v$ 的极大团数量，每次只向 $v$ 分配 $\frac{1}{c(v)}$ 的权重，那么就得到另一函数
+$$
+w^{\text{MCCP}}(G)(v)=\frac{1}{|\mathcal K(G)|} \sum_{K \in \mathcal K(G)} \frac{\big[v \in K\big]}{c(v) \cdot P_K}
+$$
+其中 $P_K:=\sum_{v \in K} \frac{1}{c(v)}$ 表示极大团 $K$ 中所有点的比例和，这样做保证了 $\sum_v w^{\text{MCCP}}(G)(v)=1$.
+
+这两个函数是否满足前面列出的四条公理呢？很遗憾，$w^{\text{MCCA}}$ 和 $w^{\text{MCCP}}$ 都不满足公理 2. 这表明基于极大团的构造也难以满足我们对于共享系数的要求. 只需要验证先前用来测试 $w^{\text{CU}}$ 的那张图就可以得出这一遗憾的结果. $w^{\text{MCCA}}$ 的失败是因为点 $b$ 在多个极大团里分配到了过高的权重，$w^{\text{MCCP}}$ 虽然缓解了这一问题但仍未解决.
+
+有没有可能让每个点仅存在于一个团中呢？我们改用 *clique-partitions* 而非 *maximal clique cover* 是否可行？但问题是 clique-partition 有很多种，为了保持 symmetry，我们必须在这些 clique-partition 中做某种对称随机化，朴素的随机顺序方法最终又会退化到类似于 $w^{\text{MCCP}}$ 的形式.
+
+### A Neighborhood-Based Maximum Entropy Principle
+
+给图上结点赋权本质上是在选择一个概率分布，如果没有额外信息，经典原则是选择 Shannon entropy 最大的分布，也就是均匀分布，但这没有考虑图结构，也没有考虑 locality 的要求. 一个简单的想法是把等价类作为基本单元，设 $\mathcal E(G)$ 是图 $G$ 的等价类划分，对每个等价类 $E \in \mathcal E(G)$ 聚合概率
+$$
+p_E:=\sum_{x \in E} \pi(x)
+$$
+之后定义 class-Shannon entropy $H_G^E$ 为概率分布 $p_E$ 的 Shannon entropy:
+$$
+H_G^E(\pi)=-\sum_{E \in \mathcal E(G)} p_E \log_2(p_E)
+$$
+最大化 class-Shannon entropy 就得到了 $w^{\text{CU}}$，这是在之前就尝试过的构造. 为了避免等价类，我们借鉴 [[Posner and Rodemich, 1972]](https://projecteuclid.org/ebooks/berkeley-symposium-on-mathematical-statistics-and-probability/Proceedings-of-the-Sixth-Berkeley-Symposium-on-Mathematical-Statistics-and/chapter/Epsilon-entropy-of-probability-distributions/bsmsp/1200514364) 的想法. 这里的 idea 是：我们不要求精确知道落在哪个点，只要求知道它落在哪个直径不超过 $\epsilon$ 的小块里，而在图里直径小于 $\epsilon$ 对应 $G_\epsilon$ 中的团.
+
+具体地，设 $S \subseteq M$ 是有限集，$(S,\Sigma)$ 是离散 $\sigma$-代数，其中 $\Sigma=2^S$. $\mu:\Sigma\mapsto [0,1]$ 是离散概率测度. 对于 $\epsilon > 0$，设 $\mathcal A_\epsilon(S)$ 表示 $S$ 的所有直径不超过 $\epsilon$ 的划分构成的集合，换句话说，$S$ 的划分 $U=\{U_i\}_{i \in I} \in \mathcal A_\epsilon(S)$ 当且仅当 $\operatorname{diam}(U_i) =\max_{x,y \in U_i}d(x,y) \le \epsilon$ 对所有 $i \in I$ 成立.
+
+此时划分 $U=\{U_i\}_{i \in I} \in \mathcal A_\epsilon(S)$ 的熵被定义为
+$$
+H(U,\mu) :=-\sum_{i \in I}p_i\log_2 p_i,\qquad \text{where } p_i=\mu(U_i)
+$$
+其中 $p_i=\mu(U_i)$ 表示从所有点中按照分布 $\mu$ 随机抽取出的元素在集合 $U_i$ 中的概率. 当我们允许把两两之间距离不超过 $\epsilon$ 的点合并，描述结果所需的最少信息量为
+$$
+H_\epsilon(\mu):=\min_{U \in \mathcal A_\epsilon(S)} H(U,\mu)
+$$
+
+迁移到图上，两两之间距离不超过 $\epsilon$ 对应了 $G_\epsilon$ 中的团，设 $G=(V,E)$ 是一个有限图，$\pi:V \mapsto [0,1]$ 是一个概率分布，设 $G$ 中的团划分构成集合 $\mathcal C(G)$，那么定义 graph entropy 为
+$$
+H_G(\pi):=\min_{U \in \mathcal C(G)} H(U,\pi)
+$$
+基于最大熵原则，我们要选取一个概率分布 $\pi$ 使得上述熵最大化，定义集合 
+$$
+\Delta^h(G):=\arg\max_{\pi \in \Delta(V)} H_G(\pi)
+$$
+是能使熵最大化的分布构成的集合. 这样表述的定义其实隐含了一个性质：能使熵最大化的概率分布不唯一. 例如只有两个点与连接它们的边构成的图中，任意分布都是最大熵分布，理论上来讲，我们希望概率分布是对称的，但是这个例子中分布却可以是不对称的. 事实上集合 $\Delta^h(G)$ 本身有一定的对称性.
+
+{{< admonition lemma "LEMMA 4" true >}}
+集合 $\Delta^h(G)$ 是对称的，也就是说，对任意图同构 $\sigma:V\mapsto V$ 和概率分布 $\pi \in \Delta^h(G)$，总有 $\pi \circ \sigma \in \Delta^h(G)$，并且在等价类内重新分配概率后的分布仍然在 $\Delta^h(G)$ 中，并且在保持各等价类概率之和不变的情况下添加新结点同样可行.
+{{< /admonition >}}
+
+那么如何从 $\Delta^h(G)$ 中选出那个我们想要的对称的概率分布呢？一个直观的想法是再从中最大化普通 Shannon entropy，但这样是不可行的，普通 Shannon entropy 对等价类内的 clone 数量敏感，它倾向于给 clone 数多的等价类更多权重，这会破坏 locality. 最终作者改用了先前提出的 class-Shannon entropy，最后再用 ordinary Shannon entropy 作为很弱的第二层 tie-breaker.
+
+最终定义 clone-robust entropy-maximizing graph weighting function 为
+$$
+h:(V,E)\in \mathcal G \mapsto \arg\max_{\pi \in \Delta^h(G)} \lim_{\delta \to 0}H_G^E(\pi)+\delta H(\pi)
+$$
+这里的 $\delta H(\pi)$ 应理解为无穷小 tie-breaker：先最大化 $H_G^E$，若仍不唯一再最大化 ordinary Shannon entropy。
+
+这个构造在理论上很漂亮，但确实难以计算. 对给定的分布 $\pi$ 计算 $H_G(\pi)$ 已经是 NP-hard，更别说还要在 $\Delta^h(G)$ 中最大化 $H_G^E(\pi)$ 了. 这样的构造能否满足四条公理？不知道. 它确实倾向于惩罚那些容易被覆盖的点，因此它解决了我们先前给出的例子，但它的问题在于删除一个点后最优的 clique partition 可能发生跳变，我们没有理论保证它始终满足公理 2.
+
+## Conclusion
+
+我们在本文中引入了 clone-robust graph weighting function 的概念，并证明了它可以给出任意伪度量下的 clone-robust weighting function. 之后我们提出了四条公理来约束共享系数，最后尝试了几种构造但都未能满足这些公理. 我们有推测
+1. 任何基于 maximal clique cover 的构造都无法满足公理 2
+2. 即使是 entropy-based rule，也可能存在某个有限图违反了公理 2
+
+未来的工作可能包含
+- 证明或反驳这些推测.
+- 找到真正满足这些公理的 graph weighting function.
+- 系统研究更好的 clone-resistant graph entropy，不局限于 clique-based formulations.
