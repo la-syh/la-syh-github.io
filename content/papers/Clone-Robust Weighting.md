@@ -93,7 +93,7 @@ $$
 
 定义图 $G=(V,E)$ 中 $x$ 的邻居为 $N_G[x]=\{x\} \cup \{y \in V : (x,y) \in E\}$ 并依此定义 $x$ 所在的等价类 $[x]_G=\{y \in V : N_G[y]=N_G[x]\}$.
 
-{{< admonition definition "DEFINITION 2 (Graph Weighting Functions)" true >}}
+{{% admonition definition "DEFINITION 2 (Graph Weighting Functions)" true %}}
 一个图上权重函数 $w$ 是一个给有限无向图上顶点赋概率分布的函数，也就是说
 $$
 w:(V,E) \in \mathcal G \to p_V \in \Delta(V)
@@ -101,12 +101,12 @@ $$
 其中 $\mathcal G$ 表示所有有限无向图，$\Delta(V)=\{p_V:V \to [0,1]:\sum_{x \in V}p_V(x)=1\}$，当 $w$ 满足
 - **Symmetry** 对任意图同构 $\sigma:\mathcal G \to \mathcal G$ 均有 $w(G)(x)=w(\sigma(G))(\sigma(x))$
 - **Locality** 对任意 $y \in V(G)-N_G[x]$ 和 $z \in [x]_G$ 均有 $w(G)(y)=w(G-\{z\})(y)$
-- **Positivity** 对任意 $x \in V(G)$ 均有 $w(G)(x) > 0$.[^2]
+- **Positivity**[^2] 对任意 $x \in V(G)$ 均有 $w(G)(x) > 0$.
 
 时，该 graph weighting function 就被称作 **clone-robust graph weighting function**. 注意原文只要求 Symmetry 和 Locality；但 THEOREM 1 的 Positivity 证明要求 $w$ 具有 Positivity，所以这里采用加强版定义。
-{{< /admonition >}}
-
 [^2]: 这里的 **Positivity** 在原论文中并未提及，但如果没有这条性质，Theorem 1 中对应 Positivity 的证明存在问题.
+{{% /admonition %}}
+
 
 {{< figure src="/images/40c1f6f/img1.svg" title="$w^{\text{CU}}$ 示意图" width="60%" >}}
 
@@ -166,7 +166,9 @@ $$
 
 ### Explainability of Existing Weighting Functions
 
-接下来插入的一小节主要解决一些可解释性的问题，为了理解权重的分配方式，我们自然地想要得知两个不同的元素之间会共享多少权重，为此我们将引入**共享系数（sharing coefficient）** 来量化两个元素之间相互影响权重的程度. [[Berriaud and Wattenhofer, 2025]](https://arxiv.org/abs/2502.03576) 这篇文章中引入的 clone-robust weighting functions 自然地允许这样的概念，该函数针对有限集 $S \subseteq \mathbb R^n$ 和欧式距离的度量，定义
+接下来的这一小节主要是复述 [[Berriaud and Wattenhofer, 2025]](https://arxiv.org/abs/2502.03576) 这篇文章中引入的函数的可解释性相关内容，并在下一小节试图将其迁移到本文中的 graph weighting function 中.
+
+为了理解权重的分配方式，我们自然地想要得知两个不同的元素之间会共享多少权重，为此我们将引入**共享系数（sharing coefficient）** 来量化两个元素之间相互影响权重的程度. [[Berriaud and Wattenhofer, 2025]](https://arxiv.org/abs/2502.03576) 中构造的函数针对有限集 $S \subseteq \mathbb R^n$ 和欧式距离的度量，定义
 $$
 g_r(S)(x)=\frac{1}{\operatorname{Vol}\!\Big(\bigcup_{y\in S} B_r(y)\Big)}
 \int_{B_r(x)} \frac{1}{|S\cap B_r(z)|} \d z
@@ -175,7 +177,7 @@ $$
 
 $g_r$ 的共享系数是容易定义的：对于两个元素 $x,y \in S$，他们的共享系数表示 $x$ 的权重中有多少是与 $y$ 竞争得到的，更准确地，表示在旧的归一化尺度下 $y$ 对 $x$ 的权重造成的损失.
 
-{{< admonition definition "DEFINITION 3" true >}}
+{{< admonition definition "DEFINITION 3 (SHARING COEFFICIENT OF $g_r$)" true >}}
 对于有限集 $S \in \mathbb R^n$ 和互异元素 $x \ne y \in S$，定义 $x$ 与 $y$ 的共享系数 $\chi_{g_r, S}(x,y)$ 为
 $$
 \chi_{g_r, S}(x,y):=\frac{1}{\operatorname{Vol}\!\Big( \bigcup_{u \in S}B_r(u) \Big)}
@@ -207,7 +209,7 @@ $$
 
 但我们其实可以得到一个更几何的单调性：
 
-{{< admonition lemma "LEMMA 3" true>}}
+{{< admonition lemma "LEMMA 3 (SHARING DOMINATION)" true>}}
 若 $S \subseteq \mathbb R^n$ 是有限集且互异元素 $x,y,z \in S$ 满足
 $$
 B_r(x) \cap B_r(z) \subseteq B_r(x) \cap B_r(y)
@@ -224,7 +226,7 @@ f_V(S)(x)=\int_0^\alpha \nu(r) g_r(S)(x) \d r
 $$
 于是共享系数 $\chi_{g_r}$ 可以自然地扩展到 $\chi_{f_V}$：
 
-{{< admonition lemma "LEMMA 4" true >}}
+{{< admonition definition "DEFINITION 4 (SHARING COEFFICIENT OF $f_V$)" true >}}
 $$
 \begin{aligned}
 \chi_{f_V, S}(x,y):=\int_0^\alpha \nu(r) \chi_{g_r,S}(x,y) \d r\\
@@ -242,4 +244,108 @@ $$
 
 ### Sharing Coefficient for Graph Weighting Functions
 
+这一小节尝试将上一小节中 $g_r$ 和 $f_V$ 的共享系数定义迁移到 clone-robust graph weighting function 上，这会对 $w$ 提出额外的要求：
+- 从 $w$ 中删去一点 $x$ 后，与之不相邻的点的权重应当以相同的比例增加.
+- 共享系数应当非负，也就是说删除 $x$ 后 $y$ 的权重不会减少.
+- 共享系数应当是对称函数，即 $\chi_{w,G}(x,y)=\chi_{w,G}(y,x)$.
+- 仿照 $\chi_{g_r}$，若 $y$ 与 $x$ 的共享范围包含 $z$ 与 $x$ 的共享范围，那么前者的共享系数应当不小于后者.
 
+这分别对应了接下来的四个公理，下面我们逐一展示.
+
+根据 Graph Weighting Function 的定义，$w(G)(x)$ 只与 $x$ 所在的等价类 $[x]_G$ 有关，因此两个不相邻的点之间共享系数理应为 $0$，也就是说
+$$
+\chi_{w,G}(x,y)=0, \qquad \text{if } (x,y) \notin E(G)
+$$
+而若两点之间有边，衡量它们之间的共享系数就应该通过删除其中一个点来衡量另一个点的权重变化，但是由于删除点 $x$ 后，剩下点的权重必须重新归一化，这迫使 $G-N_G[x]$ 中点的权重也会发生变化，因此我们需要引入假设
+
+{{% admonition axiom "AXIOM 1 (MULTIPLICATIVE RESCALING)" true %}}
+若对任意有限图 $G$ 和点 $x \in V(G)$ 均存在 $\eta_{G,x} \ge 0$ 使得对于任意 $y \in V(G)-N_G[x]$ 都有
+$$
+w(G-\{x\})(y) = w(G)(y) \cdot (1+\eta_{G,x})
+$$ 
+则称 $w$ 满足 **multiplicative rescaling**.
+
+此时删去一个极大连通子图 $C$ 对剩下点的权重的影响也都是乘同一个归一化系数[^3]，
+$$
+w(G-C)(y)=\frac{w(G)(y)}{1-\sum_{x \in C}w(G)(x)}=w(G)(y) \cdot (1+\eta_{G,C}), \qquad \text{where } y \in G - C
+$$
+[^3]: 下面第一个等号右侧在原文中分母为 $\sum_{x \in C}w(G)(x)$，是一个笔误.
+{{% /admonition %}}
+
+当 $w$ 满足公理 1 时，我们就可以定义 $w$ 的共享系数 $\chi_{w,G}$.
+
+{{< admonition definition "DEFINITION 5 (SHARING COEFFICIENT FOR GRAPH WEIGHTING FUNCTIONS)" true >}}
+设 $w$ 是满足公理 1 的 graph weighting function，$G \in \mathcal G$ 是一个有限图，$x \ne y \in V(G)$ 是图中的两个点，定义 $x,y$ 的 *vertex-based sharing coefficient* 为
+$$
+\chi_{w,G}(x,y):=\frac{w(G-\{x\})(y)}{1+\eta_{G,x}}-w(G,y)
+$$
+其中 $\eta_{G,x} \ge 0$ 定义为
+$$
+\eta_{G,x}=\begin{cases}
+\frac{w(G-\{x\})(z)}{w(G)(z)}-1, & \text{if there exists } z \in V(G)-N_G[x],\\
+0, & \text{otherwise}
+\end{cases}
+$$
+
+在这个定义下，若 $(x,y) \notin E(G)$，则自然地有 $\chi_{w,G}(x,y)=0$.
+{{< /admonition >}}
+
+如果 $x$ 和 $y$ 真的共享权重，那么删除 $x$ 后 $y$ 应该拿回一部分权重，因此 $\chi_{w,G}(x,y)$ 应当为正数，将该性质视作公理 2：
+
+{{< admonition axiom "AXIOM 2 (NON-NEGATIVE VERTEX SHARING)" true >}}
+设 $w$ 是符合公理 1 的 clone-robust graph weighting function，且对于任意有限图 $G\in \mathcal G$ 和其中两个点 $x,y \in V(G)$，若 $\chi_{w,G}(x,y) \ge 0$ 恒成立，或等价地写作
+$$
+w(G-\{x\})(y) \ge w(G)(y) \cdot (1+\eta_{G,x})
+$$
+那么就称 $w$ 满足 *non-negative vertex sharing*.
+{{< /admonition >}}
+
+注意到
+$$
+w(G)(x)-\sum_{y \ne x}\chi_{w,G}(x,y)=\frac{\eta_{G,x}}{1+\eta_{G,x}} \ge 0
+$$
+因此可以定义 $x$ 的 *private weight* 为 
+$$
+\chi_{w,G}(x,x):=\frac{\eta_{G,x}}{1+\eta_{G,x}}
+$$
+于是就有和上一节 $\chi_{g_r}$ 类似的可加性
+$$
+w(G)(x)=\chi_{w,G}(x,x)+\sum_{y \ne x} \chi_{w,G}(x,y)
+$$
+
+共享系数理应对称，将这个要求视作公理 3：
+
+{{< admonition axiom "AXIOM 3 (SHARING SYMMETRIC)" true >}}
+clone-robust graph weighting function $w$ 若对于任意有限图 $G \in \mathcal G$ 和其中任意两个点 $x,y \in V(G)$ 都有 $\chi_{w,G}(x ,y)=\chi_{w,G}(y,x)$，那么就称 $w$ 满足 *sharing symmetric*.
+上式可以等价地化为
+$$
+\frac{w(G-\{x\})(y)}{1+\eta_{G,x}}-\frac{w(G-\{y\})(x)}{1+\eta_{G,y}}=w(G)(y)-w(G)(x)
+$$
+{{< /admonition >}}
+
+最后，仿照 $g_r$ 的共享系数定义，若 $y$ 与 $x$ 的共享范围包含 $z$ 与 $x$ 的共享范围，那么前者的共享系数应当不小于后者，将这个要求视作公理 4：
+
+{{< admonition axiom "AXIOM 4 (SHARING DOMINATION)" true >}}
+设 $w$ 是满足公理 1 的 clone-robust graph weighting function，如果对于任意有限图 $G \in \mathcal G$ 和其中任意三个点 $x,y,z \in V(G)$ 满足 $N_G[x] \cap N_G[z] \subseteq N_G[x] \cap N_G[y]$，则 $\chi_{w,G}(x,y) \ge \chi_{w,G}(x,z)$ 恒成立，那么就称 $w$ 满足 *sharing domination*.
+上式可以等价地写作
+$$
+w(G-\{x\})(y)-w(G-\{x\})(z) \ge \big( w(G)(y)-w(G)(z) \big) \cdot (1+\eta_{G,x})
+$$
+{{< /admonition >}}
+
+需要满足的公理已经列出，现在剩下的唯一问题就是找到满足这些公理的 graph weighting function. 令人沮丧的是本文尚未找到这样的函数，在这一小节的末尾，我们尝试验证 $w^{\text{CU}}$ 是否满足这些公理.
+
+首先，公理 1 是成立的，放缩倍率恰好就是 $1+\eta_{G,x}=\dfrac{|V/\equiv_G|}{|(V-\{x\})/\equiv_{G-\{x\}}|}$，但剩下的公理是否成立呢？
+
+{{< figure src="/images/40c1f6f/img3.svg" title="$w^{\text{CU}}$ 的共享系数示意图" width="30%" >}}
+
+在上图中，删去 $a$ 会导致剩下的三个点成为新等价类，从而 $w^{\text{CU}}(G-\{a\})(c)=\frac{1}{3}$，，因此 $1+\eta_{G,a}=\frac{w^{\text{CU}}(G-\{a\})(c)}{w^{\text{CU}}(G)(c)}=2$，据此得到 
+$$
+\chi_{w^{\text{CU}},G}(a,b)=\frac{w^{\text{CU}}(G-\{a\})(b)}{1+\eta_{G,a}}-w^{\text{CU}}(G)(b)=\frac{1}{6}-\frac{1}{3}=-\frac{1}{6}
+$$
+
+非常遗憾，$w^{\text{CU}}$ 不满足公理 2. 进一步地，$\chi_{w^{\text{CU}},G}(b,a)=\frac{1}{2}-\frac{1}{3}=\frac{1}{6} \ne \chi_{w^{\text{CU}},G}(a,b)$，这表明 $w^{\text{CU}}$ 也不满足公理 3.
+
+回顾 $w^{\text{CU}}$ 失败的原因，主要问题在于删去某个点后可能会导致其邻居的等价类发生改变，这会进一步影响距离为 $2$ 的点所在等价类，这一现象告诉我们依据等价类分配权重的函数难以满足公理 2 和 3，为了克服这一困难，需要设计基于邻域而非等价类的权重函数.
+
+### Constructions based on Maximal Clique Covers

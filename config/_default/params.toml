@@ -450,6 +450,7 @@ layout = "dagre"
 [admonition]
 # ban = "fa-solid fa-ban"
 theorem = "fa-solid fa-square-root-variable"
+axiom = "fa-solid fa-compass-drafting"
 proof = "fa-solid fa-pen-nib"
 lemma = "fa-solid fa-lightbulb"
 corollary = "fa-solid fa-arrow-right"

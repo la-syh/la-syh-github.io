@@ -54,7 +54,7 @@ $$
 
 ### Affine and convex sets
 
-我们都知道，空间中两点 $\boldsymbol{x_1},\boldsymbol{x_2}$ 能唯一确定一条直线，直线上的点均可表示为 $\theta \boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2}$,$\theta \in \mathbb R$，当参数 $\theta \in [0,1]$ 时表示以 $\boldsymbol{x_1},\boldsymbol{x_2}$ 为端点的线段上的点.
+我们都知道，空间中两点 $\boldsymbol{x_1},\boldsymbol{x_2}$ 能唯一确定一条直线，直线上的点均可表示为 $\theta \boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2}$, $\theta \in \mathbb R$，当参数 $\theta \in [0,1]$ 时表示以 $\boldsymbol{x_1},\boldsymbol{x_2}$ 为端点的线段上的点.
 
 {{< figure src="/images/c37d08d/img1.svg" title="$\boldsymbol{x_1}$ 与 $\boldsymbol{x_2}$ 确定的直线" >}}
 
