@@ -9,7 +9,7 @@ keywords:
 comment: true
 weight: 0
 tags:
-  - 优化
+  - 最优化
   - 凸优化
 categories:
   - 数学
@@ -68,7 +68,9 @@ V=C-\boldsymbol{x_0}=\{\boldsymbol{x}-\boldsymbol{x_0}:\boldsymbol{x} \in C\}
 $$
 是子空间. 证明考虑 $\alpha \boldsymbol{v_1}+\beta \boldsymbol{v_2}+\boldsymbol{x_0}=\alpha(\boldsymbol{v_1}+\boldsymbol{x_0})+\beta(\boldsymbol{v_2}+\boldsymbol{x_0})+(1-\alpha-\beta)\boldsymbol{x_0} \in C$.
 
-**Example** 线性方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{b}$ 的解集是仿射集. 这是因为 $\boldsymbol{A}(\theta\boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2})=\theta\boldsymbol{A}\boldsymbol{x_1}+(1-\theta)\boldsymbol{A}\boldsymbol{x_2}=\boldsymbol{b}$. 更进一步还可以得到解集 $S$ 对应的子空间 $S-\boldsymbol{x_0}$ 恰为 $\boldsymbol{A}$ 的零空间，并且任意仿射集都可以写成某个线性方程组的解集.
+{{< admonition example "EXAMPLE" true >}}
+线性方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{b}$ 的解集是仿射集. 这是因为 $\boldsymbol{A}(\theta\boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2})=\theta\boldsymbol{A}\boldsymbol{x_1}+(1-\theta)\boldsymbol{A}\boldsymbol{x_2}=\boldsymbol{b}$. 更进一步还可以得到解集 $S$ 对应的子空间 $S-\boldsymbol{x_0}$ 恰为 $\boldsymbol{A}$ 的零空间，并且任意仿射集都可以写成某个线性方程组的解集.
+{{< /admonition >}}
 
 对于一个集合 $C \subseteq \mathbb R^n$，怎么将其扩充至最小的仿射集 $\aff C$？只需将 $C$ 中元素的所有仿射组合加入集合即可，也就是
 $$
@@ -84,11 +86,13 @@ $$
 
 类似地可以定义**相对边界(relative boundary)** 为 $\cl C - \relint C$，其中 $\cl C$ 为 $C$ 的闭包，即把所有可以由 $C$ 中点逼近的点也加进集合的结果.
 
-**Example** 考虑 $\mathbb R^3$ 中的一个矩形 $C=\{\boldsymbol{x} \in \mathbb R^3 : -1 \le x_1,x_2 \le 1, x_3 = 0\}$，其仿射包为整个 $(x_1,x_2)$-平面 $\{\boldsymbol{x} \in \mathbb R^3:x_3=0\}$，$C$ 的内部为空集但相对内部为
+{{< admonition example "EXAMPLE" true >}}
+考虑 $\mathbb R^3$ 中的一个矩形 $C=\{\boldsymbol{x} \in \mathbb R^3 : -1 \le x_1,x_2 \le 1, x_3 = 0\}$，其仿射包为整个 $(x_1,x_2)$-平面 $\{\boldsymbol{x} \in \mathbb R^3:x_3=0\}$，$C$ 的内部为空集但相对内部为
 $$
 \relint C = \{\boldsymbol{x} \in \mathbb R^3:-1 < x_1,x_2 < 1, x_3 = 0\}
 $$
 $C$ 的边界就是其本身，但其相对边界为 $\{\boldsymbol{x}\in\mathbb R^3:\max\{|x_1|,|x_2|\}=1,x_3=0\}$.
+{{< /admonition >}}
 
 #### convex
 
@@ -106,7 +110,7 @@ $$
 
 #### cone
 
-集合 $C \subseteq \mathbb R^n$ 是**锥(cone)** 或**非负齐次(集)(nonnegative homogeneous)** 当且仅当 $\forall \boldsymbol{x} \in C,\theta \ge 0$ 都有 $\theta \boldsymbol{x} \in C$. 若 $C$ 既是凸集有是锥，那么称 $C$ 为**凸锥(convex cone)**. 形如 $\theta_1 \boldsymbol{x_1} + \cdots +\theta_k\boldsymbol{x_k}$，$\theta_i \ge 0$ 的组合叫做**锥组合(conic combination)** 或非负线性组合，显然 $C$ 是凸锥当且仅当它包含自身元素的所有锥组合，类似定义集合 $C$ 的**锥包(conic hull)** 为 $\{\theta_1\boldsymbol{x_1}+\cdots + \theta_k\boldsymbol{x_k}:\boldsymbol{x_i} \in C,\theta_i \ge 0\}$.
+集合 $C \subseteq \mathbb R^n$ 是**锥(cone)** 或**非负齐次(集)(nonnegative homogeneous)** 当且仅当 $\forall \boldsymbol{x} \in C,\theta \ge 0$ 都有 $\theta \boldsymbol{x} \in C$. 若 $C$ 既是凸集又是锥，那么称 $C$ 为**凸锥(convex cone)**. 形如 $\theta_1 \boldsymbol{x_1} + \cdots +\theta_k\boldsymbol{x_k}$，$\theta_i \ge 0$ 的组合叫做**锥组合(conic combination)** 或非负线性组合，显然 $C$ 是凸锥当且仅当它包含自身元素的所有锥组合，类似定义集合 $C$ 的**锥包(conic hull)** 为 $\{\theta_1\boldsymbol{x_1}+\cdots + \theta_k\boldsymbol{x_k}:\boldsymbol{x_i} \in C,\theta_i \ge 0\}$.
 
 ### Some important examples
 #### Hyperplanes and halfspaces
@@ -140,30 +144,191 @@ $$
 
 在 $\mathbb R^n$ 上的任一范数都可以导出对应的**范数球(norm ball)**，球心为 $\boldsymbol{x_c}$，半径为 $r$ 的范数球定义为 $\{\boldsymbol{x}:\|\boldsymbol{x}-\boldsymbol{x_c}\| \le r\}$，类似地可以定义**范数锥(norm cone)** 为 $\{(\boldsymbol{x},t):\|\boldsymbol{x}\| \le t\} \subseteq \mathbb R^{n+1}$.
 
-**Example** *The second-order cone* 是欧几里得范数下的范数锥，也就是 
+{{< admonition example "EXAMPLE" true >}}
+*The second-order cone* 是欧几里得范数下的范数锥，也就是 
 $$
 C=\{(\boldsymbol{x},t) \in \mathbb R^{n + 1}:\|\boldsymbol{x}\|_2 \le t \}
 $$
 它也被叫做 *quadratic cone*、*Lorentz cone* 或 *ice-cream cone*.
+{{< /admonition >}}
 
 #### Polyhedra
 
 **多面体(polyhedron)** 是有限个线性等式与不等式的解集，也就是
 $$
-\mathcal P = \{\boldsymbol{x}:\boldsymbol{A}\boldsymbol{x} \preceq \boldsymbol{b}, \boldsymbol{C}\boldsymbol{x}=\boldsymbol{d}\}
+\mathcal P = \{\boldsymbol{x}:\boldsymbol{A}\boldsymbol{x} \le \boldsymbol{b}, \boldsymbol{C}\boldsymbol{x}=\boldsymbol{d}\}
 $$
-其中 $\preceq$ 表示逐个元素的不等号均成立，换句话说就是 $\boldsymbol{A} \preceq \boldsymbol{B}$ 当且仅当 $A_{i,j} \le B_{i,j}$ 恒成立.
+其中 $\le$ 表示逐个元素的不等号均成立，换句话说就是 $\boldsymbol{A} \le \boldsymbol{B}$ 当且仅当 $A_{i,j} \le B_{i,j}$ 恒成立.
 
 事实上，等式约束总可以拆分为两个不等式约束，$\boldsymbol{C}\boldsymbol{x} = \boldsymbol{d} \Longleftrightarrow \boldsymbol{C}\boldsymbol{x} \le d \wedge -\boldsymbol{C}\boldsymbol{x} \le -\boldsymbol{d}$，但为了表述清楚，定义中还是将其做了区分.
 
 根据定义可以明显看出，多面体总是有限个半空间和超平面的交，而有限个凸集的交仍然是凸集，因此多面体总是凸集.
 
-**单纯形(simplex)** 是 $\mathbb R^n$ 中的一个特殊多面体. 先在 $\mathbb R^n$ 中取 $k+1$ 个仿射无关的点 $\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}$，那么这些点构成的凸包 $\conv \{\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}\}$ 就是一个 $k$ 维单纯形. 仿射无关的意思是这些点不在同一个超平面上，也就是说不存在 $\theta_0, \ldots, \theta_k$ 满足 $\theta_0 + \cdots + \theta_k = 0$ 且 $\theta_0\boldsymbol{v_0} + \cdots + \theta_k\boldsymbol{v_k} = \boldsymbol{0}$，而这等价于 $\boldsymbol{v_1}-\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}-\boldsymbol{v_0}$ 线性无关.
+**单纯形(simplex)** 是 $\mathbb R^n$ 中的一个特殊多面体. 先在 $\mathbb R^n$ 中取 $k+1$ 个仿射无关的点 $\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}$，那么这些点构成的凸包 $\conv \{\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}\}$ 就是一个 $k$ 维单纯形. 仿射无关的意思是这些点不在同一个超平面上，也就是说不存在 $\theta_0, \ldots, \theta_k$ 满足 $\theta_0 + \cdots + \theta_k = 0$ 且 $\theta_0\boldsymbol{v_0} + \cdots + \theta_k\boldsymbol{v_k} = \boldsymbol{0}$，这等价于 $\boldsymbol{v_1}-\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}-\boldsymbol{v_0}$ 线性无关.
 
-**Example** 一维单纯形就是线段，二维单纯形是三角形，三维单纯形是四面体. $n$ 维单纯形的一个特殊例子是**标准单纯形(standard simplex)**，它由 $\mathbb R^n$ 中的 $n+1$ 个点 $\boldsymbol{e_0}=\boldsymbol{0},\boldsymbol{e_1},\cdots,\boldsymbol{e_n}$ 构成，其中 $\boldsymbol{e_i}$ 是标准正交基. 标准单纯形的凸包就是 $\{\boldsymbol{x} \in \mathbb R^n: x_i \ge 0, \sum_{i=1}^n x_i \le 1\}$.
+{{< admonition example "EXAMPLE" true >}}
+一维单纯形就是线段，二维单纯形是三角形，三维单纯形是四面体. $n$ 维单纯形的一个特殊例子是**标准单纯形(standard simplex)**，它由 $\mathbb R^n$ 中的 $n+1$ 个点 $\boldsymbol{e_0}=\boldsymbol{0},\boldsymbol{e_1},\cdots,\boldsymbol{e_n}$ 构成，其中 $\boldsymbol{e_i}$ 是标准正交基. 标准单纯形的凸包就是 $\{\boldsymbol{x} \in \mathbb R^n: x_i \ge 0, \sum_{i=1}^n x_i \le 1\}$.
+{{< /admonition >}}
 
 直观上来看，单纯形必然是多面体，下面我们来证明这一点.
 
 {{< admonition proof "PROOF" true >}}
-只需证明有限点集构成的凸包是多面体.
+设单纯形 $C=\conv\{\boldsymbol v_0,\ldots,\boldsymbol v_k\}\subseteq \mathbb R^n$，其中 $\boldsymbol v_1-\boldsymbol v_0,\ldots,\boldsymbol v_k-\boldsymbol v_0$ 线性无关. 记
+$$
+\boldsymbol A=
+\begin{pmatrix}
+\boldsymbol v_1-\boldsymbol v_0 & \cdots & \boldsymbol v_k-\boldsymbol v_0
+\end{pmatrix}
+$$
+则任意 $\boldsymbol x\in C$ 可以写成 $\boldsymbol x=\boldsymbol v_0+\boldsymbol A\boldsymbol y$，其中 $\boldsymbol y\ge \boldsymbol 0,\boldsymbol 1^T\boldsymbol y\le 1$.
+
+由于 $\boldsymbol A$ 列满秩，$\boldsymbol A^T\boldsymbol A$ 可逆. 令
+$$
+\boldsymbol L=(\boldsymbol A^T\boldsymbol A)^{-1}\boldsymbol A^T
+$$
+若 $\boldsymbol x=\boldsymbol v_0+\boldsymbol A\boldsymbol y$，则 $\boldsymbol y=\boldsymbol L(\boldsymbol x-\boldsymbol v_0)$，同时还需有
+$$
+(\boldsymbol I-\boldsymbol A\boldsymbol L)(\boldsymbol x-\boldsymbol v_0)=\boldsymbol 0,
+$$
+以保证 $\boldsymbol x-\boldsymbol v_0\in \operatorname{Col}(\boldsymbol A)$. 因此
+$$
+C=
+\left\{
+\boldsymbol x\in \mathbb R^n:
+\boldsymbol L(\boldsymbol x-\boldsymbol v_0)\ge \boldsymbol 0,\ 
+\boldsymbol 1^T\boldsymbol L(\boldsymbol x-\boldsymbol v_0)\le 1,\ 
+(\boldsymbol I-\boldsymbol A\boldsymbol L)(\boldsymbol x-\boldsymbol v_0)=\boldsymbol 0
+\right\}.
+$$
+这是由有限个线性不等式和线性等式确定的集合，而线性等式又可以写成两组线性不等式，所以 $C$ 是多面体.
 {{< /admonition >}}
+
+#### The positive semidefinite cone
+
+设 $S^n$ 表示所有 $n \times n$ 实对称矩阵构成的集合，$S^n_+$ 表示 $n \times n$ 半正定矩阵构成的集合，$S^n_{++}$ 表示 $n \times n$ 正定矩阵构成的集合，也就是说
+$$
+\begin{aligned}
+&S^n = \{\boldsymbol{X} \in \mathbb R^{n \times n}: \boldsymbol{X}^T = \boldsymbol{X}\}, \\
+&S^n_+ = \{\boldsymbol{X} \in S^n: \boldsymbol{x}^T \boldsymbol{X} \boldsymbol{x} \ge 0, \forall \boldsymbol{x} \in \mathbb R^n\}, \\
+&S^n_{++} = \{\boldsymbol{X} \in S^n: \boldsymbol{x}^T \boldsymbol{X} \boldsymbol{x} > 0, \forall \boldsymbol{x} \in \mathbb R^n, \boldsymbol{x} \ne 0\}.
+\end{aligned}
+$$
+
+现在我们想知道这三个集合是不是凸集. 结论为：$S^n_+$ 是凸锥，$S^n_{++}$ 是凸集但不是锥. 证明只需用 
+$$
+\boldsymbol{x}(\theta_1 \boldsymbol{X_1}+\theta_2 \boldsymbol{X_2})\boldsymbol{x}^T = \theta_1 \boldsymbol{x}^T \boldsymbol{X_1} \boldsymbol{x} + \theta_2 \boldsymbol{x}^T \boldsymbol{X_2} \boldsymbol{x} \ge 0,\quad \text{where } \theta_1,\theta_2 \ge 0
+$$
+$S^n_{++}$ 不含零矩阵因此不是锥.
+
+### Operations that preserve convexity
+
+这一节我们关注一些保持凸性的运算.
+
+#### Intersection
+
+交运算保持凸性是常用且熟知的结论：如果 $S_1,S_2$ 都是凸集，那么 $S_1 \cap S_2$ 也是凸集. 证明是平凡的，交集中两点连线总是既在 $S_1$ 中又在 $S_2$ 中. 直接的推论为有限个凸集的交仍然为凸集，事实上也同样可以证明任意交，也就是：给定指标集合 $I$ 和凸集 $S_i,\forall i \in I$，则 $\bigcap_{i \in I} S_i$ 也是凸集.
+
+{{< admonition example "EXAMPLE" true >}}
+$S^n_+$ 是凸集，因为
+$$
+S^n_+=\bigcap_{\boldsymbol{z} \ne \boldsymbol{0}} \{\boldsymbol{X} \in S^n: \boldsymbol{z}^T \boldsymbol{X} \boldsymbol{z} \ge 0\}
+$$
+其中对于给定的 $\boldsymbol{z}$，$\boldsymbol{z}^T\boldsymbol{X}\boldsymbol{z}$ 是一个关于 $\boldsymbol{X}$ 的线性函数，因此 $\{\boldsymbol{X} \in S^n: \boldsymbol{z}^T \boldsymbol{X} \boldsymbol{z} \ge 0\}$ 实际上是一个半空间，半空间是凸集，因此 $S^n_+$ 是凸集.
+{{< /admonition >}}
+
+事实上，之后我们将会证明：任意封闭凸集 $S$ 都是一些半空间的交，这些半空间就是所有包含 $S$ 的超平面所对应的半空间.
+$$
+S=\bigcap \big\{\mathcal H:\mathcal H \text{ halfspace, }S\subseteq \mathcal H\big\}
+$$
+
+#### Affine functions
+
+**仿射函数(affine function)** 就是线性函数加上一个偏置，换句话说，$f:\mathbb R^n \mapsto \mathbb R^m$ 是仿射的，当且仅当存在 $\boldsymbol A \in \mathbb R^{m \times n}$ 和 $\boldsymbol b \in \mathbb R^m$，使得
+$$
+f(\boldsymbol x) = \boldsymbol A \boldsymbol x + \boldsymbol b.
+$$
+
+我们将证明：**凸集经过仿射变换后仍是凸集**.
+
+{{< admonition proof "PROOF" true >}}
+设 $S$ 是凸集，$f(\boldsymbol{x})=\boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}$ 是仿射函数，下证 $f(S)$ 是凸集.
+
+只需证 $\forall \boldsymbol{x_1},\boldsymbol{x_2} \in S,\theta \ge 0$ 均有 $\theta f(\boldsymbol{x_1}) + (1-\theta) f(\boldsymbol{x_2}) \in f(S)$.
+
+$$
+\theta f(\boldsymbol{x_1}) + (1-\theta) f(\boldsymbol{x_2}) = \theta(\boldsymbol{A}\boldsymbol{x_1}+\boldsymbol{b}) + (1-\theta)(\boldsymbol{A}\boldsymbol{x_2}+\boldsymbol{b}) = \boldsymbol{A}(\theta\boldsymbol{x_1} + (1-\theta)\boldsymbol{x_2}) + \boldsymbol{b}
+$$
+由于 $S$ 是凸集，因此 $\theta \boldsymbol{x_1}+(1-\theta)(\boldsymbol{x_2})\in S$，于是
+$$
+\theta f(\boldsymbol{x_1}) + (1-\theta) f(\boldsymbol{x_2})=f(\theta \boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2}) \in f(S)
+$$
+证毕.
+{{< /admonition >}}
+
+事实上，凸集经过仿射变换的逆变换后仍是凸集，换句话说，若 $f:\mathbb R^n \to \mathbb R^m$ 是仿射函数，$S \subset \mathbb R^m$ 是凸集，则
+$$
+f^{-1}(S)=\{\boldsymbol{x} \in \mathbb R^n: f(\boldsymbol{x}) \in S\}
+$$
+仍然是凸集，证明平凡，此处从略.
+
+{{< admonition example "EXAMPLE" true >}}
+若 $S$ 是凸集，则 $\alpha S = \{\alpha \boldsymbol{x} : \boldsymbol{x} \in S\}$ 也是凸集、$S+\boldsymbol{b}=\{ \boldsymbol{x} + \boldsymbol{b} : \boldsymbol{x} \in S \}$ 也是凸集，凸集在某个方向上的投影仍然是凸集，**凸集的和仍然是凸集**.
+
+这里我们解释一下最后一条，两个凸集 $S_1,S_2$ 的和定义为
+$$
+S_1+S_2=\{\boldsymbol{x_1}+\boldsymbol{x_2}:\boldsymbol{x_1} \in S_1,\boldsymbol{x_2} \in S_2\}
+$$
+为了证明它是凸集，首先有 $S_1 \times S_2 = \{(\boldsymbol{x_1},\boldsymbol{x_2}):\boldsymbol{x_1}\in S_1,\boldsymbol{x_2}\in S_2\}$ 是凸集，再做保持凸性的仿射变换 $f(\boldsymbol{x_1},\boldsymbol{x_2})=\boldsymbol{x_1}+\boldsymbol{x_2}$ 即可. 事实上，$S_1+S_2$ 也叫做 $S_1$ 和 $S_2$ 的 **Minkowski 和**.
+{{< /admonition >}}
+
+{{< admonition example "EXAMPLE" true >}}
+线性矩阵不等式(Linear Matrix Inequality, LMI) 的解集是凸集. 设 
+$$
+A(\boldsymbol{x})=\sum_{i=1}^{n}x_i\boldsymbol{A_i}
+$$
+其中 $\boldsymbol{A_i} \in S^m$，再设 $\boldsymbol{B} \in S^m$，则 $A(\boldsymbol{x}) \preceq \boldsymbol{B}$ 称作线性矩阵不等式，$A(\boldsymbol{x}) \preceq \boldsymbol{B}$ 的含义是 $\boldsymbol{B}-A(\boldsymbol{x})$ 半正定.
+
+证明考察 $f(\boldsymbol{x}) = \boldsymbol{B} - A(\boldsymbol{x})$，则 $f^{-1}(S^m_+)$ 是凸集，且恰好为该 LMI 的解集.
+{{< /admonition >}}
+
+#### Linear-fractional and perspective functions
+
+当我们希望将空间降维，将 $\mathbb R^{n + 1}$ 中的点映到 $\mathbb R^n$ 上时，就需要用到透视函数(perspective function) $P$，它的动机是：当我们处于原点并看向某一方向时，该方向上的点会被投影到同一点上，换句话说 $P(\alpha \boldsymbol{x}) \equiv P(\boldsymbol{x})$ 应当对所有 $\boldsymbol{x}$ 和 $\alpha > 0$ 成立.
+
+不妨将最后一维删去，将所有点投影到 $x_{n+1}=1$ 这个超平面上，根据我们需要的性质，
+$$
+P\big(\alpha(x_1,\cdots ,x_n, 1)^T\big) = P\big((x_1,\cdots, x_n, 1)^T\big)=(x_1,\cdots, x_n)^T
+$$
+据此得到 $P(\boldsymbol{x},t)=\dfrac{\boldsymbol{x}}{t}$，要求 $t>0$，这里的两个参数实际上是将需要做变换的向量的前 $n$ 维和最后一维拆开了. 更加正式的定义是
+$$
+P: \mathbb R^n \times \mathbb R_{++} \mapsto \mathbb R^n, \quad P(\boldsymbol{x}, t) = \frac{\boldsymbol{x}}{t}
+$$
+可以通过定义证明，线段经过透视函数变换后仍是线段且透视函数是保凸性的，对于任意 $\theta \in [0,1]$，必然存在一个 $\mu \in [0,1]$ 满足
+$$
+\mu P(\boldsymbol{x_1}) + (1-\mu) P(\boldsymbol{x_2}) = P(\theta \boldsymbol{x_1} + (1-\theta) \boldsymbol{x_2})
+$$
+这里不再展开. 仿射函数的逆也是保凸性的，透视函数有没有类似的性质呢？答案是肯定的. 任意凸集的反透视映射仍然是凸集，换句话说，当 $C$ 是凸集时
+$$
+P^{-1}(C)=\big\{ (\boldsymbol{x},t) : \frac{\boldsymbol{x}}{t} \in C, t > 0 \big\}
+$$
+也是凸集.
+
+仿射映射和透视映射的复合叫做**线性分数函数(linear-fractional functions)** ，更正式地，若 $g:\mathbb R^n \mapsto \mathbb R^{m+1}$ 是仿射函数，
+$$
+g(\boldsymbol{x}):=\begin{pmatrix}
+\boldsymbol{A}\\
+\boldsymbol{c}^T
+\end{pmatrix}\boldsymbol{x}+\begin{pmatrix}
+\boldsymbol{b}\\
+d
+\end{pmatrix}
+$$
+则 $f=P \circ g:\mathbb R^n \mapsto \mathbb R^m$ 为线性分数函数，定义为
+$$
+f(\boldsymbol{x})=\frac{\boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}}{\boldsymbol{c}^T\boldsymbol{x}+d},\quad \boldsymbol{\operatorname{dom}}\ f = \{\boldsymbol{x}:\boldsymbol{c}^T\boldsymbol{x}+d > 0\}
+$$
+
+由于 $f$ 是保凸变换的复合，因此 $f$ 同样是保持凸性的，并且逆变换同样保凸.
+
+### Generalized inequalities
+
