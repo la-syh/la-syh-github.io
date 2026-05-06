@@ -3,6 +3,7 @@ on:
   push:
     branches: [ main ]
     paths:
+      - '.github/workflows/**'
       - 'assets/**'
       - 'config/**'
       - 'content/**'
@@ -31,18 +32,31 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    env:
+      DART_SASS_VERSION: 1.99.0
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+      - name: Install Dart Sass
+        run: |
+          mkdir -p "${HOME}/.local"
+          curl -sLJO "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
+          tar -C "${HOME}/.local" -xf "dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
+          rm "dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
+          echo "${HOME}/.local/dart-sass" >> "${GITHUB_PATH}"
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
           # use the environment variable HUGO_VERSION as the hugo version, if not set, use `latest`.
           hugo-version: ${{ vars.HUGO_VERSION || 'latest' }}
           extended: true
+      - name: Verify build tools
+        run: |
+          echo "Dart Sass: $(sass --version)"
+          echo "Hugo: $(hugo version)"
       - name: Hugo build
         run: hugo --gc --minify --logLevel info
       - name: Upload artifact
@@ -63,4 +77,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
