@@ -156,11 +156,11 @@ $$
 
 **多面体(polyhedron)** 是有限个线性等式与不等式的解集，也就是
 $$
-\mathcal P = \{\boldsymbol{x}:\boldsymbol{A}\boldsymbol{x} \le \boldsymbol{b}, \boldsymbol{C}\boldsymbol{x}=\boldsymbol{d}\}
+\mathcal P = \{\boldsymbol{x}:\boldsymbol{A}\boldsymbol{x} \preceq \boldsymbol{b}, \boldsymbol{C}\boldsymbol{x}=\boldsymbol{d}\}
 $$
-其中 $\le$ 表示逐个元素的不等号均成立，换句话说就是 $\boldsymbol{A} \le \boldsymbol{B}$ 当且仅当 $A_{i,j} \le B_{i,j}$ 恒成立.
+其中向量之间的 $\preceq$ 表示逐元素的不等号均成立，换句话说就是 $\boldsymbol{u} \preceq \boldsymbol{v}$ 当且仅当 $u_{i} \le v_{i}$ 对所有 $i$ 均成立.
 
-事实上，等式约束总可以拆分为两个不等式约束，$\boldsymbol{C}\boldsymbol{x} = \boldsymbol{d} \Longleftrightarrow \boldsymbol{C}\boldsymbol{x} \le d \wedge -\boldsymbol{C}\boldsymbol{x} \le -\boldsymbol{d}$，但为了表述清楚，定义中还是将其做了区分.
+事实上，等式约束总可以拆分为两个不等式约束，$\boldsymbol{C}\boldsymbol{x} = \boldsymbol{d} \Longleftrightarrow \boldsymbol{C}\boldsymbol{x} \preceq \boldsymbol{d} \wedge -\boldsymbol{C}\boldsymbol{x} \preceq -\boldsymbol{d}$，但为了表述清楚，定义中还是将其做了区分.
 
 根据定义可以明显看出，多面体总是有限个半空间和超平面的交，而有限个凸集的交仍然是凸集，因此多面体总是凸集.
 
@@ -180,7 +180,7 @@ $$
 \boldsymbol v_1-\boldsymbol v_0 & \cdots & \boldsymbol v_k-\boldsymbol v_0
 \end{pmatrix}
 $$
-则任意 $\boldsymbol x\in C$ 可以写成 $\boldsymbol x=\boldsymbol v_0+\boldsymbol A\boldsymbol y$，其中 $\boldsymbol y\ge \boldsymbol 0,\boldsymbol 1^T\boldsymbol y\le 1$.
+则任意 $\boldsymbol x\in C$ 可以写成 $\boldsymbol x=\boldsymbol v_0+\boldsymbol A\boldsymbol y$，其中 $\boldsymbol y\succeq \boldsymbol 0,\boldsymbol 1^T\boldsymbol y\le 1$.
 
 由于 $\boldsymbol A$ 列满秩，$\boldsymbol A^T\boldsymbol A$ 可逆. 令
 $$
@@ -195,7 +195,7 @@ $$
 C=
 \left\{
 \boldsymbol x\in \mathbb R^n:
-\boldsymbol L(\boldsymbol x-\boldsymbol v_0)\ge \boldsymbol 0,\ 
+\boldsymbol L(\boldsymbol x-\boldsymbol v_0)\succeq \boldsymbol 0,\ 
 \boldsymbol 1^T\boldsymbol L(\boldsymbol x-\boldsymbol v_0)\le 1,\ 
 (\boldsymbol I-\boldsymbol A\boldsymbol L)(\boldsymbol x-\boldsymbol v_0)=\boldsymbol 0
 \right\}.
@@ -286,7 +286,7 @@ $$
 $$
 A(\boldsymbol{x})=\sum_{i=1}^{n}x_i\boldsymbol{A_i}
 $$
-其中 $\boldsymbol{A_i} \in S^m$，再设 $\boldsymbol{B} \in S^m$，则 $A(\boldsymbol{x}) \preceq \boldsymbol{B}$ 称作线性矩阵不等式，$A(\boldsymbol{x}) \preceq \boldsymbol{B}$ 的含义是 $\boldsymbol{B}-A(\boldsymbol{x})$ 半正定.
+其中 $\boldsymbol{A_i} \in S^m$，再设 $\boldsymbol{B} \in S^m$，则 $A(\boldsymbol{x}) \preceq \boldsymbol{B}$ 称作线性矩阵不等式. 这里对称矩阵之间的 $\preceq$ 并不表示逐元素的不等号，$A(\boldsymbol{x}) \preceq \boldsymbol{B}$ 的含义是 $\boldsymbol{B}-A(\boldsymbol{x})$ 半正定.
 
 证明考察 $f(\boldsymbol{x}) = \boldsymbol{B} - A(\boldsymbol{x})$，则 $f^{-1}(S^m_+)$ 是凸集，且恰好为该 LMI 的解集.
 {{< /admonition >}}
@@ -332,3 +332,82 @@ $$
 
 ### Generalized inequalities
 
+#### Proper cones and generalized inequalities
+
+回顾偏序关系要求的性质
+- Reflexivity: $\boldsymbol{x} \preceq \boldsymbol{x}$
+- Antisymmetry: $\boldsymbol{x} \preceq \boldsymbol{y}, \boldsymbol{y} \preceq \boldsymbol{x}\Longrightarrow \boldsymbol{x}=\boldsymbol{y}$
+- Transitivity: $\boldsymbol{x} \preceq \boldsymbol{y}, \boldsymbol{y} \preceq \boldsymbol{z} \Longrightarrow \boldsymbol{x} \preceq \boldsymbol{z}$
+
+如果我们定义关系 $\preceq_K$ 为 $\boldsymbol{x} \preceq_K \boldsymbol{y} \Longleftrightarrow \boldsymbol{y} - \boldsymbol{x} \in K$，其中 $K$ 是一个锥，由于 $\boldsymbol{0}\in K$ 以及锥中元素对锥组合封闭，第一条性质和第三条性质被自然满足，但第三条限制不被所有锥满足，因此我们需要让锥 $K$ 额外满足 $-K \cap K = \{\boldsymbol{0}\}$ 以满足反自反性.
+
+满足 $-K \cap K =\{\boldsymbol{0}\}$ 的锥 $K$ 就可以定义一个偏序关系，为了让它的性质更好，我们经常在这样的锥上操作：
+
+{{< admonition definition "DEFINITION (proper cone)" true >}}
+定义**适当锥(proper cone)** 为满足
+- convex: $K$ 是凸锥.
+- closed: $K$ 是闭集.
+- solid: $K$ 的内部非空，$\boldsymbol{\operatorname{int}}\ K \ne \varnothing$.
+- pointed: $K \cap -K = \{\boldsymbol{0}\}$，这等价于 $\boldsymbol{x},-\boldsymbol{x}\in K \Longrightarrow \boldsymbol{x}=\boldsymbol{0}$.
+
+的锥 $K$，有时 proper cone 也译作“正常锥”.
+{{< /admonition >}}
+
+此时额外地还有 $\boldsymbol{x}\prec_K \boldsymbol{y} \Longleftrightarrow \boldsymbol{y}-\boldsymbol{x}\in \boldsymbol{\operatorname{int}}\ K$. 当 $K=\mathbb R_+$，此时诱导出的偏序关系就是 $\mathbb R$ 的大小关系，当 $K=\mathbb R^n_+$ 时诱导出的就是 $n$ 维向量逐元素的大小关系，$K=S^n_+$ 时诱导出的就是判断矩阵半正定的关系，这些特殊的偏序关系均在上文出现过.
+
+proper cone $K$ 诱导出的偏序关系还有一些良好的性质：
+- $\boldsymbol{x} \preceq_K \boldsymbol{y},\boldsymbol{u}\preceq_K \boldsymbol{v}\Longrightarrow \boldsymbol{x}+\boldsymbol{u}\preceq_K\boldsymbol{y}+\boldsymbol{v}$.
+- $\boldsymbol{x}\preceq_K\boldsymbol{y},\alpha \ge 0\Longrightarrow \alpha \boldsymbol{x}\preceq_K\alpha\boldsymbol{y}$.
+- 若 $\forall i \in \mathbb N_{>0}$ 都有 $\boldsymbol{x_i}\preceq_K\boldsymbol{y_i}$ 且 $\boldsymbol{x_i}\to\boldsymbol{x},\boldsymbol{y_i}\to\boldsymbol{y}$，则 $\boldsymbol{x}\preceq_K\boldsymbol{y}$.
+
+#### Minimum and minimal elements
+
+众所周知，偏序关系不一定是全序关系，这意味着可能存在两个元素不可比的情况，这时就有了最小值(minimum)和极小值(minimal)的区分. 在偏序关系 $\preceq_K$ 下， 
+- $\boldsymbol{x} \in S$ 是 $S$ 中的最小值当且仅当 $\boldsymbol{x}$ 和 $S$ 中任一元素都可比且 $\boldsymbol{x}$ 更小，也就是
+  $$
+  \forall \boldsymbol{y} \in S,\quad \boldsymbol{x} \preceq_K \boldsymbol{y}
+  $$ 
+  这等价于 $S \subseteq \boldsymbol{x} + K$.
+- $\boldsymbol{x} \in S$ 是 $S$ 中的极小值当且仅当它和与之可比的元素相比都更小，也就是 $\forall \boldsymbol{y} \in S$，
+  $$
+  \boldsymbol{y} \preceq_K \boldsymbol{x} \Longrightarrow \boldsymbol{y}=\boldsymbol{x}
+  $$
+  这等价于 $(\boldsymbol{x}-K)\cap S = \{\boldsymbol{x}\}$.
+
+{{< figure src="/images/c37d08d/img3.svg" title="最小值与极小值" >}}
+
+上图中的左侧的浅灰色部分为 $\boldsymbol{x_1}+\mathbb R^2_+$，右侧的浅灰色部分为 $\boldsymbol{x_2}-\mathbb R^2_+$，$\boldsymbol{x_1}$ 为左图唯一的最小值，$\boldsymbol{x_2}$ 为右图中的一个极小值.
+
+### Separating and supporting hyperplanes
+
+对于任意两个不交的凸集，必然存在一个超平面将它们隔开，这个直观且重要的定理叫做**超平面分离定理(separating hyperplane theorem)**.
+
+{{< admonition theorem "THEOREM (separating hyperplane theorem)" true >}}
+设 $C,D$ 是两个非空凸集且 $C \cap D = \varnothing$，则存在 $\boldsymbol{a} \ne \boldsymbol{0}$ 和 $b$ 使得
+$$
+\begin{aligned}
+\forall \boldsymbol{x} \in C,\quad \boldsymbol{a}^T\boldsymbol{x} \le b\\
+\forall \boldsymbol{x} \in D,\quad \boldsymbol{a}^T\boldsymbol{x} \ge b\\
+\end{aligned}
+$$
+换句话说，超平面 $\{\boldsymbol{x}:\boldsymbol{a}^T\boldsymbol{x}=b\}$ 将 $C,D$ 分隔开了.
+{{< /admonition >}}
+
+{{< figure src="/images/c37d08d/img4.svg" title="超平面分离定理" >}}
+
+{{< admonition proof "PROOF" true >}}
+一个简单的特例是，当存在 $\boldsymbol{c} \in C$ 和 $\boldsymbol{d} \in D$ 使得 $$\|\boldsymbol{c}-\boldsymbol{d}\| = \inf\{\|\boldsymbol{x}-\boldsymbol{y}\|:\boldsymbol{x}\in C,\boldsymbol{y}\in D\}$$ 时，取过 $\boldsymbol{c},\boldsymbol{d}$ 中点且法向量为 $\boldsymbol{c}-\boldsymbol{d}$ 的超平面即可. 但这样的 $\boldsymbol{c},\boldsymbol{d}$ 并不总能取到.
+
+我们的目的是求出一向量 $\boldsymbol{a}$ 使得
+$$
+\sup\{\boldsymbol{a}^T\boldsymbol{c}\} \le \inf\{\boldsymbol{a}^T\boldsymbol{d}\}
+$$
+此时在区间 $[\sup\{\boldsymbol{a}^T\boldsymbol{c}\}, \inf\{\boldsymbol{a}^T\boldsymbol{d}\}]$ 中任取 $b$ 即可，为此考虑不含 $\boldsymbol{0}$ 的凸集
+$$
+S=C-D=\{\boldsymbol{c}-\boldsymbol{d}:\boldsymbol c\in C,\boldsymbol d\in D\}
+$$
+只需找到 $\boldsymbol{a}$ 使得 $\forall \boldsymbol{s} \in S,\boldsymbol{a}^T\boldsymbol{s} \le 0$，也就是证明存在一个超平面分隔 $S$ 与 $\{\boldsymbol{0}\}$.
+
+考察其闭包 $\overline{S}$，分两种情况
+- $\boldsymbol{0} \notin \overline{S}$，此时取 $\boldsymbol{p} = \arg\min_{\boldsymbol{u}\in \overline{S}} \|\boldsymbol{u}\|$，则 $\forall \boldsymbol{s} \in S,\|\boldsymbol{s}\| \le \|\boldsymbol{s}-\boldsymbol{p}\| + \|\boldsymbol{p}\|$
+{{< /admonition >}}
