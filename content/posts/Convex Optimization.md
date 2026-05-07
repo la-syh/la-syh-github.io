@@ -48,7 +48,7 @@ $$
 
 当 $f$ 均为线性函数时这就是线性规划问题，否则就是非线性规划. 我们要研究的凸优化就是 $f$ 为凸函数时的最优化问题，凸函数的定义、答案的求解和其它内容均会在之后讲解.
 
-## Convex Sets
+## Convex sets
 
 在这一章里，我们需要在了解一些基础概念的同时感性理解什么是凸性.
 
@@ -172,7 +172,7 @@ $$
 
 直观上来看，单纯形必然是多面体，下面我们来证明这一点.
 
-{{< admonition proof "PROOF" true >}}
+{{< details "PROOF" >}}
 设单纯形 $C=\conv\{\boldsymbol v_0,\ldots,\boldsymbol v_k\}\subseteq \mathbb R^n$，其中 $\boldsymbol v_1-\boldsymbol v_0,\ldots,\boldsymbol v_k-\boldsymbol v_0$ 线性无关. 记
 $$
 \boldsymbol A=
@@ -200,8 +200,8 @@ C=
 (\boldsymbol I-\boldsymbol A\boldsymbol L)(\boldsymbol x-\boldsymbol v_0)=\boldsymbol 0
 \right\}.
 $$
-这是由有限个线性不等式和线性等式确定的集合，而线性等式又可以写成两组线性不等式，所以 $C$ 是多面体.
-{{< /admonition >}}
+这是由有限个线性不等式和线性等式确定的集合，所以 $C$ 是多面体，证毕.
+{{< /details >}}
 
 #### The positive semidefinite cone
 
@@ -250,7 +250,7 @@ $$
 
 我们将证明：**凸集经过仿射变换后仍是凸集**.
 
-{{< admonition proof "PROOF" true >}}
+{{< details "PROOF" >}}
 设 $S$ 是凸集，$f(\boldsymbol{x})=\boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}$ 是仿射函数，下证 $f(S)$ 是凸集.
 
 只需证 $\forall \boldsymbol{x_1},\boldsymbol{x_2} \in S,\theta \ge 0$ 均有 $\theta f(\boldsymbol{x_1}) + (1-\theta) f(\boldsymbol{x_2}) \in f(S)$.
@@ -263,7 +263,7 @@ $$
 \theta f(\boldsymbol{x_1}) + (1-\theta) f(\boldsymbol{x_2})=f(\theta \boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2}) \in f(S)
 $$
 证毕.
-{{< /admonition >}}
+{{< /details >}}
 
 事实上，凸集经过仿射变换的逆变换后仍是凸集，换句话说，若 $f:\mathbb R^n \to \mathbb R^m$ 是仿射函数，$S \subset \mathbb R^m$ 是凸集，则
 $$
@@ -395,10 +395,25 @@ $$
 
 {{< figure src="/images/c37d08d/img4.svg" title="超平面分离定理" >}}
 
-{{< admonition proof "PROOF" true >}}
-一个简单的特例是，当存在 $\boldsymbol{c} \in C$ 和 $\boldsymbol{d} \in D$ 使得 $$\|\boldsymbol{c}-\boldsymbol{d}\| = \inf\{\|\boldsymbol{x}-\boldsymbol{y}\|:\boldsymbol{x}\in C,\boldsymbol{y}\in D\}$$ 时，取过 $\boldsymbol{c},\boldsymbol{d}$ 中点且法向量为 $\boldsymbol{c}-\boldsymbol{d}$ 的超平面即可. 但这样的 $\boldsymbol{c},\boldsymbol{d}$ 并不总能取到.
+{{< details "PROOF" >}}
+一个简单的特例是，当存在 $\boldsymbol{c} \in C$ 和 $\boldsymbol{d} \in D$ 使得 $$\|\boldsymbol{c}-\boldsymbol{d}\| = \inf\{\|\boldsymbol{x}-\boldsymbol{y}\|:\boldsymbol{x}\in C,\boldsymbol{y}\in D\}>0$$ 时，取过 $\boldsymbol{c},\boldsymbol{d}$ 中点且法向量为 $\boldsymbol{c}-\boldsymbol{d}$ 的超平面即可. 但这样的 $\boldsymbol{c},\boldsymbol{d}$ 并不总能取到.
 
-我们的目的是求出一向量 $\boldsymbol{a}$ 使得
+先证明这个特例情形，形式化地，设 $f(\boldsymbol{u})=(\boldsymbol{c}-\boldsymbol{d})^T(\boldsymbol{u}-\frac{\boldsymbol{c}+\boldsymbol{d}}{2})$，下面验证 $\forall \boldsymbol{u} \in \boldsymbol{C}$ 都有 $f(\boldsymbol{u}) \ge 0$，对于 $D$ 同理可证 $\le 0$.
+
+反证法，若存在 $\boldsymbol{u} \in C$ 使 $f(\boldsymbol{u}) < 0$，也即
+$$
+(\boldsymbol{c}-\boldsymbol{d})^T(\boldsymbol{u}-\boldsymbol{c}+\frac{\boldsymbol{c}-\boldsymbol{d}}{2})=(\boldsymbol{c}-\boldsymbol{d})^T(\boldsymbol{u}-\boldsymbol{c})+\frac{\|\boldsymbol{c}-\boldsymbol{d}\|_2{}^2}{2}<0
+$$
+于是必有 $(\boldsymbol{c}-\boldsymbol{d})^T(\boldsymbol{u}-\boldsymbol{c})<0$，然而，当取 $\boldsymbol{u}$ 与 $\boldsymbol{c}$ 所连线段上的点 $t(\boldsymbol{u}-\boldsymbol{c})+\boldsymbol{c},t \in (0,1]$ 时，本应有
+$$
+\begin{aligned}
+&\|t(\boldsymbol{u}-\boldsymbol{c})+\boldsymbol{c}-\boldsymbol{d}\|_2{}^2 \ge \|\boldsymbol{c}-\boldsymbol{d}\|_2{}^2\\
+\Longleftrightarrow & t\|\boldsymbol{u}-\boldsymbol{c}\|_2{}^2+2(\boldsymbol{c}-\boldsymbol{d})^T(\boldsymbol{u}-\boldsymbol{c}) \ge 0
+\end{aligned}
+$$
+但当 $t \to 0^+$ 时，不等式左侧趋于 $2(\boldsymbol{c}-\boldsymbol{d})^T(\boldsymbol{u}-\boldsymbol{c}) < 0$，矛盾！
+
+对于一般情况，我们的目的是求出一向量 $\boldsymbol{a}$ 使得
 $$
 \sup\{\boldsymbol{a}^T\boldsymbol{c}\} \le \inf\{\boldsymbol{a}^T\boldsymbol{d}\}
 $$
@@ -408,6 +423,168 @@ S=C-D=\{\boldsymbol{c}-\boldsymbol{d}:\boldsymbol c\in C,\boldsymbol d\in D\}
 $$
 只需找到 $\boldsymbol{a}$ 使得 $\forall \boldsymbol{s} \in S,\boldsymbol{a}^T\boldsymbol{s} \le 0$，也就是证明存在一个超平面分隔 $S$ 与 $\{\boldsymbol{0}\}$.
 
-考察其闭包 $\overline{S}$，分两种情况
-- $\boldsymbol{0} \notin \overline{S}$，此时取 $\boldsymbol{p} = \arg\min_{\boldsymbol{u}\in \overline{S}} \|\boldsymbol{u}\|$，则 $\forall \boldsymbol{s} \in S,\|\boldsymbol{s}\| \le \|\boldsymbol{s}-\boldsymbol{p}\| + \|\boldsymbol{p}\|$
+考察其闭包 $\cl S$，分两种情况
+- $\boldsymbol{0} \notin \cl S$，此时可以取到 $\boldsymbol{p} =\arg\inf_{\boldsymbol{u} \in \cl S} \|\boldsymbol{u}-\boldsymbol{0}\|_2{}^2$，化为特例情况.
+- $\boldsymbol{0} \in \cl S$，这一情形实际上等价于下面的支撑超平面定理.
+{{< /details >}}
+
+假设 $\boldsymbol{x_0}$ 是 $C \subseteq \mathbb R^n$ 的边界 $\partial C=\cl C - \boldsymbol{\operatorname{int}}\ C$ 上一点，若 $\boldsymbol{a} \ne \boldsymbol{0}$ 满足 $\forall \boldsymbol{x}\in C,\boldsymbol{a}^T\boldsymbol{x} \le \boldsymbol{a}^T\boldsymbol{x_0}$，那么 $\big\{ \boldsymbol{x}:\boldsymbol{a}^T(\boldsymbol{x}-\boldsymbol{x_0})=\boldsymbol{0} \big\}$ 就被称作 $C$ 在 $\boldsymbol{x_0}$ 上的**支撑超平面(supporting hyperplane)**，关于支撑超平面有下面的支撑超平面定理：
+
+{{< admonition theorem "THEOREM(supporting hyperplane theorem)" true >}}
+对于任意非空闭凸集 $C$ 和边界上一点 $\boldsymbol{x_0}\in\partial C$，$C$ 在 $\boldsymbol{x_0}$ 上的支撑超平面始终存在.
 {{< /admonition >}}
+
+{{< details "PROOF" >}}
+取一列点 $\boldsymbol{y_k} \notin C$，$\boldsymbol{y_k} \to \boldsymbol{x_0}$ 并令 $\boldsymbol{x_k} \in C$ 是 $\boldsymbol{y_k}$ 到 $C$ 的最近点，则 $\forall \boldsymbol{x} \in C,\ (\boldsymbol{y_k}-\boldsymbol{x_k})^T(\boldsymbol{x}-\boldsymbol{x_k}) \le 0$，再令
+$$
+\boldsymbol{a_k}=\frac{\boldsymbol{y_k}-\boldsymbol{x_k}}{\|\boldsymbol{y_k}-\boldsymbol{x_k}\|}
+$$
+并取收敛子列 $\boldsymbol{a_k} \to \boldsymbol{a},\ \|\boldsymbol{a}\|=1$，又可证明 $\boldsymbol{x_k}\to\boldsymbol{x_0}$，于是取极限得到 $\boldsymbol{a}^T(\boldsymbol{x}-\boldsymbol{x_0}) \le 0,\ \forall \boldsymbol{x} \in C$，证毕.
+{{< /details >}}
+
+{{< figure src="/images/c37d08d/img5.svg" title="支撑超平面示例" >}}
+
+## Convex functions
+
+### Basic properties and examples
+
+{{< admonition definition "DEFINITION(convex function)" true >}}
+称函数 $f:\mathbb R^n \mapsto \mathbb R$ 是凸的，当且仅当其定义域 $\dom f$ 是凸集且 $\forall \boldsymbol{x,y} \in \dom f,\ \theta \in [0,1]$ 都有
+$$
+f(\theta\boldsymbol{x}+(1-\theta)\boldsymbol{y}) \le \theta f(\boldsymbol{x})+(1-\theta)f(\boldsymbol{y})
+$$
+函数 $f$ 是凸函数当且仅当函数 $f$ 是凸的. 若将不等号反号，则称函数 $f$ 是凹(concave)的，显然，若 $f$ 是凸函数，则 $-f$ 为凹函数.
+
+当 $\boldsymbol{x} \neq \boldsymbol{y}$，$\theta \in (0,1)$ 时上式总取不到等号时，称 $f$ 为严格凸函数.
+{{< /admonition >}}
+
+这个定义的几何意义是说，凸函数上两点之间的割线始终在函数图像上方（非严格或严格），一维情形如下图所示.
+
+{{< figure src="/images/c37d08d/img6.svg" title="定义在 $\mathbb R$ 上的一个凸函数" >}}
+
+对于一个凸函数，任选定义域内一点，定义在每一条经过该点的直线上的新函数也应该是凸的，这引出了凸函数的另一定义
+
+{{< admonition definition "DEFINITION(convex function 2)" true >}}
+$f$ 是凸函数等价于，$\forall \boldsymbol{x} \in \dom f$ 和 $\boldsymbol{v}$，定义在 $\mathbb R$ 子集上的函数
+$$
+g(t)=f(\boldsymbol{x}+t\boldsymbol{v})
+$$
+也是凸函数，其中 $g$ 的定义域为 $\{t:\boldsymbol{x}+t\boldsymbol{v} \in \dom f\}$.
+{{< /admonition >}}
+
+例如，$f(x_1,x_2)=x_1{}^2+x_2{}^2$ 是凸函数，将其限制在直线上时总为开口向上的二次函数，仍是凸函数.
+
+{{< details "定义的等价性证明" >}}
+首先 $\dom g$ 是凸集，这是因为凸集与直线的交集仍是凸集. 下面证明不等式限制的等价性.
+
+$$
+\begin{aligned}
+f \text{ convex} &\Longleftrightarrow f\big(\theta(\boldsymbol{x}+t_1\boldsymbol{v})+(1-\theta)(\boldsymbol{x}+t_2\boldsymbol{v})\big) \le \theta f(\boldsymbol{x}+t_1\boldsymbol{v})+(1-\theta)f(\boldsymbol{x}+t_2\boldsymbol{v})\\
+&\Longleftrightarrow g(\theta t_1+(1-\theta)t_2) \le \theta g(t_1)+(1-\theta) g(t_2) \\
+&\Longleftrightarrow g \text{ convex}
+\end{aligned}
+$$
+证毕.
+{{< /details >}}
+
+有时我们不想显式声明定义域，此时可以将未定义区域的函数值全部设为 $\infty$，扩展后的函数是凸函数等价于原函数是凸函数，换句话说，对于定义在 $\mathbb R^n$ 子集上的函数 $f$，设 $\tilde{f}:\mathbb R^n \to \mathbb R \cup \{\infty\}$ 定义为
+$$
+\tilde{f}(\boldsymbol{x})=\begin{cases}
+f(\boldsymbol{x}),& \boldsymbol{x} \in \dom f\\
+\infty,& \boldsymbol{x} \notin \dom f
+\end{cases}
+$$
+则 $\tilde{f}$ 为凸函数等价于 $f$ 为凸函数.
+
+笔者高中接触定义在实数域上的凸函数时，见到的的往往是另外两种定义：切线位于函数图像下侧、二阶导数非负，这对应了我们下面要讲述的一阶条件与二阶条件.
+
+#### First-order conditions
+
+设 $f$ 可微，则 $f$ 为凸函数当且仅当 $\dom f$ 是凸集并且 $\forall \boldsymbol{x},\boldsymbol{y} \in \dom f$ 均有
+$$
+f(\boldsymbol{y}) \ge f(\boldsymbol{x})+\nabla f(\boldsymbol{x})^T(\boldsymbol{y}-\boldsymbol{x})
+$$
+该式表明函数的一阶 Taylor 逼近总是对函数的全局低估，这对应了"切线总在图像下侧"这一几何直观，我们称其为**一阶条件(first-order condition)**，一维情形可见图示.
+
+{{< figure src="/images/c37d08d/img7.svg" title="一阶条件图示" >}}
+
+凹函数总是对应不等号反向的情形，之后若无必要就不再赘述，只关注凸函数的情况. 接下来我们证明在可微情况下一阶条件与定义的等价性.
+
+{{< details "PROOF" >}}
+设函数 $f$ 可微，先证一维情形.
+
+- 若 $f$ 满足一阶条件，对任意 $x,y \in \dom f,\ \theta \in [0, 1]$，设 $z=\theta x + (1-\theta) y$，则
+  $$
+  \begin{aligned}
+  &f(x) \ge f(z) + f'(z)(x - z)\\
+  &f(y) \ge f(z) + f'(z)(y - z)
+  \end{aligned}
+  $$
+  将两不等式凸组合得到
+  $$
+  \theta f(x) + (1-\theta)f(y) \ge f(z) + f'(z)\big( \theta x + (1-\theta)y - z \big)
+  $$
+  而 $\theta x+(1-\theta)y-z=0$，故 $\theta f(x) + (1-\theta)f(y) \ge f\big(\theta(x)+(1-\theta)y\big)$，于是 $f$ 为凸函数.
+- 若 $f$ 为凸函数，则 $\forall x,y \in \dom f,\ \theta \in (0,1]$ 有
+  $$
+  f(\theta y + (1-\theta)x) \le \theta f(y) + (1-\theta)f(x) \Longrightarrow \theta f(x)+f(x+\theta(y-x))-f(x) \le \theta f(y) 
+  $$
+  两侧除以 $\theta$ 得到
+  $$
+  f(y) \ge f(x)+\frac{f(x+\theta(y-x))-f(x)}{\theta}
+  $$
+  令 $\theta \to 0^+$ 立刻得到
+  $$
+  f(y) \ge f(x) + f'(x)(y-x)
+  $$
+  于是 $f$ 满足一阶条件.
+
+对于高维情况，我们尝试用凸函数的第二定义将其转为一维情况. 考虑令 $\boldsymbol{v}=\boldsymbol{y}-\boldsymbol{x}$，则
+
+$$
+g(t)=f(\boldsymbol{x}+t\boldsymbol{v}),\quad g'(t)=\nabla f(\boldsymbol{x}+t\boldsymbol{v})^T\boldsymbol{v}
+$$
+
+若 $f$ 是凸函数，那么 $g$ 也为凸函数，$g(t_1) \ge g(t_2) +g'(t_2)(t_1-t_2)$，代入 $t_1=1,t_2=0$ 得到
+$$
+f(\boldsymbol{x}+\boldsymbol{v}) \ge f(\boldsymbol{x})+\nabla f(\boldsymbol{x})^T\boldsymbol{v}
+$$
+得到了一阶条件.
+
+另一方向和一维情况完全一致，若 $f$ 满足一阶条件，则对于任意 $\boldsymbol{x},\boldsymbol{y} \in \dom f$，令 $\boldsymbol{z}=\theta\boldsymbol{x}+(1-\theta)\boldsymbol{y}$，有
+$$
+f(\boldsymbol{x}) \ge f(\boldsymbol{z})+\nabla f(\boldsymbol{z})^T(\boldsymbol{x}-\boldsymbol{z}) \\
+f(\boldsymbol{y}) \ge f(\boldsymbol{z})+\nabla f(\boldsymbol{z})^T(\boldsymbol{y}-\boldsymbol{z})
+$$
+将两不等式凸组合得到
+$$
+\theta f(\boldsymbol{x})+(1-\theta)f(\boldsymbol{y}) \ge f(\boldsymbol{z})
+$$
+即 $f$ 为凸函数.
+
+{{< /details >}}
+
+一阶条件隐含了一个性质：若能找到一点 $\boldsymbol{x_0}$ 满足 $\nabla f(\boldsymbol{x_0})=\boldsymbol{0}$，则 $\boldsymbol{x_0}$ 就是 $f$ 的最小值点（之一），$f(\boldsymbol{x_0})$ 就是函数的最小值.
+
+#### Second-order conditions
+
+凸函数的最后一个定义就是**二阶条件(second-order condition)**：若 $f:\mathbb R^n \mapsto \mathbb R$ 二阶可微，则 $f$ 为凸函数等价于 $\dom f$ 为凸集且 $\forall \boldsymbol{x} \in \dom f,\ \nabla^2 f(\boldsymbol{x}) \succeq 0$. 一维情况下 Hessian 矩阵半正定等价于二阶导数非负，一阶导数单调不减.
+
+> [!NOTE]
+> Hessian 矩阵正定可以导出函数严格凸，但严格凸并**不**能推出 Hessian 矩阵正定. 例如 $f(x)=x^4$ 在 $x=0$ 处 Hessian 矩阵为 $0$.
+
+{{< admonition example "EXAMPLE" true >}}
+二次函数 $f:\mathbb R^n \mapsto \mathbb R$ 定义为
+$$
+f(\boldsymbol{x})=\frac{1}{2}\boldsymbol{x}^T\boldsymbol{P}\boldsymbol{x}+\boldsymbol{q}^T\boldsymbol{x}+r
+$$
+其中 $\boldsymbol{P} \in S^n,\ \boldsymbol{q} \in \mathbb R^n,\ r \in \mathbb R$.
+
+容易求得 $\nabla^2 f(\boldsymbol{x})=\boldsymbol{P}$，因此 $f$ 为凸函数当且仅当 $\boldsymbol{P}$ 为半正定矩阵. 可以证明，对于二次函数 $f$，其 Hessian 矩阵正定与其为严格凸函数等价.
+{{< /admonition >}}
+
+{{< admonition example "EXAMPLE" true >}}
+对于函数 $f(x)=x^{-2}$，其 Hessian 矩阵为 $6x^{-4} \ge 0$，但 $f(x)$ 不是凸函数，因为其定义域不是凸集（不含原点），但若将定义域限制在 $x > 0$（或 $< 0$） 则此时 $f(x)$ 确为凸函数.
+{{< /admonition >}}
+
+容易验证，仿射函数 $f(\boldsymbol{x})=\boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}$、指数函数 $f(x)=\exp(-x)$ 均为凸函数.

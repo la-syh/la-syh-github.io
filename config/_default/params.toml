@@ -957,6 +957,7 @@ cdn = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml-nofont.js"
   relint = '\boldsymbol{\operatorname{relint}}\ ' # 相对内部
   cl = '\boldsymbol{\operatorname{cl}}\ ' # 闭包
   conv = '\boldsymbol{\operatorname{conv}}\ ' # 凸包
+  dom = '\operatorname{dom}'  # 定义域
 # bold = ["{\\bf #1}", 1] # usage: $\bold{math}$
 
 [page.math.mathjax.loader]
