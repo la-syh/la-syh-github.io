@@ -587,4 +587,109 @@ $$
 对于函数 $f(x)=x^{-2}$，其 Hessian 矩阵为 $6x^{-4} \ge 0$，但 $f(x)$ 不是凸函数，因为其定义域不是凸集（不含原点），但若将定义域限制在 $x > 0$（或 $< 0$） 则此时 $f(x)$ 确为凸函数.
 {{< /admonition >}}
 
-容易验证，仿射函数 $f(\boldsymbol{x})=\boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}$、指数函数 $f(x)=\exp(-x)$ 均为凸函数.
+- 仿射函数 $f(\boldsymbol{x})=\boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}$ 是凸函数.
+- 指数函数 $\exp(ax)$ 是凸函数.
+- $a \le 0$ 或 $a \ge 1$ 时幂函数 $x^a, x \in \mathbb R_{++}$ 是凸函数，$a \in [0,1]$ 时是凹函数.
+- 绝对值的幂函数 $|x|^p, x \in \mathbb R$ 在 $p \ge 1$ 时是凸函数.
+- 对数函数 $\log x$ 是凹函数.
+- 负熵 $x\log x$ 是凸函数.
+- 任意 $\mathbb R^n$ 上的范数总是凸函数.
+  - 零范数 $f(\boldsymbol{x})=\sharp \{i:x_i \ne 0\}$ 不是范数，它也不是凸函数.
+- 极大值函数 $f(\boldsymbol{x})=\max\{x_1,\cdots , x_n\}$ 是凸函数.
+  - 极大值函数虽然是凸函数，但是不可导，因此常见的做法是对该函数做解析逼近，对应 log-sum-exp.
+- log-sum-exp 函数 $f(\boldsymbol{x})=\log(e^{x_1}+\cdots + e^{x_n})$ 是凸函数.
+  - {{< details "PROOF" >}}
+设 $\boldsymbol{z}=\begin{pmatrix}e^{x_1}&\cdots &e^{x_n}\end{pmatrix}^T$，则 
+$$
+\nabla^2 f(\boldsymbol{x})=\frac{1}{(\boldsymbol{1}^T\boldsymbol{z})^2}\big( (\boldsymbol{1}^T\boldsymbol{z})\operatorname{diag} (\boldsymbol{z})-\boldsymbol{z}^T\boldsymbol{z} \big)
+$$
+于是
+$$
+\boldsymbol{v}^T\nabla^2 f(\boldsymbol{x})\boldsymbol{v}=\frac{1}{(\boldsymbol{1}^T\boldsymbol{z})^2}\Big( \left( \sum z_i \right)\left( \sum v_i{}^2z_i \right)-\left( \sum v_iz_i \right)^2 \Big) \ge 0
+$$
+不等号由 Cauchy-Schwarz 不等式保证，证毕.
+{{< /details >}}
+  - 有不等式 $\max x_i \le f(\boldsymbol{x}) \le \log n + \max x_i $.
+- 几何平均 $f(\boldsymbol{x})=\left(\prod x_i\right)^{1/n}$ 在定义域 $\mathbb R^n_{++}$ 是凹函数，证明略去.
+- 行列式对数函数 $f(\boldsymbol{X})=\log \det \boldsymbol{X},\ \dom f = S^n_{++}$ 是凹函数.
+  - {{< details "PROOF" >}}
+考虑通过定义 2 证明，$\forall \boldsymbol{Z} \in S^n_{++}$ 和 $\boldsymbol{V} \in S^n$，只需证明
+$$
+g(t)=f(\boldsymbol{Z}+t\boldsymbol{V})
+$$
+的凹性. 根据 $\det(\boldsymbol{A}\boldsymbol{B})=\det(\boldsymbol{A})\cdot \det(\boldsymbol{B})$ 以及 $\boldsymbol{Z}$ 的正定性，
+$$
+\begin{aligned}
+g(t)&=\log \det(\boldsymbol{Z}+t\boldsymbol{V})=\log \det\big(\boldsymbol{Z}^{1/2}(\boldsymbol{I}+t\boldsymbol{Z}^{-1/2}\boldsymbol{V}\boldsymbol{Z}^{-1/2})\boldsymbol{Z}^{1/2}\big)\\
+&=\log \det(\boldsymbol{Z})+\log \det(\boldsymbol{I}+t\boldsymbol{Z}^{-1/2}\boldsymbol{V}\boldsymbol{Z}^{-1/2})
+\end{aligned}
+$$
+考虑设 $\boldsymbol{U}=\boldsymbol{Z}^{-1/2}\boldsymbol{V}\boldsymbol{Z}^{-1/2}$，则 $\boldsymbol{U}$ 为对称矩阵，其特征值设为 $\lambda_i$，将该矩阵分解为 $\boldsymbol{Q}\boldsymbol{\Lambda}\boldsymbol{Q}^T$ 后可以得到
+$$
+\begin{aligned}
+\log \det(\boldsymbol{Z})+\log \det(\boldsymbol{I}+t\boldsymbol{Z}^{-1/2}\boldsymbol{V}\boldsymbol{Z}^{-1/2})&=
+\log \det\big( \boldsymbol{Q}(\boldsymbol{I}+t\boldsymbol{\Lambda})\boldsymbol{Q}^T \big)\\
+&=\log \det (\boldsymbol{I}+t\boldsymbol{\Lambda})=\sum \log (1 + t\lambda_i)
+\end{aligned}
+$$
+于是
+$$
+g(t)=\log \det(\boldsymbol{Z})+\sum \log (1 + t\lambda_i)
+$$
+只需用二阶条件证明 $g$ 的凹性，这是容易的，此处略去.
+{{< /details >}}
+
+#### Jensen's inequality
+
+当 $f$ 为凸函数时，不等式
+$$
+f(\theta \boldsymbol{x} + (1-\theta)\boldsymbol{y}) \le \theta f(\boldsymbol{x}) + (1-\theta)f(\boldsymbol{y})
+$$
+被称为**琴生不等式(Jensen's inequality)**，容易扩展到任意凸组合的情形
+$$
+f(\sum \theta_k \boldsymbol{x_k}) \le \sum \theta_k f(\boldsymbol{x_k})
+$$
+$$
+f\left( \int_S p(x)x \d x \right) \le \int_S f(x)p(x) \d x,\quad \text{if } p(x) \ge 0 \text{ on } S \subseteq \dom f \text{ and }\int_S p(x)\d x = 1
+$$
+
+扩展到高维情况，设 $f$ 为凸函数，$\boldsymbol{X}$ 为随机向量且 $\mathbb P(\boldsymbol{X} \in \dom f)=1$，若 $\mathbb E\boldsymbol{X}$ 存在并 $\in \dom f$，且 $\mathbb Ef(\boldsymbol{X})$ 有意义，则
+$$
+f(\mathbb E\boldsymbol{X}) \le \mathbb Ef(\boldsymbol{X})
+$$
+
+
+Jensen's inequality 可以直接导出两个著名不等式：
+- AM-GM inequality
+  $$
+  \frac{1}{n}\left( \sum_{i=1}^{n} x_i \right) \ge \left( \prod_{i=1}^{n} x_i \right)^{1/n}
+  $$
+  其中 $x_i > 0$.
+{{< details "PROOF" >}}
+根据 $-\log x$ 的凸性，
+$$
+-\log \left(\sum_{i=1}^n \frac{1}{n} x_i\right) \le -\sum_{i=1}^n \frac{1}{n} \log(x_i)\Longrightarrow \log\left( \frac{1}{n}\sum_{i=1}^{n} x_i \right) \ge \log \left(\prod_{i=1}^{n}x_i\right)^{1/n}
+$$
+两侧取 $\exp$ 即证.
+{{< /details >}}
+- Hölder's inequality
+  $$
+  \sum_{i=1}^{n} x_iy_i \le \left( \sum_{i=1}^{n}|x_i|^p \right)^{1/p} \cdot \left( \sum_{i=1}^{n}|y_i|^q \right)^{1/q}
+  $$
+  其中 $p>1,\ \frac{1}{p}+\frac{1}{q}=1,\ \boldsymbol{x},\boldsymbol{y} \in \mathbb R^n$
+{{< details "PROOF" >}}
+首先根据 $-\log x$ 的凸性得到 $\forall a,b \ge 0,\ \theta \in [0,1]$ 有 $a^\theta b^{1-\theta} \le \theta a + (1-\theta) b$，于是考虑设
+$$
+a=\frac{|x_i|^p}{\sum_{j=1}^{n}|x_j|^p},\quad b=\frac{|y_i|^q}{\sum_{j=1}^{n}|y_j|^q},\ \theta = 1/p
+$$
+因此
+$$
+\left(\frac{|x_i|^p}{\sum_{j=1}^{n}|x_j|^p}\right)^{1/p}\cdot \left(\frac{|y_i|^q}{\sum_{j=1}^{n}|y_j|^q}\right)^{1/q} \le \frac{|x_i|^p}{p\sum_{j=1}^{n}|x_j|^p}+\frac{|y_i|^q}{q\sum_{j=1}^{n}|y_j|^q}
+$$
+对所有 $i$ 求和即证.
+{{< /details >}}
+### Operations that preserve convexity
+
+什么样的操作可以保持函数的凸性？
+
+- 凸函数的非负加权和 $f=\sum w_i f_i$ 仍是凸函数，其中 $w_i \ge 0$，$f_i$ 均为凸函数.

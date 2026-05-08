@@ -3,13 +3,16 @@
 // 覆盖变量
 // ==============================
 
-// 正文字体：Noto Serif SC
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap");
+// 正文字体：Noto Serif + Noto Serif SC
+// Keep Latin glyphs in the Latin family so apostrophes and letters use
+// proportional metrics, while CJK characters fall back to Noto Serif SC.
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap");
 
 // 代码字体：JetBrains Mono
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap");
 
 $global-font-family:
+  "Noto Serif",
   "Noto Serif SC",
   "Source Han Serif SC",
   "思源宋体 SC",
