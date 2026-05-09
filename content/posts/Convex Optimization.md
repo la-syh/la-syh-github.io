@@ -598,6 +598,7 @@ $$
 - 极大值函数 $f(\boldsymbol{x})=\max\{x_1,\cdots , x_n\}$ 是凸函数.
   - 极大值函数虽然是凸函数，但是不可导，因此常见的做法是对该函数做解析逼近，对应 log-sum-exp.
 - log-sum-exp 函数 $f(\boldsymbol{x})=\log(e^{x_1}+\cdots + e^{x_n})$ 是凸函数.
+{{< figure src="/images/c37d08d/img8.svg" title="log-sum-exp" >}}
   - {{< details "PROOF" >}}
 设 $\boldsymbol{z}=\begin{pmatrix}e^{x_1}&\cdots &e^{x_n}\end{pmatrix}^T$，则 
 $$
@@ -658,7 +659,6 @@ $$
 f(\mathbb E\boldsymbol{X}) \le \mathbb Ef(\boldsymbol{X})
 $$
 
-
 Jensen's inequality 可以直接导出两个著名不等式：
 - AM-GM inequality
   $$
@@ -692,4 +692,50 @@ $$
 
 什么样的操作可以保持函数的凸性？
 
-- 凸函数的非负加权和 $f=\sum w_i f_i$ 仍是凸函数，其中 $w_i \ge 0$，$f_i$ 均为凸函数.
+- 凸函数的非负加权和 $f=\sum w_i f_i$ 仍是凸函数，其中 $w_i \ge 0$，$f_i$ 均为凸函数，更一般的形式是无穷和，给定定义在任意集合 $\mathcal A$ 上的函数 $w$，若对于固定的 $y \in \mathcal A$，函数 $f(\boldsymbol{x},y)$ 总是关于 $\boldsymbol{x}$ 的凸函数且 $w(y) \ge 0$，那么
+$$
+g(\boldsymbol{x}) = \int_{\mathcal A} w(y) f(\boldsymbol{x}, y) \d y
+$$
+仍是凸函数. 当集合 $\mathcal A$ 是有限集时退化为有限个凸函数的非负加权和. $f(\boldsymbol{x}, y)$ 实际上定义了一族凸函数，$y$ 是索引，$w(y)$ 是对应权重.
+- 凸函数与仿射映射的复合. 设 $f:C \subseteq \mathbb R^n \mapsto \mathbb R$ 是凸函数，$\boldsymbol{A} \in \mathbb R^{n \times m},\ \boldsymbol{b} \in \mathbb R^n$，那么函数
+$$
+g(\boldsymbol{x}) = f(\boldsymbol{A}\boldsymbol{x} + \boldsymbol{b}),\ \dom g = \{\boldsymbol{x}:\boldsymbol{A}\boldsymbol{x}+\boldsymbol{b} \in \dom f\}
+$$
+仍是凸函数.
+- 凸函数的最大值函数仍是凸函数. 设 $f_1,f_2$ 为凸函数，则函数 $g(\boldsymbol{x})=\max\{f_1(\boldsymbol{x}), f_2(\boldsymbol{x})\},\ \dom g = \dom f_1 \cap \dom f_2$ 仍是凸函数. 这自然可以扩展到有限个凸函数的最大值，而对于无限个凸函数，结论类似：设 $f(\boldsymbol{x},y)$ 对任意固定的 $y$ 都有 $f(\boldsymbol{x},y)$ 凸，那么
+$$
+g(\boldsymbol{x})=\sup_{y} f(\boldsymbol{x},y)
+$$
+仍是凸函数.
+  - **EXAMPLE** 向量的前 $r$ 大元素和是凸函数，实对称矩阵的最大特征值是凸函数. 前者只需直接应用上述结论：前 $r$ 大元素和等于任意 $r$ 个位置的和取 $\max$，而向量的固定位置之和是凸函数. 后者则需要一些技巧，$\lambda_{\max}(S)=\sup_{\|\boldsymbol{y}\|=1}\ \boldsymbol{y}^T\boldsymbol{S}\boldsymbol{y}$.
+- 函数的复合在某些情况下会保持凸性，设 $h:\mathbb R^k \mapsto \mathbb R$，$g:\mathbb R^n \mapsto \mathbb R^k$，$f=h\circ g:\mathbb R^n \mapsto \mathbb R$ 为两函数的复合，定义域为 $\{\boldsymbol{x}\in\dom g:g(\boldsymbol{x})\in \dom h\}$，则
+  - 若 $h$ 凸且 $\tilde{h}$ 单调不减，$g$ 凸，则 $f$ 为凸函数.
+  - 若 $h$ 凸且 $\tilde{h}$ 单调不增，$g$ 凹，则 $f$ 为凸函数.
+  - 若 $h$ 凹且 $\tilde{h}$ 单调不减，$g$ 凹，则 $f$ 为凹函数.
+  - 若 $h$ 凹且 $\tilde{h}$ 单调不增，$g$ 凸，则 $f$ 为凹函数.
+  
+  其中 $\tilde{h}$ 表示扩展定义域后的函数，凸函数将未定义点补为 $+\infty$ 而凹函数补为 $-\infty$. $h$ 的定义域为向量，其单调性指对每个分量单调，即若 $\boldsymbol{u} \preceq \boldsymbol{v}$ 则 $h(\boldsymbol{u}) \le h(\boldsymbol{v})$.
+- 函数的透视保持凸性. 若 $f(\boldsymbol{x})$ 为凸函数，则
+$$
+g(\boldsymbol{x},t)=t\cdot f\left( \frac{\boldsymbol{x}}{t} \right),\quad \dom g = \big\{(\boldsymbol{x},t):t>0,\frac{\boldsymbol{x}}{t} \in \dom f\big\}
+$$
+为凸函数.
+  - **EXAMPLE** 欧几里得范数的平方 $f(\boldsymbol{x})=\boldsymbol{x}^T\boldsymbol{x}$ 的透视 $g(\boldsymbol{x},t)=\frac{\boldsymbol{x}^T\boldsymbol{x}}{t}$ 是凸函数.
+  - **EXAMPLE** $-\log x$ 的透视 $t \log \frac{t}{x}$ 是凸函数，根据仿射函数与凸函数的复合以及非负加权和的保凸性，信息论中的广义 KL divergence 是凸函数，定义为
+$$
+D_{KL}(\boldsymbol{u},\boldsymbol{v}) := \sum_{i=1}^{n} \left( u_i\log \frac{u_i}{v_i}-u_i+v_i \right),\quad \boldsymbol{u},\boldsymbol{v}\in \mathbb R^n_{++}
+$$
+关于 $(\boldsymbol{u},\boldsymbol{v})$ 联合凸. 它也是 Bregman divergence 的一个特例. 若 $f$ 是可微凸函数，则 Bregman divergence 定义为
+$$
+D_B(\boldsymbol{u},\boldsymbol{v}):=f(\boldsymbol{u})-f(\boldsymbol{v})-\nabla f(\boldsymbol{v})^T(\boldsymbol{u}-\boldsymbol{v})
+$$
+注意 Bregman divergence 不一定关于 $(\boldsymbol{u},\boldsymbol{v})$ 联合凸，当 $f(\boldsymbol{u})=\sum_{i=1}^{n} u_i\log u_i - \sum_{i=1}^{n} u_i$ 时 Bregman divergence 恰为广义 KL divergence. 
+- 函数的**共轭(conjugate)** 具有凸性. 对于函数 $f:\mathbb R^n \mapsto \mathbb R$，其共轭定义为
+$$
+f^*(\boldsymbol{y})=\sup_{\boldsymbol{x} \in \dom f}\big(\boldsymbol{y}^T\boldsymbol{x}-f(\boldsymbol{x})\big)
+$$
+可以证明，**任意函数的共轭一定为凸函数**，这是因为 $f^*$ 是一族关于 $\boldsymbol{y}$ 的仿射函数的逐点上确界.
+
+{{< figure src="/images/c37d08d/img9.svg" title="函数的共轭" >}}
+
+几何上理解，$f^*(\boldsymbol{y})$ 表示平面 $z=\boldsymbol{y}^T\boldsymbol{x}$ 为了成为 $f$ 的全局下支撑超平面所需的最小下移量.
