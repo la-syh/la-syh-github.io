@@ -104,7 +104,7 @@ $$
 $$
 \boldsymbol x_i \approx \sum_{j=1}^{d'}w_{i,j}\boldsymbol z_j
 $$
-通常我们在最开始将数据做中心化处理，即要求样本均值为 $0$，否则令 $\tilde{\boldsymbol x_i}=\boldsymbol x_i-\sum_{j=1}^{n}\boldsymbol x_j$，后续讨论中默认数据已经中心化.
+通常我们在最开始将数据做中心化处理，即要求样本均值为 $0$，否则令 $\tilde{\boldsymbol x_i}=\boldsymbol x_i-\frac{1}{n}\sum_{j=1}^{n}\boldsymbol x_j$，后续讨论中默认数据已经中心化.
 
 #### 一维情形
 
