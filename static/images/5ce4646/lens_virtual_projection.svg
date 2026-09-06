@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="760" viewBox="0 0 1300 760">
+<title>Thin lens with a virtual projection plane in oblique view</title><desc>Symmetric thin lens centered at O. Object distance z=600, image distance z′=200, focal length f=150 in drawing units. The dashed blue plane is a mathematical virtual projection plane at distance z′ on the object side, not an optical virtual image.</desc>
+<defs>
+<marker id="dim" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto-start-reverse"><path d="M0 0L7 3.5L0 7Z" fill="#66717b"/></marker>
+<marker id="axis" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#88939d"/></marker>
+<linearGradient id="glass" x1="0" x2="1"><stop stop-color="#c0d9e5" stop-opacity=".65"/><stop offset=".5" stop-color="#f7fcff" stop-opacity=".85"/><stop offset="1" stop-color="#c0d9e5" stop-opacity=".65"/></linearGradient>
+<style>text{font-family:'DejaVu Serif',serif;font-size:23px;fill:#273440}.math{font-style:italic}.small{font-size:18px}.label{paint-order:stroke;stroke:white;stroke-width:7px;stroke-linejoin:round}.dimension{stroke:#66717b;stroke-width:1.3;marker-start:url(#dim);marker-end:url(#dim)}.guide{stroke:#a7b0b8;stroke-width:1.1;stroke-dasharray:4 5}.leader{fill:none;stroke:#748390;stroke-width:1.2}</style>
+</defs>
+<rect width="1300" height="760" fill="white"/>
+<!-- Oblique planes: horizontal transverse direction projects up-right. -->
+<g id="real-image-plane"><path d="M70 225L190 165V485L70 545Z" fill="#f2f3f5" stroke="#89929b" stroke-width="1.7"/><text x="46" y="109">Real image plane</text><text x="83" y="138" class="small">sensor / film</text><path class="leader" d="M131 148V187"/></g>
+<g id="virtual-image-plane"><path d="M470 225L590 165V485L470 545Z" fill="#eaf4fc" fill-opacity=".7" stroke="#4e91bc" stroke-width="1.7" stroke-dasharray="6 4"/><text x="499" y="109" class="math" style="font-size:32px;fill:#237cae">Π′</text><text x="446" y="139" class="small" style="fill:#237cae">Virtual image plane</text></g>
+<!-- Symmetric biconvex lens, exact reflection about x=330 and y=355. -->
+<g id="lens"><path d="M330 165C382 215 382 495 330 545C278 495 278 215 330 165Z" fill="url(#glass)" stroke="#658394" stroke-width="2"/><path d="M330 165C352 215 352 495 330 545C308 495 308 215 330 165Z" fill="none" stroke="#99b3c1" stroke-width="1"/><text x="299" y="108">Lens</text><path class="leader" d="M330 121V153"/></g>
+<!-- Object: a simple candle with oblique top and base. -->
+<g id="object" stroke="#81878b" stroke-width="1.6" fill="white"><path d="M900 235V436C900 452 960 438 960 421V220Z"/><ellipse cx="930" cy="228" rx="31" ry="10" transform="rotate(-16 930 228)"/><path d="M930 228C902 211 911 188 930 175C949 194 954 212 930 228Z"/><path d="M930 226C918 214 923 203 930 200C939 209 939 219 930 226" fill="none"/></g>
+<text x="998" y="278">Object</text><path class="leader" d="M985 285L961 301"/>
+<!-- Thin lens rays: center ray; incident parallel ray refracted through F. -->
+<g id="rays" fill="none" stroke-width="2.7"><path d="M930 175L130 415" stroke="#ce3a3a"/><path d="M930 175H330L130 415" stroke="#df9a32"/><path d="M759 216L742 231L765 233" stroke="#ce3a3a" stroke-width="2"/><path d="M730 168L710 175L730 182" stroke="#df9a32" stroke-width="2"/></g>
+<!-- Optical axis -->
+<path d="M38 355H1160" stroke="#8a959f" stroke-width="1.4" marker-end="url(#axis)"/>
+<text x="1050" y="341" class="small">Optical axis</text>
+<!-- Upright virtual candle (1/3 scale) and inverted real candle. -->
+<g id="virtual-image" stroke="#317da8" fill="#e0f0fb" fill-opacity=".8" stroke-width="1.4"><path d="M520 315V382Q530 387 540 377V310Z"/><ellipse cx="530" cy="313" rx="10" ry="3" transform="rotate(-16 530 313)"/><path d="M530 313C521 307 524 299 530 295C536 301 538 308 530 313Z"/></g>
+<g id="real-image" stroke="#a16b6b" fill="#f8eeee" stroke-width="1.3"><path d="M120 395V328L140 323V390Z"/><path d="M130 397C121 403 124 411 130 415C136 409 138 402 130 397Z"/></g>
+<!-- Key points and unobstructed labels -->
+<circle cx="330" cy="355" r="4.8" fill="white" stroke="#263440" stroke-width="2"/><text x="348" y="384" class="math label">O</text>
+<circle cx="180" cy="355" r="4" fill="#263440"/><text x="193" y="343" class="math label">F</text>
+<circle cx="930" cy="175" r="5.5" fill="#ce3a3a" stroke="white" stroke-width="1.5"/><text x="966" y="160" class="math">P(x, y, z)</text><path class="leader" d="M956 165L937 172"/>
+<circle cx="530" cy="295" r="5.5" fill="#237cae" stroke="white" stroke-width="1.5"/><text x="626" y="216" class="math" style="fill:#237cae">P′(x′, y′)</text><path class="leader" d="M615 223L538 287"/>
+<circle cx="130" cy="415" r="5.5" fill="#ce3a3a" stroke="white" stroke-width="1.5"/><text x="211" y="461" class="math">Pᵣ</text><path class="leader" d="M201 449L137 419"/>
+<!-- Dimension lines separated from geometry -->
+<path class="guide" d="M130 551V658 M330 551V706 M530 551V616 M930 455V706 M180 369V574"/>
+<path class="dimension" d="M185 568H325"/><text x="248" y="557" class="math">f</text>
+<path class="dimension" d="M335 606H525"/><text x="419" y="595" class="math">z′</text>
+<path class="dimension" d="M135 649H325"/><text x="219" y="638" class="math">z′</text>
+<path class="dimension" d="M335 696H925"/><text x="619" y="685" class="math">z</text>
+
+<path d="M700 548H739" stroke="#ce3a3a" stroke-width="2.7"/><text x="752" y="554" class="small">Through O: no deflection</text>
+<path d="M700 583H739" stroke="#df9a32" stroke-width="2.7"/><text x="752" y="589" class="small">Parallel ray → through F</text>
+<text x="45" y="740" class="small" style="fill:#4e7892">Π′ is a virtual projection plane: it represents the upright image, not a physical convergence of rays.</text>
+</svg>
