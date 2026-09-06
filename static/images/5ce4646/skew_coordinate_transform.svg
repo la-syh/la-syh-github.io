@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680">
+  <title>Skewed image-coordinate transformation</title>
+  <desc>An ideal vertical y axis and an actual skewed y axis at angle theta to the positive x axis. A point A=(0,y0) is decomposed into a coordinate along the actual y axis and a horizontal x increment.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#24679e"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#82909b"/>
+    </marker>
+    <marker id="dim-arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+      <path d="M8,0 L0,4 L8,8" fill="none" stroke="#d05a42" stroke-width="1.5"/>
+    </marker>
+    <marker id="dim-blue" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+      <path d="M8,0 L0,4 L8,8" fill="none" stroke="#24679e" stroke-width="1.5"/>
+    </marker>
+    <style>
+      text { font-family: "STIX Two Text", "DejaVu Serif", serif; fill: #263746; font-size: 24px; }
+      .math { font-style: italic; }
+      .halo { paint-order: stroke; stroke: white; stroke-width: 7px; stroke-linejoin: round; }
+      .small { font-size: 19px; }
+    </style>
+  </defs>
+
+  <rect width="1000" height="680" fill="#ffffff"/>
+
+  <!-- Origin and x axis -->
+  <path d="M150 120 H900" fill="none" stroke="#24679e" stroke-width="2.7" marker-end="url(#arrow-blue)"/>
+  <circle cx="150" cy="120" r="5" fill="#ffffff" stroke="#263746" stroke-width="2"/>
+  <text x="122" y="101" class="math">O</text>
+  <text x="918" y="128" class="math" style="fill:#24679e;font-size:30px">x</text>
+
+  <!-- Ideal vertical y axis -->
+  <path d="M150 120 V594" fill="none" stroke="#82909b" stroke-width="2.2" stroke-dasharray="8 7" marker-end="url(#arrow-gray)"/>
+  <text x="90" y="621" class="math" style="fill:#82909b;font-size:27px">y</text>
+  <text x="49" y="648" class="small" style="fill:#82909b">ideal</text>
+
+  <!-- Actual skewed y axis, theta = 60 degrees -->
+  <path d="M150 120 L430 605" fill="none" stroke="#24679e" stroke-width="3.2" marker-end="url(#arrow-blue)"/>
+  <text x="448" y="610" class="math" style="fill:#24679e;font-size:27px">y′</text>
+  <text x="450" y="637" class="small" style="fill:#24679e">actual</text>
+
+  <!-- Angle theta -->
+  <path d="M226 120 A76 76 0 0 1 188 186" fill="none" stroke="#263746" stroke-width="1.8"/>
+  <text x="211" y="174" class="math" style="font-size:27px">θ</text>
+
+  <!-- Original point A=(0,y0) -->
+  <circle cx="150" cy="420" r="7" fill="#d05a42" stroke="#ffffff" stroke-width="2"/>
+  <text x="39" y="414" class="math halo">A=(0,y₀)</text>
+
+  <!-- Horizontal construction: A to B on the actual y axis -->
+  <path d="M150 420 H323.2" fill="none" stroke="#d05a42" stroke-width="2.2" stroke-dasharray="7 6"/>
+  <circle cx="323.2" cy="420" r="7" fill="#d05a42" stroke="#ffffff" stroke-width="2"/>
+  <text x="341" y="445" class="math halo">B</text>
+
+  <!-- x increment dimension -->
+  <path d="M158 461 H315" fill="none" stroke="#d05a42" stroke-width="1.7" marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)"/>
+  <path d="M150 432 V474 M323.2 432 V474" fill="none" stroke="#d05a42" stroke-width="1.2"/>
+  <text x="181" y="496" class="math" style="fill:#b94835">Δx = y₀ cot θ</text>
+
+  <!-- New y coordinate: the segment OB on the actual y axis -->
+  <path d="M371 268 L248 292" fill="none" stroke="#24679e" stroke-width="1.3"/>
+  <text x="381" y="270" class="math halo" style="fill:#24679e">
+    y<tspan baseline-shift="sub" font-size="16">new</tspan> = OB = y₀/sin θ
+  </text>
+
+  <!-- Light coordinate guides -->
+  <path d="M323.2 420 V120" fill="none" stroke="#c9d1d7" stroke-width="1.2" stroke-dasharray="5 6"/>
+  <path d="M139 420 H161" fill="none" stroke="#82909b" stroke-width="1.5"/>
+
+  <!-- Compact legend -->
+  <path d="M610 382 H666" stroke="#82909b" stroke-width="2" stroke-dasharray="8 7"/>
+  <text x="684" y="390" class="small">ideal vertical axis</text>
+  <path d="M610 425 H666" stroke="#24679e" stroke-width="3"/>
+  <text x="684" y="433" class="small">actual sensor axis</text>
+  <path d="M610 468 H666" stroke="#d05a42" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="684" y="476" class="small">horizontal offset</text>
+</svg>
