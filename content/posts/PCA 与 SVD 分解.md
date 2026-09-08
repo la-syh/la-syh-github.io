@@ -353,6 +353,6 @@ New direction of the data:
 
 上面的代码展示了一个 PCA 降维的示例，代码首先生成了四簇样本点，中心分别为 $(0,0,0),(1,1,1),(2,2,2)$ 和 $(3,3,3)$，他们都落在了 $x=y=z$ 这条直线上，由于每一簇的半径不大，这条直线上的方差占比达到了相当高的 `0.98043499`. 之后我们通过 PCA 将其降维，我们可以明显地看到每一簇仍然被明显区分.
 
-{{<image src = "/images/5161887/output1.png" caption = "原始数据">}}
+{{< image src="/images/5161887/output1.png" label="fig:pca-original-data" caption="原始数据" >}}
 
-{{<image src = "/images/5161887/output2.png" caption = "PCA 降维后数据">}}
+{{< image src="/images/5161887/output2.png" label="fig:pca-projected-data" caption="PCA 降维后数据" >}}

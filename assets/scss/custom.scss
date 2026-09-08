@@ -1,0 +1,59 @@
+// Numbered figures and LaTeX-style cross-references.
+.page.single .content {
+  counter-reset: article-figure;
+
+  figure[data-auto-number="true"] {
+    counter-increment: article-figure;
+    scroll-margin-top: 5rem;
+
+    .figure-number {
+      font-weight: 600;
+
+      &::before {
+        content: attr(data-figure-prefix) " " counter(article-figure) ": ";
+      }
+    }
+
+    .figure-number[data-resolved="true"]::before {
+      content: none;
+    }
+
+    &:target {
+      animation: figure-reference-highlight 1.6s ease-out;
+    }
+  }
+
+  .figure-attribution::before {
+    content: " — ";
+  }
+
+  .figure-ref {
+    white-space: nowrap;
+    text-decoration: none;
+    border-bottom: 1px dotted currentColor;
+  }
+
+  .figure-ref--missing {
+    color: #c62828;
+    cursor: help;
+  }
+}
+
+@keyframes figure-reference-highlight {
+  0%, 35% {
+    outline: 0.2rem solid rgba(47, 111, 159, 0.55);
+    outline-offset: 0.35rem;
+    border-radius: 0.2rem;
+  }
+  100% {
+    outline-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page.single .content figure[data-auto-number="true"]:target {
+    animation: none;
+    outline: 0.15rem solid rgba(47, 111, 159, 0.55);
+    outline-offset: 0.25rem;
+  }
+}

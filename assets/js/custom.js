@@ -146,6 +146,175 @@ class FixItBlog {
   }
 
   /**
+   * Number article figures and resolve LaTeX-style figure references.
+   *
+   * Supported prose syntax:
+   *   \\ref{fig:label}     -> 1
+   *   \\figref{fig:label}  -> Figure 1
+   *
+   * @returns {FixItBlog}
+   */
+  initFigureReferences() {
+    const $roots = document.querySelectorAll('.page.single .content#content');
+
+    const uniqueId = (wanted, $figure) => {
+      const base = wanted || 'figure';
+      let candidate = base;
+      let suffix = 2;
+      while (document.getElementById(candidate) && document.getElementById(candidate) !== $figure) {
+        candidate = `${base}-${suffix}`;
+        suffix += 1;
+      }
+      return candidate;
+    };
+
+    const createReference = (entry, style, label) => {
+      const $reference = document.createElement(entry ? 'a' : 'span');
+      $reference.className = entry ? 'figure-ref' : 'figure-ref figure-ref--missing';
+
+      if (!entry) {
+        $reference.textContent = '??';
+        $reference.title = `Unknown figure label: ${label}`;
+        $reference.setAttribute('aria-label', `Unknown figure reference ${label}`);
+        return $reference;
+      }
+
+      const fullText = `${entry.prefix} ${entry.number}`;
+      $reference.href = `#${entry.id}`;
+      $reference.textContent = style === 'full' ? fullText : String(entry.number);
+      $reference.title = `Jump to ${fullText}`;
+      $reference.setAttribute('aria-label', `Jump to ${fullText}`);
+      return $reference;
+    };
+
+    const isInsideMath = (text, offset) => {
+      let dollarMode = 0;
+      let parenMode = false;
+      let bracketMode = false;
+
+      for (let index = 0; index < offset; index += 1) {
+        const char = text[index];
+        const next = text[index + 1];
+        const escaped = index > 0 && text[index - 1] === '\\';
+
+        if (char === '$' && !escaped) {
+          const delimiterLength = next === '$' ? 2 : 1;
+          if (dollarMode === 0) {
+            dollarMode = delimiterLength;
+          } else if (dollarMode === delimiterLength) {
+            dollarMode = 0;
+          }
+          if (delimiterLength === 2) index += 1;
+        } else if (char === '\\' && next === '(' && !parenMode && !bracketMode) {
+          parenMode = true;
+          index += 1;
+        } else if (char === '\\' && next === ')' && parenMode) {
+          parenMode = false;
+          index += 1;
+        } else if (char === '\\' && next === '[' && !bracketMode && !parenMode) {
+          bracketMode = true;
+          index += 1;
+        } else if (char === '\\' && next === ']' && bracketMode) {
+          bracketMode = false;
+          index += 1;
+        }
+      }
+      return dollarMode !== 0 || parenMode || bracketMode;
+    };
+
+    $roots.forEach(($root) => {
+      const labels = new Map();
+      const $figures = Array.from($root.querySelectorAll('figure[data-auto-number="true"]'));
+
+      $figures.forEach(($figure, index) => {
+        const number = index + 1;
+        const prefix = $figure.dataset.figurePrefix || 'Figure';
+        const label = $figure.dataset.figureLabel || '';
+        const fallbackId = label
+          ? `fig-${label.replace(/^fig:/, '').replace(/[^a-zA-Z0-9_-]+/g, '-')}`
+          : `figure-${number}`;
+        const id = uniqueId($figure.id || fallbackId, $figure);
+
+        $figure.id = id;
+        $figure.dataset.figureNumber = String(number);
+
+        const $number = $figure.querySelector('figcaption .figure-number');
+        if ($number) {
+          $number.textContent = `${prefix} ${number}: `;
+          $number.dataset.resolved = 'true';
+        }
+
+        if (label) {
+          if (labels.has(label)) {
+            $figure.dataset.figureLabelDuplicate = 'true';
+            console.warn(`Duplicate figure label "${label}"; references use the first occurrence.`);
+          } else {
+            labels.set(label, { id, number, prefix });
+          }
+        }
+      });
+
+      $root.querySelectorAll('.figure-ref[data-figure-ref]').forEach(($placeholder) => {
+        const label = $placeholder.dataset.figureRef;
+        const style = $placeholder.dataset.refStyle === 'number' ? 'number' : 'full';
+        $placeholder.replaceWith(createReference(labels.get(label), style, label));
+      });
+
+      const excludedSelector = [
+        'pre',
+        'code',
+        'script',
+        'style',
+        'textarea',
+        'svg',
+        'math',
+        'mjx-container',
+        '.katex',
+        '.MathJax',
+        '[data-no-figure-refs]'
+      ].join(',');
+      const walker = document.createTreeWalker($root, NodeFilter.SHOW_TEXT);
+      const textNodes = [];
+
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if ((node.nodeValue.includes('\\ref{') || node.nodeValue.includes('\\figref{')) && !node.parentElement?.closest(excludedSelector)) {
+          textNodes.push(node);
+        }
+      }
+
+      textNodes.forEach((node) => {
+        const text = node.nodeValue;
+        const pattern = /\\(figref|ref)\{([^{}\s]+)\}/g;
+        const $fragment = document.createDocumentFragment();
+        let cursor = 0;
+        let changed = false;
+        let match;
+
+        while ((match = pattern.exec(text)) !== null) {
+          const [, command, label] = match;
+          const entry = labels.get(label);
+          const isFigureLabel = label.startsWith('fig:');
+
+          if (isInsideMath(text, match.index) || (!entry && !isFigureLabel)) continue;
+
+          $fragment.append(document.createTextNode(text.slice(cursor, match.index)));
+          $fragment.append(createReference(entry, command === 'figref' ? 'full' : 'number', label));
+          cursor = match.index + match[0].length;
+          changed = true;
+        }
+
+        if (changed) {
+          $fragment.append(document.createTextNode(text.slice(cursor)));
+          node.replaceWith($fragment);
+        }
+      });
+    });
+
+    return this;
+  }
+
+  /**
    * initialize
    * @returns {FixItBlog}
    */
@@ -153,6 +322,7 @@ class FixItBlog {
     this.hello();
     this.patchBackToTopFirefoxProgress();
     this.patchTocScrollSpy();
+    this.initFigureReferences();
     return this;
   }
 }

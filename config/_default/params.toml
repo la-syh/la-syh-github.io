@@ -814,6 +814,9 @@ debug = false
 # Page config
 # TODO migrate mapping key to `params` layer in the future
 [page]
+# Prefix used by automatically numbered figure captions and `\figref`.
+# It can be overridden in an individual page's front matter.
+figurePrefix = "Figure"
 # FixIt 0.2.18 | NEW whether to enable the author's avatar of the post
 authorAvatar = true
 # whether to hide a page from home page

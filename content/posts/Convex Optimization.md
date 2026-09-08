@@ -56,7 +56,7 @@ $$
 
 我们都知道，空间中两点 $\boldsymbol{x_1},\boldsymbol{x_2}$ 能唯一确定一条直线，直线上的点均可表示为 $\theta \boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2}$, $\theta \in \mathbb R$，当参数 $\theta \in [0,1]$ 时表示以 $\boldsymbol{x_1},\boldsymbol{x_2}$ 为端点的线段上的点.
 
-{{< figure src="/images/c37d08d/img1.svg" title="$\boldsymbol{x_1}$ 与 $\boldsymbol{x_2}$ 确定的直线" >}}
+{{< figure src="/images/c37d08d/img1.svg" label="fig:affine-line" title="$\boldsymbol{x_1}$ 与 $\boldsymbol{x_2}$ 确定的直线" >}}
 
 #### Affine
 
@@ -100,9 +100,9 @@ $C$ 的边界就是其本身，但其相对边界为 $\{\boldsymbol{x}\in\mathbb
 $$
 \conv C = \{\theta_1\boldsymbol{x_1} + \cdots + \theta_k \boldsymbol{x_k}:\boldsymbol{x_i} \in C,\ \theta_i \ge 0,\ \theta_1 + \cdots + \theta_k = 1\}
 $$
-显然，凸包必然是凸集，并且是包含 $C$ 的最小凸集，下图展示了一个凸包的示例.
+显然，凸包必然是凸集，并且是包含 $C$ 的最小凸集，图 \ref{fig:convex-hull} 展示了一个凸包的示例.
 
-{{< figure src="/images/c37d08d/img2.svg" title="凸包示例" >}} 
+{{< figure src="/images/c37d08d/img2.svg" label="fig:convex-hull" title="凸包示例" >}}
 
 事实上，凸组合的表述可以扩展到无穷项求和、积分形式、概率分布. 设 $\theta_i \ge 0$ 且 $\sum_{i=1}^{\infty} \theta_i = 1$，$C \subseteq \mathbb R^n$ 是凸集且 $\boldsymbol{x_i} \in C$，那么只要 $\sum \theta_i\boldsymbol{x_i}$ 收敛就必有 $\sum \theta_i \boldsymbol{x_i} \in C$. 更一般地，若 $p:\mathbb R^n \to \mathbb R$ 且 $\forall \boldsymbol{x} \in C$，$p(\boldsymbol{x}) \ge 0$ 且 $\int_C p(\boldsymbol{x}) \d \boldsymbol{x}=1$，则必有 $\int_C p(\boldsymbol{x})\boldsymbol{x}\d \boldsymbol{x} \in C$，如果积分存在.
 
@@ -374,9 +374,9 @@ proper cone $K$ 诱导出的偏序关系还有一些良好的性质：
   $$
   这等价于 $(\boldsymbol{x}-K)\cap S = \{\boldsymbol{x}\}$.
 
-{{< figure src="/images/c37d08d/img3.svg" title="最小值与极小值" >}}
+{{< figure src="/images/c37d08d/img3.svg" label="fig:minimum-and-minimal-elements" title="最小值与极小值" >}}
 
-上图中的左侧的浅灰色部分为 $\boldsymbol{x_1}+\mathbb R^2_+$，右侧的浅灰色部分为 $\boldsymbol{x_2}-\mathbb R^2_+$，$\boldsymbol{x_1}$ 为左图唯一的最小值，$\boldsymbol{x_2}$ 为右图中的一个极小值.
+图 \ref{fig:minimum-and-minimal-elements} 左侧的浅灰色部分为 $\boldsymbol{x_1}+\mathbb R^2_+$，右侧的浅灰色部分为 $\boldsymbol{x_2}-\mathbb R^2_+$，$\boldsymbol{x_1}$ 为左图唯一的最小值，$\boldsymbol{x_2}$ 为右图中的一个极小值.
 
 ### Separating and supporting hyperplanes
 
@@ -393,7 +393,7 @@ $$
 换句话说，超平面 $\{\boldsymbol{x}:\boldsymbol{a}^T\boldsymbol{x}=b\}$ 将 $C,D$ 分隔开了.
 {{< /admonition >}}
 
-{{< figure src="/images/c37d08d/img4.svg" title="超平面分离定理" >}}
+{{< figure src="/images/c37d08d/img4.svg" label="fig:separating-hyperplane" title="超平面分离定理" >}}
 
 {{< details "PROOF" >}}
 一个简单的特例是，当存在 $\boldsymbol{c} \in C$ 和 $\boldsymbol{d} \in D$ 使得 $$\|\boldsymbol{c}-\boldsymbol{d}\| = \inf\{\|\boldsymbol{x}-\boldsymbol{y}\|:\boldsymbol{x}\in C,\boldsymbol{y}\in D\}>0$$ 时，取过 $\boldsymbol{c},\boldsymbol{d}$ 中点且法向量为 $\boldsymbol{c}-\boldsymbol{d}$ 的超平面即可. 但这样的 $\boldsymbol{c},\boldsymbol{d}$ 并不总能取到.
@@ -442,7 +442,7 @@ $$
 并取收敛子列 $\boldsymbol{a_k} \to \boldsymbol{a},\ \|\boldsymbol{a}\|=1$，又可证明 $\boldsymbol{x_k}\to\boldsymbol{x_0}$，于是取极限得到 $\boldsymbol{a}^T(\boldsymbol{x}-\boldsymbol{x_0}) \le 0,\ \forall \boldsymbol{x} \in C$，证毕.
 {{< /details >}}
 
-{{< figure src="/images/c37d08d/img5.svg" title="支撑超平面示例" >}}
+{{< figure src="/images/c37d08d/img5.svg" label="fig:supporting-hyperplane" title="支撑超平面示例" >}}
 
 ## Convex functions
 
@@ -458,9 +458,9 @@ $$
 当 $\boldsymbol{x} \neq \boldsymbol{y}$，$\theta \in (0,1)$ 时上式总取不到等号时，称 $f$ 为严格凸函数.
 {{< /admonition >}}
 
-这个定义的几何意义是说，凸函数上两点之间的割线始终在函数图像上方（非严格或严格），一维情形如下图所示.
+这个定义的几何意义是说，凸函数上两点之间的割线始终在函数图像上方（非严格或严格），一维情形如图 \ref{fig:convex-function} 所示.
 
-{{< figure src="/images/c37d08d/img6.svg" title="定义在 $\mathbb R$ 上的一个凸函数" >}}
+{{< figure src="/images/c37d08d/img6.svg" label="fig:convex-function" title="定义在 $\mathbb R$ 上的一个凸函数" >}}
 
 对于一个凸函数，任选定义域内一点，定义在每一条经过该点的直线上的新函数也应该是凸的，这引出了凸函数的另一定义
 
@@ -504,9 +504,9 @@ $$
 $$
 f(\boldsymbol{y}) \ge f(\boldsymbol{x})+\nabla f(\boldsymbol{x})^T(\boldsymbol{y}-\boldsymbol{x})
 $$
-该式表明函数的一阶 Taylor 逼近总是对函数的全局低估，这对应了"切线总在图像下侧"这一几何直观，我们称其为**一阶条件(first-order condition)**，一维情形可见图示.
+该式表明函数的一阶 Taylor 逼近总是对函数的全局低估，这对应了"切线总在图像下侧"这一几何直观，我们称其为**一阶条件(first-order condition)**，一维情形如图 \ref{fig:first-order-condition} 所示.
 
-{{< figure src="/images/c37d08d/img7.svg" title="一阶条件图示" >}}
+{{< figure src="/images/c37d08d/img7.svg" label="fig:first-order-condition" title="一阶条件图示" >}}
 
 凹函数总是对应不等号反向的情形，之后若无必要就不再赘述，只关注凸函数的情况. 接下来我们证明在可微情况下一阶条件与定义的等价性.
 
@@ -598,7 +598,7 @@ $$
 - 极大值函数 $f(\boldsymbol{x})=\max\{x_1,\cdots , x_n\}$ 是凸函数.
   - 极大值函数虽然是凸函数，但是不可导，因此常见的做法是对该函数做解析逼近，对应 log-sum-exp.
 - log-sum-exp 函数 $f(\boldsymbol{x})=\log(e^{x_1}+\cdots + e^{x_n})$ 是凸函数.
-{{< figure src="/images/c37d08d/img8.svg" title="log-sum-exp" >}}
+{{< figure src="/images/c37d08d/img8.svg" label="fig:log-sum-exp" title="log-sum-exp" >}}
   - {{< details "PROOF" >}}
 设 $\boldsymbol{z}=\begin{pmatrix}e^{x_1}&\cdots &e^{x_n}\end{pmatrix}^T$，则 
 $$
@@ -736,6 +736,6 @@ f^*(\boldsymbol{y})=\sup_{\boldsymbol{x} \in \dom f}\big(\boldsymbol{y}^T\boldsy
 $$
 可以证明，**任意函数的共轭一定为凸函数**，这是因为 $f^*$ 是一族关于 $\boldsymbol{y}$ 的仿射函数的逐点上确界.
 
-{{< figure src="/images/c37d08d/img9.svg" title="函数的共轭" >}}
+{{< figure src="/images/c37d08d/img9.svg" label="fig:conjugate-function" title="函数的共轭" >}}
 
 几何上理解，$f^*(\boldsymbol{y})$ 表示平面 $z=\boldsymbol{y}^T\boldsymbol{x}$ 为了成为 $f$ 的全局下支撑超平面所需的最小下移量.

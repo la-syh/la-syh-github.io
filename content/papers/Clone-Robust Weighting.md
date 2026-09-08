@@ -108,7 +108,7 @@ $$
 {{% /admonition %}}
 
 
-{{< figure src="/images/40c1f6f/img1.svg" title="$w^{\text{CU}}$ 示意图" width="60%" >}}
+{{< figure src="/images/40c1f6f/img1.svg" label="fig:cu-weighting" title="$w^{\text{CU}}$ 示意图" width="60%" >}}
 
 一个平凡的构造是让每个等价类具有相同的概率，等价类内部再将概率均分给每个结点. 形式化地，设 $V/\equiv_G$ 表示图 $G$ 的所有等价类构成的集合，则
 $$
@@ -193,9 +193,9 @@ $$
 $$
 简单来说就是先将 $x,y$ 竞争的部分加回到 $y$，而又由于删去 $x$ 后总体积可能发生变化，因此需要再将归一化系数调整一下，在式子中表现为乘 $(1+\eta_{r,S,x})$.
 
-直觉上来说，距 $x$ 越近的元素与 $x$ 的共享系数理应越大，但这是不成立的，因为 clone 会稀释共享权重，例如下图中 $\boldsymbol{y_1}$ 距 $\boldsymbol{x}$ 更近，但由于 $\boldsymbol{y_2}$ 的稀释，它与 $\boldsymbol{x}$ 的共享系数小于更远的 $\boldsymbol{z}$.
+直觉上来说，距 $x$ 越近的元素与 $x$ 的共享系数理应越大，但这是不成立的，因为 clone 会稀释共享权重，例如图 \ref{fig:shared-weight-dilution} 中 $\boldsymbol{y_1}$ 距 $\boldsymbol{x}$ 更近，但由于 $\boldsymbol{y_2}$ 的稀释，它与 $\boldsymbol{x}$ 的共享系数小于更远的 $\boldsymbol{z}$.
 
-{{< figure src="/images/40c1f6f/img2.svg" title="共享权重的稀释" width="50%">}}
+{{< figure src="/images/40c1f6f/img2.svg" label="fig:shared-weight-dilution" title="共享权重的稀释" width="50%" >}}
 
 但我们其实可以得到一个更几何的单调性：
 
@@ -325,9 +325,9 @@ $$
 
 需要满足的公理已经列出，现在剩下的唯一问题就是找到满足这些公理的 graph weighting function. 令人沮丧的是本文尚未找到这样的函数，在这一小节的末尾，我们尝试验证 $w^{\text{CU}}$ 是否满足这些公理.
 
-{{< figure src="/images/40c1f6f/img3.svg" title="$w^{\text{CU}}$ 的共享系数示意图" width="30%" >}}
+{{< figure src="/images/40c1f6f/img3.svg" label="fig:cu-shared-coefficient" title="$w^{\text{CU}}$ 的共享系数示意图" width="30%" >}}
 
-在上图中，删去 $a$ 会导致剩下的三个点成为新等价类，从而 $w^{\text{CU}}(G-\{a\})(c)=\frac{1}{3}$，因此 $1+\eta_{G,a}=\frac{w^{\text{CU}}(G-\{a\})(c)}{w^{\text{CU}}(G)(c)}=2$，据此得到 
+在图 \ref{fig:cu-shared-coefficient} 中，删去 $a$ 会导致剩下的三个点成为新等价类，从而 $w^{\text{CU}}(G-\{a\})(c)=\frac{1}{3}$，因此 $1+\eta_{G,a}=\frac{w^{\text{CU}}(G-\{a\})(c)}{w^{\text{CU}}(G)(c)}=2$，据此得到
 $$
 \chi_{w^{\text{CU}},G}(a,b)=\frac{w^{\text{CU}}(G-\{a\})(b)}{1+\eta_{G,a}}-w^{\text{CU}}(G)(b)=\frac{1}{6}-\frac{1}{3}=-\frac{1}{6}
 $$
@@ -348,7 +348,7 @@ w^{\text{MCCP}}(G)(v)=\frac{1}{|\mathcal K(G)|} \sum_{K \in \mathcal K(G)} \frac
 $$
 其中 $P_K:=\sum_{v \in K} \frac{1}{c(v)}$ 表示极大团 $K$ 中所有点的比例和，这样做保证了 $\sum_v w^{\text{MCCP}}(G)(v)=1$.
 
-这两个函数是否满足前面列出的四条公理呢？很遗憾，$w^{\text{MCCA}}$ 和 $w^{\text{MCCP}}$ 都不满足公理 2. 这表明基于极大团的构造也难以满足我们对于共享系数的要求. 只需要验证先前用来测试 $w^{\text{CU}}$ 的那张图就可以得出这一遗憾的结果. $w^{\text{MCCA}}$ 的失败是因为点 $b$ 在多个极大团里分配到了过高的权重，$w^{\text{MCCP}}$ 虽然缓解了这一问题但仍未解决.
+这两个函数是否满足前面列出的四条公理呢？很遗憾，$w^{\text{MCCA}}$ 和 $w^{\text{MCCP}}$ 都不满足公理 2. 这表明基于极大团的构造也难以满足我们对于共享系数的要求. 只需要验证先前用来测试 $w^{\text{CU}}$ 的图 \ref{fig:cu-shared-coefficient} 就可以得出这一遗憾的结果. $w^{\text{MCCA}}$ 的失败是因为点 $b$ 在多个极大团里分配到了过高的权重，$w^{\text{MCCP}}$ 虽然缓解了这一问题但仍未解决.
 
 有没有可能让每个点仅存在于一个团中呢？我们改用 *clique-partitions* 而非 *maximal clique cover* 是否可行？但问题是 clique-partition 有很多种，为了保持 symmetry，我们必须在这些 clique-partition 中做某种对称随机化，朴素的随机顺序方法最终又会退化到类似于 $w^{\text{MCCP}}$ 的形式.
 

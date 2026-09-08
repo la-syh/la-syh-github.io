@@ -1,0 +1,85 @@
+{{- /*
+  Numbered figure shortcode with LaTeX-style cross-reference metadata.
+
+  The actual number is assigned in document order by assets/js/custom.js. Keeping
+  numbering out of the build template makes forward references work and prevents
+  unrelated shortcodes from affecting the sequence.
+*/ -}}
+{{- $src := cond .IsNamedParams (.Get "src") (.Get 0) -}}
+{{- $caption := "" -}}
+{{- $captionHTML := "" -}}
+{{- $alt := "" -}}
+{{- $label := "" -}}
+{{- $class := "" -}}
+{{- $link := "" -}}
+{{- $target := "" -}}
+{{- $rel := "" -}}
+{{- $width := "" -}}
+{{- $height := "" -}}
+{{- $loading := "lazy" -}}
+{{- $attr := "" -}}
+{{- $attrlink := "" -}}
+{{- $prefix := .Page.Params.figurePrefix | default site.Params.page.figurePrefix | default "Figure" -}}
+{{- $numbered := true -}}
+
+{{- if .IsNamedParams -}}
+  {{- $caption = .Get "caption" | default (.Get "title") -}}
+  {{- $captionHTML = $caption | .Page.RenderString (dict "display" "inline") -}}
+  {{- $alt = .Get "alt" | default ($captionHTML | plainify) -}}
+  {{- $label = .Get "label" | default "" -}}
+  {{- $class = .Get "class" | default "" -}}
+  {{- $link = .Get "link" | default "" -}}
+  {{- $target = .Get "target" | default "" -}}
+  {{- $rel = .Get "rel" | default "" -}}
+  {{- $width = .Get "width" | default "" -}}
+  {{- $height = .Get "height" | default "" -}}
+  {{- $loading = .Get "loading" | default "lazy" -}}
+  {{- $attr = .Get "attr" | default "" -}}
+  {{- $attrlink = .Get "attrlink" | default "" -}}
+  {{- $prefix = .Get "prefix" | default $prefix -}}
+  {{- if isset .Params "numbered" -}}
+    {{- $numbered = .Get "numbered" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $figureID := "" -}}
+{{- with $label -}}
+  {{- $labelName := strings.TrimPrefix "fig:" . -}}
+  {{- $figureID = printf "fig-%s" ($labelName | anchorize) -}}
+{{- end -}}
+{{- if and .IsNamedParams (.Get "id") -}}
+  {{- $figureID = .Get "id" -}}
+{{- end -}}
+
+{{- $classes := slice "article-figure" -}}
+{{- if $numbered -}}
+  {{- $classes = $classes | append "numbered-figure" -}}
+{{- else -}}
+  {{- $classes = $classes | append "unnumbered-figure" -}}
+{{- end -}}
+{{- with $class -}}
+  {{- $classes = $classes | append . -}}
+{{- end -}}
+
+<figure class="{{ delimit $classes " " }}"{{ with $figureID }} id="{{ . }}"{{ end }} data-auto-number="{{ if $numbered }}true{{ else }}false{{ end }}"{{ with $label }} data-figure-label="{{ . }}"{{ end }} data-figure-prefix="{{ $prefix }}">
+  {{- with $link }}
+    <a href="{{ . | safeURL }}"{{ with $target }} target="{{ . }}"{{ end }}{{ with $rel }} rel="{{ . }}"{{ end }}>
+  {{- end }}
+  <img src="{{ $src | safeURL }}" alt="{{ $alt }}" loading="{{ $loading }}" decoding="async"{{ with $width }} width="{{ . }}"{{ end }}{{ with $height }} height="{{ . }}"{{ end }}>
+  {{- with $link }}
+    </a>
+  {{- end }}
+  {{- if or $numbered $caption $attr }}
+    <figcaption class="image-caption">
+      {{- if $numbered }}<span class="figure-number" data-figure-prefix="{{ $prefix }}"></span>{{ end -}}
+      {{- with $captionHTML }}<span class="figure-caption-text">{{ . }}</span>{{ end -}}
+      {{- with $attr }}
+        <span class="figure-attribution">
+          {{- with $attrlink }}<a href="{{ . | safeURL }}">{{ end -}}
+          {{- $attr | $.Page.RenderString (dict "display" "inline") -}}
+          {{- with $attrlink }}</a>{{ end -}}
+        </span>
+      {{- end }}
+    </figcaption>
+  {{- end }}
+</figure>

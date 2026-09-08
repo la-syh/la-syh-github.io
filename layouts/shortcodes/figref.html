@@ -1,0 +1,3 @@
+{{- $label := cond .IsNamedParams (.Get "label") (.Get 0) -}}
+{{- $style := cond .IsNamedParams (.Get "style" | default "full") "full" -}}
+<span class="figure-ref" data-figure-ref="{{ $label }}" data-ref-style="{{ $style }}">??</span>

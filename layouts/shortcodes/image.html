@@ -1,0 +1,70 @@
+{{- /*
+  FixIt-compatible image shortcode with automatic numbering and cross-reference
+  labels. This keeps the theme's responsive image pipeline and existing syntax.
+*/ -}}
+{{- $src := cond .IsNamedParams (.Get "src") (.Get 0) -}}
+{{- $caption := cond .IsNamedParams (.Get "caption") (.Get 2) | .Page.RenderString (dict "display" "inline") -}}
+{{- $alt := cond .IsNamedParams (.Get "alt") (.Get 1) | default ($caption | plainify) -}}
+{{- $options := dict "Src" $src "Alt" $alt -}}
+{{- $options = dict "Caption" $caption | merge $options -}}
+{{- $options = dict "Resources" .Page.Resources | merge $options -}}
+{{- $optim := slice
+  (dict "Process" "resize 800x webp q75" "descriptor" "800w")
+  (dict "Process" "resize 1200x webp q75" "descriptor" "1200w")
+  (dict "Process" "resize 1600x webp q75" "descriptor" "1600w")
+-}}
+{{- $options = dict "OptimConfig" $optim | merge $options -}}
+{{- $optimise := .Get "optimise" -}}
+{{- $cacheRemote := .Get "cacheRemote" -}}
+{{- $label := "" -}}
+{{- $prefix := .Page.Params.figurePrefix | default site.Params.page.figurePrefix | default "Figure" -}}
+{{- $numbered := true -}}
+{{- $class := "" -}}
+
+{{- if .IsNamedParams -}}
+  {{- $options = dict "Title" (.Get "title") | merge $options -}}
+  {{- $options = dict "Height" (.Get "height") | merge $options -}}
+  {{- $options = dict "Width" (.Get "width") | merge $options -}}
+  {{- $options = .Get "linked" | ne false | dict "Linked" | merge $options -}}
+  {{- $options = dict "Rel" (.Get "rel") | merge $options -}}
+  {{- $options = dict "Loading" (.Get "loading" | default "lazy") | merge $options -}}
+  {{- if ne $optimise nil -}}{{- $options = dict "Optimise" $optimise | merge $options -}}{{- end -}}
+  {{- if ne $cacheRemote nil -}}{{- $options = dict "CacheRemote" $cacheRemote | merge $options -}}{{- end -}}
+  {{- $label = .Get "label" | default "" -}}
+  {{- $prefix = .Get "prefix" | default $prefix -}}
+  {{- $class = .Get "class" | default "" -}}
+  {{- if isset .Params "numbered" -}}
+    {{- $numbered = .Get "numbered" -}}
+  {{- end -}}
+{{- else -}}
+  {{- $options = cond $caption true false | dict "Linked" | merge $options -}}
+{{- end -}}
+
+{{- $options = dict "Responsive" true | merge $options -}}
+{{- $figureID := "" -}}
+{{- with $label -}}
+  {{- $labelName := strings.TrimPrefix "fig:" . -}}
+  {{- $figureID = printf "fig-%s" ($labelName | anchorize) -}}
+{{- end -}}
+
+{{- $classes := slice "article-figure" -}}
+{{- if $numbered -}}
+  {{- $classes = $classes | append "numbered-figure" -}}
+{{- else -}}
+  {{- $classes = $classes | append "unnumbered-figure" -}}
+{{- end -}}
+{{- with $class -}}
+  {{- $classes = $classes | append . -}}
+{{- end -}}
+
+{{- if or $numbered $caption -}}
+  <figure class="{{ delimit $classes " " }}"{{ with $figureID }} id="{{ . }}"{{ end }} data-auto-number="{{ if $numbered }}true{{ else }}false{{ end }}"{{ with $label }} data-figure-label="{{ . }}"{{ end }} data-figure-prefix="{{ $prefix }}">
+    {{- partial "plugin/image.html" $options -}}
+    <figcaption class="image-caption">
+      {{- if $numbered }}<span class="figure-number" data-figure-prefix="{{ $prefix }}"></span>{{ end -}}
+      {{- with $caption }}<span class="figure-caption-text">{{ . }}</span>{{ end -}}
+    </figcaption>
+  </figure>
+{{- else -}}
+  {{- partial "plugin/image.html" $options -}}
+{{- end -}}
