@@ -315,6 +315,93 @@ class FixItBlog {
   }
 
   /**
+   * Initialize numbered side notes.
+   *
+   * Notes remain in the article DOM, so MathJax can typeset their contents.
+   * They open as a desktop popover or an inline mobile disclosure.
+   *
+   * @returns {FixItBlog}
+   */
+  initSidenotes() {
+    document.querySelectorAll('.page.single .content#content').forEach(($root) => {
+      const $notes = Array.from($root.querySelectorAll('.sidenote[data-sidenote]'));
+      if (!$notes.length) return;
+
+      $root.classList.add('sidenotes-ready');
+
+      const setOpen = ($note, open, focusReference = false) => {
+        const $reference = $note.querySelector('.sidenote-ref');
+        const $body = $note.querySelector('.sidenote-body');
+        if (!$reference || !$body) return;
+
+        $note.classList.toggle('is-open', open);
+        $reference.setAttribute('aria-expanded', String(open));
+        $body.setAttribute('aria-hidden', String(!open));
+
+        if (!open) {
+          if (focusReference) $reference.focus();
+        }
+      };
+
+      const closeOtherNotes = ($current) => {
+        $notes.forEach(($note) => {
+          if ($note !== $current) setOpen($note, false);
+        });
+      };
+
+      $notes.forEach(($note, index) => {
+        if ($note.dataset.sidenoteReady === 'true') return;
+        $note.dataset.sidenoteReady = 'true';
+
+        const number = index + 1;
+        const $reference = $note.querySelector('.sidenote-ref');
+        const $referenceNumber = $note.querySelector('.sidenote-number');
+        const $body = $note.querySelector('.sidenote-body');
+        const $bodyNumber = $note.querySelector('.sidenote-body-number');
+        const $close = $note.querySelector('.sidenote-close');
+
+        if ($referenceNumber) {
+          $referenceNumber.textContent = String(number);
+          $referenceNumber.dataset.resolved = 'true';
+        }
+        if ($bodyNumber) {
+          $bodyNumber.textContent = `注 ${number}`;
+          $bodyNumber.dataset.resolved = 'true';
+        }
+        if (!$reference || !$body) return;
+
+        $reference.setAttribute('aria-label', `注释 ${number}`);
+
+        $reference.addEventListener('click', () => {
+          const willOpen = !$note.classList.contains('is-open');
+          closeOtherNotes($note);
+          setOpen($note, willOpen);
+        });
+
+        $close?.addEventListener('click', () => {
+          setOpen($note, false, true);
+        });
+
+        setOpen($note, $note.dataset.open === 'true');
+      });
+
+      document.addEventListener('click', (event) => {
+        if (event.target instanceof Element && event.target.closest('.sidenote')) return;
+        $notes.forEach(($note) => setOpen($note, false));
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        const $openNote = $root.querySelector('.sidenote.is-open');
+        if ($openNote) setOpen($openNote, false, true);
+      });
+
+    });
+
+    return this;
+  }
+
+  /**
    * initialize
    * @returns {FixItBlog}
    */
@@ -323,6 +410,7 @@ class FixItBlog {
     this.patchBackToTopFirefoxProgress();
     this.patchTocScrollSpy();
     this.initFigureReferences();
+    this.initSidenotes();
     return this;
   }
 }

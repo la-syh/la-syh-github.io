@@ -1,6 +1,6 @@
 // Numbered figures and LaTeX-style cross-references.
 .page.single .content {
-  counter-reset: article-figure;
+  counter-reset: article-figure article-sidenote;
 
   figure[data-auto-number="true"] {
     counter-increment: article-figure;
@@ -37,6 +37,200 @@
     color: #c62828;
     cursor: help;
   }
+
+  // Numbered notes rendered as a compact popover on desktop and an inline
+  // disclosure on small screens.
+  .sidenote {
+    position: relative;
+    counter-increment: article-sidenote;
+  }
+
+  .sidenote-joiner {
+    font-size: 0;
+  }
+
+  .sidenote-ref {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.35em;
+    height: 1.35em;
+    margin-inline: 0.1em;
+    padding: 0 0.32em;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--fi-global-background-color) 88%, var(--fi-global-link-hover-color));
+    color: var(--fi-global-link-hover-color);
+    font: inherit;
+    font-size: 0.7em;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: super;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, background-color 0.15s ease;
+
+    &:hover,
+    &:focus-visible {
+      background: color-mix(in srgb, var(--fi-global-background-color) 78%, var(--fi-global-link-hover-color));
+      outline: 2px solid color-mix(in srgb, transparent 65%, var(--fi-global-link-hover-color));
+      outline-offset: 2px;
+    }
+  }
+
+  .sidenote.is-open .sidenote-ref {
+    box-shadow: 0 0 0 2px color-mix(in srgb, transparent 68%, var(--fi-global-link-hover-color));
+  }
+
+  .sidenote-number:not([data-resolved="true"])::before {
+    content: counter(article-sidenote);
+  }
+
+  .sidenote-body {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0.5rem 0 0.9rem;
+    padding: 0.7rem 0.85rem 0.8rem;
+    overflow-wrap: anywhere;
+    border: 1px solid var(--fi-global-border-color);
+    border-radius: 0.55rem;
+    background: color-mix(in srgb, var(--fi-global-background-color) 97%, var(--fi-global-border-color));
+    box-sizing: border-box;
+    color: var(--fi-global-font-color);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    text-align: start;
+    box-shadow: 0 0.2rem 0.65rem rgba(20, 35, 50, 0.08);
+    animation: sidenote-inline-in 0.14s ease-out;
+
+    mjx-container[display="true"] {
+      max-width: 100%;
+      margin-block: 0.65em !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+  }
+
+  &.sidenotes-ready .sidenote:not(.is-open) .sidenote-body {
+    display: none;
+  }
+
+  &:not(.sidenotes-ready) .sidenote-close {
+    display: none;
+  }
+
+  .sidenote-header {
+    display: flex;
+    align-items: center;
+    min-height: 1.5rem;
+    padding-inline-end: 1.5rem;
+  }
+
+  .sidenote-body-number {
+    display: inline-block;
+    margin-inline-end: 0.55em;
+    color: var(--fi-global-link-hover-color);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .sidenote-body-number:not([data-resolved="true"])::before {
+    content: "注 " counter(article-sidenote);
+  }
+
+  .sidenote-title {
+    overflow: hidden;
+    color: var(--fi-global-font-color);
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sidenote-close {
+    appearance: none;
+    position: absolute;
+    inset-block-start: 0.55rem;
+    inset-inline-end: 0.6rem;
+    display: inline-grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--fi-global-font-secondary-color);
+    font: inherit;
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background: color-mix(in srgb, var(--fi-global-background-color) 82%, var(--fi-global-border-color));
+      color: var(--fi-global-font-color);
+      outline: none;
+    }
+  }
+
+  .sidenote-content {
+    display: block;
+    margin-block-start: 0.4rem;
+  }
+
+  .sidenote-paragraph {
+    display: block;
+
+    & + .sidenote-paragraph {
+      margin-block-start: 0.5em;
+    }
+  }
+
+  .sidenote-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+}
+
+@media only print {
+  .page.single .content .sidenote-body {
+    display: inline !important;
+    float: none;
+    width: auto;
+    margin-inline: 0.25em;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 0.85em;
+  }
+
+  .page.single .content .sidenote-header,
+  .page.single .content .sidenote-content {
+    display: inline;
+    margin: 0;
+  }
+
+  .page.single .content .sidenote-close {
+    display: none;
+  }
+}
+
+@keyframes sidenote-inline-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.2rem);
+  }
 }
 
 @keyframes figure-reference-highlight {
@@ -55,5 +249,9 @@
     animation: none;
     outline: 0.15rem solid rgba(47, 111, 159, 0.55);
     outline-offset: 0.25rem;
+  }
+
+  .page.single .content .sidenote-body {
+    animation: none;
   }
 }

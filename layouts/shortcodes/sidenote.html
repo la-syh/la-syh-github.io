@@ -1,0 +1,47 @@
+{{- /*
+  Numbered side note with Markdown and MathJax support.
+
+  The number is resolved in document order by assets/js/custom.js. CSS counters
+  provide a readable fallback when JavaScript is unavailable.
+
+  Usage:
+    Text{{< sidenote >}}A note with $\LaTeX$.{{< /sidenote >}}
+    Text{{< sidenote title="Background" open=true >}}Longer note.{{< /sidenote >}}
+*/ -}}
+{{- $title := "" -}}
+{{- $class := "" -}}
+{{- $open := false -}}
+{{- $customID := "" -}}
+{{- if .IsNamedParams -}}
+  {{- $title = .Get "title" | default "" -}}
+  {{- $class = .Get "class" | default "" -}}
+  {{- $open = .Get "open" | default false -}}
+  {{- $customID = .Get "id" | default "" -}}
+{{- end -}}
+
+{{- $id := printf "sidenote-%d" .Ordinal -}}
+{{- with $customID -}}
+  {{- $id = printf "sidenote-%s" (. | anchorize) -}}
+{{- end -}}
+{{- $refID := printf "%s-ref" $id -}}
+{{- $bodyID := printf "%s-body" $id -}}
+{{- $titleHTML := $title | .Page.RenderString (dict "display" "inline") -}}
+{{- $contentHTML := .Inner | strings.TrimSpace | .Page.RenderString (dict "display" "inline") -}}
+{{- /* Keep the shortcode valid inside a prose paragraph even when the note has
+      blank lines around a display formula. */ -}}
+{{- $contentHTML = replace $contentHTML "<p>" `<span class="sidenote-paragraph">` -}}
+{{- $contentHTML = replace $contentHTML "</p>" "</span>" -}}
+
+<span class="sidenote{{ with $class }} {{ . }}{{ end }}" data-sidenote{{ if $open }} data-open="true"{{ end }}><span class="sidenote-joiner" aria-hidden="true">&#8288;</span><button type="button" class="sidenote-ref" id="{{ $refID }}" aria-expanded="true" aria-controls="{{ $bodyID }}">
+    <span class="sidenote-number" aria-hidden="true"></span>
+    <span class="sidenote-visually-hidden">注释</span>
+  </button>
+  <span class="sidenote-body" id="{{ $bodyID }}" role="note" aria-labelledby="{{ $refID }}">
+    <span class="sidenote-header">
+      <span class="sidenote-body-number" aria-hidden="true"></span>
+      {{- with $titleHTML }}<strong class="sidenote-title">{{ . }}</strong>{{ end -}}
+      <button type="button" class="sidenote-close" aria-label="收起注释">&times;</button>
+    </span>
+    <span class="sidenote-content">{{ $contentHTML | safeHTML }}</span>
+  </span>
+</span>
