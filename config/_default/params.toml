@@ -962,7 +962,7 @@ cdn = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml-nofont.js"
   conv = '\boldsymbol{\operatorname{conv}}\ ' # 凸包
   dom = '\operatorname{dom}'  # 定义域
   var = '\operatorname{Var}'  # 方差
-# bold = ["{\\bf #1}", 1] # usage: $\bold{math}$
+  bold = ["{\\bf #1}", 1] # usage: $\bold{math}$
 
 [page.math.mathjax.loader]
 load = [ "ui/safe", "[tex]/ams", "[tex]/physics", "[tex]/configmacros" ]
