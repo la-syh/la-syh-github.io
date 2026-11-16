@@ -73,7 +73,7 @@ $$
 
 若保留绝对值前 $k$ 大的特征值，则在 $L_2$ 范数下 $\|\boldsymbol A-\hat{\boldsymbol A_k}\| \le |\lambda_{k+1}|$，在 Frobenius 范数下 $\|\boldsymbol A - \hat{\boldsymbol A_k}\|_F{}^2=\sum_{i=k+1}^{n}\lambda_i{}^2$，这里自然地要求所有特征值已经有序，$|\lambda_1| \ge |\lambda_2| \ge \cdots \ge |\lambda_n|$.
 
-**例** 
+{{< example "例｜保留一项的近似" >}}
 $$
 \boldsymbol A=\begin{pmatrix}
 5 & 2\\
@@ -81,6 +81,8 @@ $$
 \end{pmatrix}
 $$
 对其做 PCA，保留一项近似.
+
+<!--解答-->
 
 $\boldsymbol A$ 是一个 实对称矩阵，$\lambda_1=6,\lambda_2=1$，可选取单位正交特征向量
 $$
@@ -93,6 +95,7 @@ $$
 2.4 & 1.2
 \end{pmatrix}
 $$
+{{< /example >}}
 
 ### 数据逼近下的 PCA
 

@@ -68,9 +68,13 @@ V=C-\boldsymbol{x_0}=\{\boldsymbol{x}-\boldsymbol{x_0}:\boldsymbol{x} \in C\}
 $$
 是子空间. 证明考虑 $\alpha \boldsymbol{v_1}+\beta \boldsymbol{v_2}+\boldsymbol{x_0}=\alpha(\boldsymbol{v_1}+\boldsymbol{x_0})+\beta(\boldsymbol{v_2}+\boldsymbol{x_0})+(1-\alpha-\beta)\boldsymbol{x_0} \in C$.
 
-{{< admonition example "EXAMPLE" true >}}
-线性方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{b}$ 的解集是仿射集. 这是因为 $\boldsymbol{A}(\theta\boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2})=\theta\boldsymbol{A}\boldsymbol{x_1}+(1-\theta)\boldsymbol{A}\boldsymbol{x_2}=\boldsymbol{b}$. 更进一步还可以得到解集 $S$ 对应的子空间 $S-\boldsymbol{x_0}$ 恰为 $\boldsymbol{A}$ 的零空间，并且任意仿射集都可以写成某个线性方程组的解集.
-{{< /admonition >}}
+{{< example "例｜线性方程组的解集" >}}
+线性方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{b}$ 的解集是否为仿射集？
+
+<!--解答-->
+
+解集是仿射集. 这是因为 $\boldsymbol{A}(\theta\boldsymbol{x_1}+(1-\theta)\boldsymbol{x_2})=\theta\boldsymbol{A}\boldsymbol{x_1}+(1-\theta)\boldsymbol{A}\boldsymbol{x_2}=\boldsymbol{b}$. 更进一步还可以得到解集 $S$ 对应的子空间 $S-\boldsymbol{x_0}$ 恰为 $\boldsymbol{A}$ 的零空间，并且任意仿射集都可以写成某个线性方程组的解集.
+{{< /example >}}
 
 对于一个集合 $C \subseteq \mathbb R^n$，怎么将其扩充至最小的仿射集 $\aff C$？只需将 $C$ 中元素的所有仿射组合加入集合即可，也就是
 $$
@@ -86,13 +90,17 @@ $$
 
 类似地可以定义**相对边界(relative boundary)** 为 $\cl C - \relint C$，其中 $\cl C$ 为 $C$ 的闭包，即把所有可以由 $C$ 中点逼近的点也加进集合的结果.
 
-{{< admonition example "EXAMPLE" true >}}
-考虑 $\mathbb R^3$ 中的一个矩形 $C=\{\boldsymbol{x} \in \mathbb R^3 : -1 \le x_1,x_2 \le 1, x_3 = 0\}$，其仿射包为整个 $(x_1,x_2)$-平面 $\{\boldsymbol{x} \in \mathbb R^3:x_3=0\}$，$C$ 的内部为空集但相对内部为
+{{< example "例｜矩形的仿射包和相对内部" >}}
+考虑 $\mathbb R^3$ 中的一个矩形 $C=\{\boldsymbol{x} \in \mathbb R^3 : -1 \le x_1,x_2 \le 1, x_3 = 0\}$，求它的仿射包、内部、边界以及相对内部和相对边界。
+
+<!--解答-->
+
+其仿射包为整个 $(x_1,x_2)$-平面 $\{\boldsymbol{x} \in \mathbb R^3:x_3=0\}$，$C$ 的内部为空集但相对内部为
 $$
 \relint C = \{\boldsymbol{x} \in \mathbb R^3:-1 < x_1,x_2 < 1, x_3 = 0\}
 $$
 $C$ 的边界就是其本身，但其相对边界为 $\{\boldsymbol{x}\in\mathbb R^3:\max\{|x_1|,|x_2|\}=1,x_3=0\}$.
-{{< /admonition >}}
+{{< /example >}}
 
 #### convex
 
@@ -144,13 +152,17 @@ $$
 
 在 $\mathbb R^n$ 上的任一范数都可以导出对应的**范数球(norm ball)**，球心为 $\boldsymbol{x_c}$，半径为 $r$ 的范数球定义为 $\{\boldsymbol{x}:\|\boldsymbol{x}-\boldsymbol{x_c}\| \le r\}$，类似地可以定义**范数锥(norm cone)** 为 $\{(\boldsymbol{x},t):\|\boldsymbol{x}\| \le t\} \subseteq \mathbb R^{n+1}$.
 
-{{< admonition example "EXAMPLE" true >}}
+{{< example "例｜二阶锥" >}}
+欧几里得范数对应的范数锥是什么？
+
+<!--解答-->
+
 *The second-order cone* 是欧几里得范数下的范数锥，也就是 
 $$
 C=\{(\boldsymbol{x},t) \in \mathbb R^{n + 1}:\|\boldsymbol{x}\|_2 \le t \}
 $$
 它也被叫做 *quadratic cone*、*Lorentz cone* 或 *ice-cream cone*.
-{{< /admonition >}}
+{{< /example >}}
 
 #### Polyhedra
 
@@ -166,9 +178,13 @@ $$
 
 **单纯形(simplex)** 是 $\mathbb R^n$ 中的一个特殊多面体. 先在 $\mathbb R^n$ 中取 $k+1$ 个仿射无关的点 $\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}$，那么这些点构成的凸包 $\conv \{\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}\}$ 就是一个 $k$ 维单纯形. 仿射无关的意思是这些点不在同一个超平面上，也就是说不存在 $\theta_0, \ldots, \theta_k$ 满足 $\theta_0 + \cdots + \theta_k = 0$ 且 $\theta_0\boldsymbol{v_0} + \cdots + \theta_k\boldsymbol{v_k} = \boldsymbol{0}$，这等价于 $\boldsymbol{v_1}-\boldsymbol{v_0}, \ldots, \boldsymbol{v_k}-\boldsymbol{v_0}$ 线性无关.
 
-{{< admonition example "EXAMPLE" true >}}
+{{< example "例｜标准单纯形" >}}
+低维的单纯形长什么样？如何描述标准单纯形？
+
+<!--解答-->
+
 一维单纯形就是线段，二维单纯形是三角形，三维单纯形是四面体. $n$ 维单纯形的一个特殊例子是**标准单纯形(standard simplex)**，它由 $\mathbb R^n$ 中的 $n+1$ 个点 $\boldsymbol{e_0}=\boldsymbol{0},\boldsymbol{e_1},\cdots,\boldsymbol{e_n}$ 构成，其中 $\boldsymbol{e_i}$ 是标准正交基. 标准单纯形的凸包就是 $\{\boldsymbol{x} \in \mathbb R^n: x_i \ge 0, \sum_{i=1}^n x_i \le 1\}$.
-{{< /admonition >}}
+{{< /example >}}
 
 直观上来看，单纯形必然是多面体，下面我们来证明这一点.
 
@@ -228,13 +244,17 @@ $S^n_{++}$ 不含零矩阵因此不是锥.
 
 交运算保持凸性是常用且熟知的结论：如果 $S_1,S_2$ 都是凸集，那么 $S_1 \cap S_2$ 也是凸集. 证明是平凡的，交集中两点连线总是既在 $S_1$ 中又在 $S_2$ 中. 直接的推论为有限个凸集的交仍然为凸集，事实上也同样可以证明任意交，也就是：给定指标集合 $I$ 和凸集 $S_i,\forall i \in I$，则 $\bigcap_{i \in I} S_i$ 也是凸集.
 
-{{< admonition example "EXAMPLE" true >}}
+{{< example "例｜半正定矩阵构成凸集" >}}
+证明 $S^n_+$ 是凸集。
+
+<!--解答-->
+
 $S^n_+$ 是凸集，因为
 $$
 S^n_+=\bigcap_{\boldsymbol{z} \ne \boldsymbol{0}} \{\boldsymbol{X} \in S^n: \boldsymbol{z}^T \boldsymbol{X} \boldsymbol{z} \ge 0\}
 $$
 其中对于给定的 $\boldsymbol{z}$，$\boldsymbol{z}^T\boldsymbol{X}\boldsymbol{z}$ 是一个关于 $\boldsymbol{X}$ 的线性函数，因此 $\{\boldsymbol{X} \in S^n: \boldsymbol{z}^T \boldsymbol{X} \boldsymbol{z} \ge 0\}$ 实际上是一个半空间，半空间是凸集，因此 $S^n_+$ 是凸集.
-{{< /admonition >}}
+{{< /example >}}
 
 事实上，之后我们将会证明：任意封闭凸集 $S$ 都是一些半空间的交，这些半空间就是所有包含 $S$ 的超平面所对应的半空间.
 $$
@@ -271,25 +291,29 @@ f^{-1}(S)=\{\boldsymbol{x} \in \mathbb R^n: f(\boldsymbol{x}) \in S\}
 $$
 仍然是凸集，证明平凡，此处从略.
 
-{{< admonition example "EXAMPLE" true >}}
+{{< example "例｜保持凸性的运算" >}}
 若 $S$ 是凸集，则 $\alpha S = \{\alpha \boldsymbol{x} : \boldsymbol{x} \in S\}$ 也是凸集、$S+\boldsymbol{b}=\{ \boldsymbol{x} + \boldsymbol{b} : \boldsymbol{x} \in S \}$ 也是凸集，凸集在某个方向上的投影仍然是凸集，**凸集的和仍然是凸集**.
+
+<!--解答-->
 
 这里我们解释一下最后一条，两个凸集 $S_1,S_2$ 的和定义为
 $$
 S_1+S_2=\{\boldsymbol{x_1}+\boldsymbol{x_2}:\boldsymbol{x_1} \in S_1,\boldsymbol{x_2} \in S_2\}
 $$
 为了证明它是凸集，首先有 $S_1 \times S_2 = \{(\boldsymbol{x_1},\boldsymbol{x_2}):\boldsymbol{x_1}\in S_1,\boldsymbol{x_2}\in S_2\}$ 是凸集，再做保持凸性的仿射变换 $f(\boldsymbol{x_1},\boldsymbol{x_2})=\boldsymbol{x_1}+\boldsymbol{x_2}$ 即可. 事实上，$S_1+S_2$ 也叫做 $S_1$ 和 $S_2$ 的 **Minkowski 和**.
-{{< /admonition >}}
+{{< /example >}}
 
-{{< admonition example "EXAMPLE" true >}}
+{{< example "例｜线性矩阵不等式" >}}
 线性矩阵不等式(Linear Matrix Inequality, LMI) 的解集是凸集. 设 
 $$
 A(\boldsymbol{x})=\sum_{i=1}^{n}x_i\boldsymbol{A_i}
 $$
 其中 $\boldsymbol{A_i} \in S^m$，再设 $\boldsymbol{B} \in S^m$，则 $A(\boldsymbol{x}) \preceq \boldsymbol{B}$ 称作线性矩阵不等式. 这里对称矩阵之间的 $\preceq$ 并不表示逐元素的不等号，$A(\boldsymbol{x}) \preceq \boldsymbol{B}$ 的含义是 $\boldsymbol{B}-A(\boldsymbol{x})$ 半正定.
 
+<!--解答-->
+
 证明考察 $f(\boldsymbol{x}) = \boldsymbol{B} - A(\boldsymbol{x})$，则 $f^{-1}(S^m_+)$ 是凸集，且恰好为该 LMI 的解集.
-{{< /admonition >}}
+{{< /example >}}
 
 #### Linear-fractional and perspective functions
 
@@ -339,7 +363,7 @@ $$
 - Antisymmetry: $\boldsymbol{x} \preceq \boldsymbol{y}, \boldsymbol{y} \preceq \boldsymbol{x}\Longrightarrow \boldsymbol{x}=\boldsymbol{y}$
 - Transitivity: $\boldsymbol{x} \preceq \boldsymbol{y}, \boldsymbol{y} \preceq \boldsymbol{z} \Longrightarrow \boldsymbol{x} \preceq \boldsymbol{z}$
 
-如果我们定义关系 $\preceq_K$ 为 $\boldsymbol{x} \preceq_K \boldsymbol{y} \Longleftrightarrow \boldsymbol{y} - \boldsymbol{x} \in K$，其中 $K$ 是一个锥，由于 $\boldsymbol{0}\in K$ 以及锥中元素对锥组合封闭，第一条性质和第三条性质被自然满足，但第三条限制不被所有锥满足，因此我们需要让锥 $K$ 额外满足 $-K \cap K = \{\boldsymbol{0}\}$ 以满足反自反性.
+如果我们定义关系 $\preceq_K$ 为 $\boldsymbol{x} \preceq_K \boldsymbol{y} \Longleftrightarrow \boldsymbol{y} - \boldsymbol{x} \in K$，其中 $K$ 是一个锥，由于 $\boldsymbol{0}\in K$ 以及锥中元素对锥组合封闭，第一条性质和第三条性质被自然满足，但第二条限制不被所有锥满足，因此我们需要让锥 $K$ 额外满足 $-K \cap K = \{\boldsymbol{0}\}$ 以满足反自反性.
 
 满足 $-K \cap K =\{\boldsymbol{0}\}$ 的锥 $K$ 就可以定义一个偏序关系，为了让它的性质更好，我们经常在这样的锥上操作：
 
@@ -573,19 +597,25 @@ $$
 > [!NOTE]
 > Hessian 矩阵正定可以导出函数严格凸，但严格凸并**不**能推出 Hessian 矩阵正定. 例如 $f(x)=x^4$ 在 $x=0$ 处 Hessian 矩阵为 $0$.
 
-{{< admonition example "EXAMPLE" true >}}
+{{< example "例｜二次函数的凸性" >}}
 二次函数 $f:\mathbb R^n \mapsto \mathbb R$ 定义为
 $$
 f(\boldsymbol{x})=\frac{1}{2}\boldsymbol{x}^T\boldsymbol{P}\boldsymbol{x}+\boldsymbol{q}^T\boldsymbol{x}+r
 $$
 其中 $\boldsymbol{P} \in S^n,\ \boldsymbol{q} \in \mathbb R^n,\ r \in \mathbb R$.
 
-容易求得 $\nabla^2 f(\boldsymbol{x})=\boldsymbol{P}$，因此 $f$ 为凸函数当且仅当 $\boldsymbol{P}$ 为半正定矩阵. 可以证明，对于二次函数 $f$，其 Hessian 矩阵正定与其为严格凸函数等价.
-{{< /admonition >}}
+<!--解答-->
 
-{{< admonition example "EXAMPLE" true >}}
-对于函数 $f(x)=x^{-2}$，其 Hessian 矩阵为 $6x^{-4} \ge 0$，但 $f(x)$ 不是凸函数，因为其定义域不是凸集（不含原点），但若将定义域限制在 $x > 0$（或 $< 0$） 则此时 $f(x)$ 确为凸函数.
-{{< /admonition >}}
+容易求得 $\nabla^2 f(\boldsymbol{x})=\boldsymbol{P}$，因此 $f$ 为凸函数当且仅当 $\boldsymbol{P}$ 为半正定矩阵. 可以证明，对于二次函数 $f$，其 Hessian 矩阵正定与其为严格凸函数等价.
+{{< /example >}}
+
+{{< example "例｜二阶导数和定义域" >}}
+对于函数 $f(x)=x^{-2}$，判断它在其定义域上是否为凸函数。
+
+<!--解答-->
+
+其 Hessian 矩阵为 $6x^{-4} \ge 0$，但 $f(x)$ 不是凸函数，因为其定义域不是凸集（不含原点），但若将定义域限制在 $x > 0$（或 $< 0$） 则此时 $f(x)$ 确为凸函数.
+{{< /example >}}
 
 - 仿射函数 $f(\boldsymbol{x})=\boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}$ 是凸函数.
 - 指数函数 $\exp(ax)$ 是凸函数.

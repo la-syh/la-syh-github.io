@@ -1,0 +1,18 @@
+{{- $page := .Page -}}
+{{- $renderOptions := dict "display" "block" -}}
+{{- $title := .Get 0 | default "例题" | $page.RenderString -}}
+{{- $marker := "<!--解答-->" -}}
+{{- $parts := split .Inner $marker -}}
+{{- $body := $page.RenderString $renderOptions (index $parts 0) -}}
+{{- $answer := delimit (after 1 $parts) $marker | strings.TrimSpace -}}
+{{- with $answer -}}
+  {{- $answerHTML := $page.RenderString $renderOptions . -}}
+  {{- $body = printf "%s\n<details>\n<summary>解答</summary>\n%s\n</details>" $body $answerHTML -}}
+{{- end -}}
+{{- partial "plugin/admonition.html" (dict
+  "Type" "example"
+  "Title" $title
+  "Text" $body
+  "Open" true
+  "Foldable" false
+) -}}
