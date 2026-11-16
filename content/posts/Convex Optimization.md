@@ -291,17 +291,13 @@ f^{-1}(S)=\{\boldsymbol{x} \in \mathbb R^n: f(\boldsymbol{x}) \in S\}
 $$
 仍然是凸集，证明平凡，此处从略.
 
-{{< example "例｜保持凸性的运算" >}}
-若 $S$ 是凸集，则 $\alpha S = \{\alpha \boldsymbol{x} : \boldsymbol{x} \in S\}$ 也是凸集、$S+\boldsymbol{b}=\{ \boldsymbol{x} + \boldsymbol{b} : \boldsymbol{x} \in S \}$ 也是凸集，凸集在某个方向上的投影仍然是凸集，**凸集的和仍然是凸集**.
-
-<!--解答-->
+**保持凸性的运算**　若 $S$ 是凸集，则 $\alpha S = \{\alpha \boldsymbol{x} : \boldsymbol{x} \in S\}$ 也是凸集、$S+\boldsymbol{b}=\{ \boldsymbol{x} + \boldsymbol{b} : \boldsymbol{x} \in S \}$ 也是凸集，凸集在某个方向上的投影仍然是凸集，**凸集的和仍然是凸集**.
 
 这里我们解释一下最后一条，两个凸集 $S_1,S_2$ 的和定义为
 $$
 S_1+S_2=\{\boldsymbol{x_1}+\boldsymbol{x_2}:\boldsymbol{x_1} \in S_1,\boldsymbol{x_2} \in S_2\}
 $$
 为了证明它是凸集，首先有 $S_1 \times S_2 = \{(\boldsymbol{x_1},\boldsymbol{x_2}):\boldsymbol{x_1}\in S_1,\boldsymbol{x_2}\in S_2\}$ 是凸集，再做保持凸性的仿射变换 $f(\boldsymbol{x_1},\boldsymbol{x_2})=\boldsymbol{x_1}+\boldsymbol{x_2}$ 即可. 事实上，$S_1+S_2$ 也叫做 $S_1$ 和 $S_2$ 的 **Minkowski 和**.
-{{< /example >}}
 
 {{< example "例｜线性矩阵不等式" >}}
 线性矩阵不等式(Linear Matrix Inequality, LMI) 的解集是凸集. 设 
