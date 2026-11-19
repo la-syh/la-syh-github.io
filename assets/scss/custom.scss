@@ -293,3 +293,12 @@
     }
   }
 }
+
+// Keep the first two TOC levels visible and fold deeper inactive branches.
+:is(#toc-content-auto, #toc-content-static, #toc-content-drawer) > nav > :is(ul, ol) > li > :is(ul, ol) {
+  display: block;
+
+  li:not(.has-active) > :is(ul, ol) {
+    display: none;
+  }
+}
